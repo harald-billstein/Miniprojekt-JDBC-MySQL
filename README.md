@@ -4,6 +4,8 @@ av Harald & Christoffer
 #######################
 Database sql creation commands:
 
+CREATE DATABASE the_firm;
+
 CREATE TABLE employee (employee_id int NOT NULL AUTO_INCREMENT, fname varchar(32) NOT NULL, lname varchar(32) NOT NULL, salary int NOT NULL, hire_date date, PRIMARY KEY (`employee_id`)
 );
 
