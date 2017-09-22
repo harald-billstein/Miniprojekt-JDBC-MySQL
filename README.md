@@ -33,5 +33,8 @@ MariaDB [the_firm]> select name, COUNT(employee_id) FROM department JOIN employe
 
 
 
-WORK IN PROGRESS
+WORK IN PROGRESS employee_id foreign key problem!
+CREATE TABLE company_car (reg_nr char(6) NOT NULL UNIQUE, brand varchar(32) NOT NULL, model varchar(32) NOT NULL, purchase_price int NOT NULL, purchase_date date NOT NULL, employee_id int, PRIMARY KEY(reg_nr));
+
+INSERT INTO company_car (reg_nr, brand, model, purchase_price, purchase_date, employee_id) VALUES('abc123','VOLVO','V70',250000,'2017-01-12',1),('edf456','SAAB','9-5',200000,'2016-10-11',2),('hij789','OPEL','ASTRA',140000,'2015-03-09',3),('klmo12','PEUGEOT','208',107000,'2009-06-19',4);
 
