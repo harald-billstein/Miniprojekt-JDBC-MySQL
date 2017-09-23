@@ -70,4 +70,13 @@ INSERT INTO company_car (reg_nr, brand, model, purchase_price, purchase_date, em
 CREATE PROCEDURE add_employee(IN firstname varchar(32), IN lastname varchar(32), IN salary int, IN department_id int) BEGIN INSERT INTO
  employee (fname, lname, salary, department_id) VALUES (firstname, lastname, salary, department_id); END
  ```
+ 
+ 
+ ```
+# code block
+CREATE TRIGGER set_created_date BEFORE INSERT ON employee FOR EACH ROW
+BEGIN
+    SET NEW.hire_date = NOW();
+END;
+ ```
 
