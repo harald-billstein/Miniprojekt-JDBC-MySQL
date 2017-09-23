@@ -38,3 +38,5 @@ CREATE TABLE company_car (reg_nr char(6) NOT NULL UNIQUE, brand varchar(32) NOT 
 
 INSERT INTO company_car (reg_nr, brand, model, purchase_price, purchase_date, employee_id) VALUES('abc123','VOLVO','V70',250000,'2017-01-12',1),('edf456','SAAB','9-5',200000,'2016-10-11',2),('hij789','OPEL','ASTRA',140000,'2015-03-09',3),('klmo12','PEUGEOT','208',107000,'2009-06-19',4);
 
+CREATE PROCEDURE add_employee(IN firstname varchar(32), IN lastname varchar(32), IN salary int, IN department_id int) BEGIN INSERT INTO employee (fname, lname, salary, department_id) VALUES (firstname, lastname, salary, department_id); END
+
