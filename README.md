@@ -22,7 +22,7 @@ KEY (department_id));
 ```
 # code block
 CREATE TABLE employee (employee_id int NOT NULL AUTO_INCREMENT, fname varchar(32), lname varchar(32), salary int NOT NULL, hire_date 
-date NOT NULL, department_id int NOT NULL, FOREIGN KEY(department_id) REFERENCES department(department_id), PRIMARY KEY (employee_id));
+date NOT NULL, department_id int NOT NULL, FOREIGN KEY(department_id) REFERENCES department(department_id), PRIMARY KEY (employee_id), FOREIGN KEY(employee_id) REFERENCES company_car(employee_id) ON DELETE SET NULL);
 
 ```
 
