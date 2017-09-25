@@ -7,6 +7,7 @@
 
 **SQL commands**
 
+
 ```
 # code block
 DELIMITER //
