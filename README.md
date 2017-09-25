@@ -9,8 +9,20 @@
 
 ```
 # code block
+DELIMITER //
+```
+
+```
+# code block
 CREATE DATABASE the_firm;
 ```
+
+```
+# code block
+USE the_firm
+```
+
+
 
 ```
 # code block
@@ -21,8 +33,8 @@ KEY (department_id));
 
 ```
 # code block
-CREATE TABLE employee (employee_id int NOT NULL AUTO_INCREMENT, fname varchar(32), lname varchar(32), salary int NOT NULL, hire_date 
-date NOT NULL, department_id int NOT NULL, FOREIGN KEY(department_id) REFERENCES department(department_id), PRIMARY KEY (employee_id), FOREIGN KEY(employee_id) REFERENCES company_car(employee_id) ON DELETE SET NULL);
+CREATE TABLE employee (employee_id int NOT NULL AUTO_INCREMENT, fname varchar(32) NOT NULL, lname varchar(32) NOT NULL, salary int NOT NULL, hire_date 
+date NOT NULL, department_id int NOT NULL, FOREIGN KEY(department_id) REFERENCES department(department_id), PRIMARY KEY (employee_id));
 
 ```
 
@@ -52,15 +64,15 @@ SELECT name, COUNT(employee_id) FROM department JOIN employee ON department.depa
 # code block
 WORK IN PROGRESS employee_id foreign key problem!
 CREATE TABLE company_car (reg_nr char(6) NOT NULL UNIQUE, brand varchar(32) NOT NULL, model varchar(32) NOT NULL, purchase_price int 
-NOT NULL, purchase_date date NOT NULL, employee_id int, PRIMARY KEY(reg_nr), FOREIGN KEY(employee_id) REFERENCES employee(employee_id) ON DELETE SET NULL);
+NOT NULL, purchase_date date NOT NULL, employee_id int UNIQUE, PRIMARY KEY(reg_nr), FOREIGN KEY(employee_id) REFERENCES employee(employee_id) ON DELETE SET NULL);
 ```
 
 
 ```
 # code block
-INSERT INTO company_car (reg_nr, brand, model, purchase_price, purchase_date) VALUES('abc123','VOLVO','V70',
-250000,'2017-01-12'),('edf456','SAAB','9-5',200000,'2016-10-11'),('hij789','OPEL','ASTRA',140000,'2015-03-09'),
-('klmo12','PEUGEOT','208',107000,'2009-06-19');
+INSERT INTO company_car (reg_nr, brand, model, purchase_price, purchase_date, employee_id) VALUES('abc123','VOLVO','V70',
+250000,'2017-01-12',1),('edf456','SAAB','9-5',200000,'2016-10-11',2),('hij789','OPEL','ASTRA',140000,'2015-03-09',3),
+('klmo12','PEUGEOT','208',107000,'2009-06-19',4);
 ```
 
 
@@ -78,4 +90,9 @@ BEGIN
     SET NEW.hire_date = NOW();
 END
  ```
+ 
+ ```
+# code block
+DELIMITER ;
+```
 
