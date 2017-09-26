@@ -4,6 +4,13 @@
 #####av Harald & Christoffer
 
 
+![er-diagram-the_firm2](https://user-images.githubusercontent.com/5534092/30874042-81a14e7c-a2ef-11e7-9d05-a79242e53c72.jpg)
+
+
+
+![explainthe_firm2](https://user-images.githubusercontent.com/5534092/30875353-8eba5f8c-a2f3-11e7-8bb2-8d6ce1fbd071.jpg)
+
+
 
 **SQL commands**
 
