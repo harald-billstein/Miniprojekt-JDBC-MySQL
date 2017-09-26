@@ -8,6 +8,10 @@
 
 
 
+![explainthe_firm2](https://user-images.githubusercontent.com/5534092/30875353-8eba5f8c-a2f3-11e7-8bb2-8d6ce1fbd071.jpg)
+
+
+
 **SQL commands**
 
 
