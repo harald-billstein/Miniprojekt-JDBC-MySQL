@@ -1,21 +1,21 @@
 import java.util.List;
 import java.util.Scanner;
 
-
-
 import databasecontroller.TheFirmDatabaseIO;
+import databasemodel.Department;
 import databasemodel.Employee;
 import exceptions.TheFirmParsebleException;
 
 public class TheFirm<T> {
-	
+
 	private Scanner scanner = new Scanner(System.in);
 	private TheFirmDatabaseIO<Employee> theFirmDatabaseIO;
-	
+	private TheFirmDatabaseIO<Department> theFirmDatabaseIO2;
+
 	public void start() {
 		showMenu();
 	}
-	
+
 	public void showMenu() {
 		System.out.println("##########################");
 		System.out.println("1: Show all employees");
@@ -24,7 +24,7 @@ public class TheFirm<T> {
 		System.out.println("4: Add new Employee");
 		System.out.println("5: Update salary");
 		System.out.println("6: Remove employee");
-		System.out.println("7: Search for an eployee");
+		System.out.println("7: Search for an employee");
 		System.out.println("8: List all employees from specific department");
 		System.out.println("9: Exit program");
 		System.out.println("##########################");
@@ -32,11 +32,11 @@ public class TheFirm<T> {
 		System.out.println("##########################");
 		System.out.print("--> ");
 		String answer = scanner.nextLine();
-		
+
 		boolean isParable = isParsable(answer);
-		
+
 		if (isParable) {
-			MenuChoice(Integer.parseInt(answer));			
+			MenuChoice(Integer.parseInt(answer));
 		} else {
 			showMenu();
 		}
@@ -83,7 +83,7 @@ public class TheFirm<T> {
 			System.out.println("EXITING.....");
 			System.exit(0);
 			break;
-		}	
+		}
 	}
 
 	private void listAllEmployeesFromDepartment() {
@@ -92,18 +92,18 @@ public class TheFirm<T> {
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
-		
+
 	}
 
 	private void searchEmployee() {
 		System.out.print("Name: ");
 		String name = scanner.nextLine();
-		theFirmDatabaseIO =  new TheFirmDatabaseIO<>(Employee.class);
+		theFirmDatabaseIO = new TheFirmDatabaseIO<>(Employee.class);
 		List<Employee> employees = theFirmDatabaseIO.seachEmployeeName(name);
 		printEmployees(employees);
 		System.out.println("Press any key...");
 		scanner.nextLine();
-		showMenu();	
+		showMenu();
 	}
 
 	private void removeEmployee() {
@@ -111,7 +111,7 @@ public class TheFirm<T> {
 		// TODO Auto-generated method stub
 		System.out.println("Press any key...");
 		scanner.nextLine();
-		showMenu();	
+		showMenu();
 	}
 
 	private void updateSalary() {
@@ -139,22 +139,25 @@ public class TheFirm<T> {
 	}
 
 	private void showDepartments() {
-		System.out.println("showDepartments");
-		// TODO Auto-generated method stub
-		System.out.println("Press any key...");
+		theFirmDatabaseIO2 = new TheFirmDatabaseIO<>(Department.class);
+		List<Department> departments = theFirmDatabaseIO2.retrive("department");
+		System.out.println("Departments:\n");
+		for (Department department : departments)
+			System.out.println(department.getName());
+		System.out.println("\nPress any key...");
 		scanner.nextLine();
 		showMenu();
 	}
 
 	private void showEmployees() {
-		theFirmDatabaseIO =  new TheFirmDatabaseIO<>(Employee.class);
+		theFirmDatabaseIO = new TheFirmDatabaseIO<>(Employee.class);
 		List<Employee> employees = theFirmDatabaseIO.retrive("employee");
 		printEmployees(employees);
 		System.out.println("Press any key...");
 		scanner.nextLine();
-		showMenu();	
+		showMenu();
 	}
-	
+
 	public void printEmployees(List<Employee> employees) {
 		for (Employee employee : employees) {
 			System.out.println(employee.getFname() + " " + employee.getLname());

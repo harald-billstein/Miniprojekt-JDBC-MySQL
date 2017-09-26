@@ -1,6 +1,3 @@
-import databasemodel.CompanyCarBuilder;
-import databasemodel.CompanyCarBuilder.CompanyCar;
-import java.sql.Date;
 import java.util.logging.Level;
 
 public class Main {
