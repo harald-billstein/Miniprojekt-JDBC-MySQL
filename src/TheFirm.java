@@ -81,7 +81,7 @@ public class TheFirm<T> {
 			removeEmployee();
 			break;
 		case 7:
-			//searchEmployee();
+			searchEmployee();
 			break;
 		case 8:
 			listAllEmployeesFromDepartment();
@@ -108,16 +108,16 @@ public class TheFirm<T> {
 
 	}
 
-//	private void searchEmployee() {
-//		System.out.print("Name: ");
-//		String name = scanner.nextLine();
-//		theFirmDatabaseIO = new TheFirmDatabaseIO<>(Employee.class);
-//		List<Employee> employees = theFirmDatabaseIO.seachEmployeeName(name);
-//		printEmployees(employees);
-//		System.out.println("Press any key...");
-//		scanner.nextLine();
-//		showMenu();
-//	}
+	private void searchEmployee() {
+		System.out.print("Name: ");
+		String name = scanner.nextLine();
+		theFirmDatabaseIO.setClazz(Employee.class);
+		List<Employee> employees = theFirmDatabaseIO.seachEmployeeName(name);
+		printEmployees(employees);
+		System.out.println("Press any key...");
+		scanner.nextLine();
+		showMenu();
+	}
 
 	private void removeEmployee() {
 		System.out.println("removeEmployee");
@@ -128,11 +128,29 @@ public class TheFirm<T> {
 	}
 
 	private void updateSalary() {
-		System.out.println("updateSalary");
-		// TODO Auto-generated method stub
+		theFirmDatabaseIO.setClazz(Employee.class);
+		System.out.print("Employee id: ");
+		String employeeId = scanner.nextLine();
+		while(!isParsable(employeeId)) {
+			System.out.print("Employee id: ");
+			employeeId = scanner.nextLine();
+		}
+		System.out.print("Salary: ");
+		String salary = scanner.nextLine();
+		while(!isParsable(salary)) {
+			System.out.print("Salary: ");
+			salary = scanner.nextLine();
+		}
+		try {
+		theFirmDatabaseIO.update(Integer.parseInt(employeeId), Integer.parseInt(salary));
+		}
+		catch(Exception e) {
+			System.out.println("Error");
+		}
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
+		
 	}
 
 	private void addNewEmployee() {
@@ -144,7 +162,6 @@ public class TheFirm<T> {
 		String salary = scanner.nextLine();
 		
 		while (!isParsable(salary)) {
-			System.out.println("in while loop");
 			System.out.print("Salary: ");
 			salary = scanner.nextLine();
 		}
