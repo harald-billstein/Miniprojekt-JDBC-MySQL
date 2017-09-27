@@ -2,10 +2,13 @@ package databasecontroller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import databasemodel.Department;
 import databasemodel.Employee;
 
 public class TheFirmDatabaseIO<T> {
@@ -13,13 +16,12 @@ public class TheFirmDatabaseIO<T> {
 	private SessionFactory factory;
 	private Session session;
 	private Class<?> clazz;
+	private Object object;
+	private String tableName;
 
 	public void setClazz(Class<?> clazz) {
 		this.clazz = clazz;
 	}
-
-	private Object object;
-	private String tableName;
 
 	public TheFirmDatabaseIO() {
 
@@ -49,6 +51,19 @@ public class TheFirmDatabaseIO<T> {
 
 	public void getSession() {
 		session = factory.getCurrentSession();
+	}
+
+	public void save(Object object) {
+		createFactory();
+		getSession();
+		try {
+			session.beginTransaction();
+			session.save(object);
+			session.getTransaction().commit();
+			System.out.println("Succsses!");
+		} finally {
+			factory.close();
+		}
 	}
 
 	public List<?> retrive(String tableName) {
