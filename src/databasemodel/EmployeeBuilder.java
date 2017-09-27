@@ -3,12 +3,11 @@ package databasemodel;
 import java.sql.Date;
 
 public class EmployeeBuilder {
-	private int employeeId;
 	private String fname;
 	private String lname;
-	private int salary;
+	private Integer salary;
 	private Date hireDate;
-	private int departmentId;
+	private Integer departmentId;
 
 	public EmployeeBuilder setFname(String fname) {
 		this.fname = fname;
@@ -20,7 +19,7 @@ public class EmployeeBuilder {
 		return this;
 	}
 
-	public EmployeeBuilder salary(int salary) {
+	public EmployeeBuilder setSalary(Integer salary) {
 		this.salary = salary;
 		return this;
 	}
@@ -30,7 +29,7 @@ public class EmployeeBuilder {
 		return this;
 	}
 
-	public EmployeeBuilder departmentId(int departmentId) {
+	public EmployeeBuilder setDepartmentId(Integer departmentId) {
 		this.departmentId = departmentId;
 		return this;
 	}
@@ -40,19 +39,27 @@ public class EmployeeBuilder {
 	}
 
 	public class Employee {
-		private int employeeId;
+		private Integer employeeId;
 		private String fname;
 		private String lname;
-		private int salary;
+		private Integer salary;
 		private Date hireDate;
-		private int departmentId;
+		private Integer departmentId;
 
-		public Employee(String fname, String lname, int salary, Date hireDate, int departmentId) {
+		public Employee(String fname, String lname, Integer salary, Date hireDate, Integer departmentId) {
 			this.fname = fname;
 			this.lname = lname;
 			this.salary = salary;
 			this.hireDate = hireDate;
 			this.departmentId = departmentId;
+		}
+
+		public int getEmployeeId() {
+			return employeeId;
+		}
+
+		public void setEmployeeId(Integer employeeId) {
+			this.employeeId = employeeId;
 		}
 
 		public String getFname() {
@@ -71,11 +78,11 @@ public class EmployeeBuilder {
 			this.lname = lname;
 		}
 
-		public int getSalary() {
+		public Integer getSalary() {
 			return salary;
 		}
 
-		public void setSalary(int salary) {
+		public void setSalary(Integer salary) {
 			this.salary = salary;
 		}
 
@@ -87,11 +94,11 @@ public class EmployeeBuilder {
 			this.hireDate = hireDate;
 		}
 
-		public int getDepartmentId() {
+		public Integer getDepartmentId() {
 			return departmentId;
 		}
 
-		public void setDepartmentId(int departmentId) {
+		public void setDepartmentId(Integer departmentId) {
 			this.departmentId = departmentId;
 		}
 	}

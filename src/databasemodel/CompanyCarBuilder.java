@@ -2,6 +2,11 @@ package databasemodel;
 
 import java.sql.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 public class CompanyCarBuilder {
 	
 	private String reg_nr;
@@ -45,14 +50,20 @@ public class CompanyCarBuilder {
 		return new CompanyCar(this.reg_nr, this.brand, this.model, this.purchase_price, this.purchase_date, this.employee_id);
 	}
 	
+	@Entity(name = "company_car")
 	public class CompanyCar {
 		
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private String reg_nr;
 		private String brand;
 		private String model;
 		private int purchase_price;
 		private Date purchase_date;
 		private int employee_id;
+		
+		public CompanyCar() {
+		}
 		
 		public CompanyCar(String reg_nr, String brand, String model , int purchase_price, Date purchase_date,int employee_id) {
 			this.reg_nr = reg_nr;

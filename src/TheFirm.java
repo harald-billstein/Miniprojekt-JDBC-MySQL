@@ -4,8 +4,10 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import databasecontroller.TheFirmDatabaseIO;
+import databasemodel.CompanyCar;
 import databasemodel.Department;
 import databasemodel.Employee;
+import exceptions.PrintException;
 import exceptions.TheFirmParsebleException;
 
 public class TheFirm<T> {
@@ -137,19 +139,17 @@ public class TheFirm<T> {
 	}
 
 	private void showAllCompanyCars() {
-		System.out.println("showAllCompanyCars");
-		// TODO Auto-generated method stub
+		theFirmDatabaseIO.setClazz(CompanyCar.class);
+		List<CompanyCar> companyCars = (List<CompanyCar>) theFirmDatabaseIO.retrive("company_car");
+		printCompanyCars(companyCars);
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
 	}
 
 	private void showDepartments() {
-		theFirmDatabaseIO2 = new TheFirmDatabaseIO<>(Department.class);
-		List<Department> departments = theFirmDatabaseIO2.retrive("department");
-		System.out.println("Departments:\n");
-		for (Department department : departments)
-			System.out.println(department.getName());
+		theFirmDatabaseIO.setClazz(Department.class);
+		printDepartments((List<Department>) theFirmDatabaseIO.retrive("department"));
 		System.out.println("\nPress any key...");
 		scanner.nextLine();
 		showMenu();
@@ -170,11 +170,35 @@ public class TheFirm<T> {
 			try {
 				TimeUnit.MILLISECONDS.sleep(100);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				new PrintException(e);
 			}
 		}
 		System.out.println();
+	}
+
+	private void printCompanyCars(List<CompanyCar> companyCars) {
+		for (CompanyCar companyCar : companyCars) {
+			System.out.println(companyCar.getReg_nr() + " - " + companyCar.getBrand() + " - " + companyCar.getModel());
+			try {
+				TimeUnit.MILLISECONDS.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				new PrintException(e);
+			}
+		}
+	}
+	
+	private void printDepartments(List<Department> departments) {
+		for (Department department : departments) {
+			System.out.println(department.getName());
+			try {
+				TimeUnit.MILLISECONDS.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				new PrintException(e);
+			}
+		}
 	}
 
 	public void clearScreen() {
