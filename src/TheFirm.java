@@ -1,5 +1,7 @@
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import databasecontroller.TheFirmDatabaseIO;
 import databasemodel.Department;
@@ -9,10 +11,10 @@ import exceptions.TheFirmParsebleException;
 public class TheFirm<T> {
 
 	private Scanner scanner = new Scanner(System.in);
-	private TheFirmDatabaseIO<Employee> theFirmDatabaseIO;
-	private TheFirmDatabaseIO<Department> theFirmDatabaseIO2;
+	private TheFirmDatabaseIO<?> theFirmDatabaseIO = new TheFirmDatabaseIO<>();
 
 	public void start() {
+		System.out.println(theFirmDatabaseIO.getDatabaseInfo());
 		showMenu();
 	}
 
@@ -27,8 +29,6 @@ public class TheFirm<T> {
 		System.out.println("7: Search for an employee");
 		System.out.println("8: List all employees from specific department");
 		System.out.println("9: Exit program");
-		System.out.println("##########################");
-		System.out.println("Database uptime");
 		System.out.println("##########################");
 		System.out.print("--> ");
 		String answer = scanner.nextLine();
@@ -79,9 +79,15 @@ public class TheFirm<T> {
 		case 8:
 			listAllEmployeesFromDepartment();
 			break;
-		default:
+		case 9:
 			System.out.println("EXITING.....");
+			System.out.println("DONE");
 			System.exit(0);
+			break;
+
+		default:
+			System.out.println("Not a valied menu option \n");
+			showMenu();
 			break;
 		}
 	}
@@ -150,8 +156,8 @@ public class TheFirm<T> {
 	}
 
 	private void showEmployees() {
-		theFirmDatabaseIO = new TheFirmDatabaseIO<>(Employee.class);
-		List<Employee> employees = theFirmDatabaseIO.retrive("employee");
+		theFirmDatabaseIO.setClazz(Employee.class);
+		List<Employee> employees = (List<Employee>) theFirmDatabaseIO.retrive("employee");
 		printEmployees(employees);
 		System.out.println("Press any key...");
 		scanner.nextLine();
@@ -161,7 +167,17 @@ public class TheFirm<T> {
 	public void printEmployees(List<Employee> employees) {
 		for (Employee employee : employees) {
 			System.out.println(employee.getFname() + " " + employee.getLname());
+			try {
+				TimeUnit.MILLISECONDS.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		System.out.println();
+	}
+
+	public void clearScreen() {
+		// TODO can this be done?
 	}
 }
