@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import databasecontroller.TheFirmDatabaseIO;
+import databasemodel.Department;
 import databasemodel.Employee;
 import exceptions.TheFirmParsebleException;
 
@@ -25,7 +26,7 @@ public class TheFirm<T> {
 		System.out.println("4: Add new Employee");
 		System.out.println("5: Update salary");
 		System.out.println("6: Remove employee");
-		System.out.println("7: Search for an eployee");
+		System.out.println("7: Search for an employee");
 		System.out.println("8: List all employees from specific department");
 		System.out.println("9: Exit program");
 		System.out.println("##########################");
@@ -83,6 +84,7 @@ public class TheFirm<T> {
 			System.out.println("DONE");
 			System.exit(0);
 			break;
+
 		default:
 			System.out.println("Not a valied menu option \n");
 			showMenu();
@@ -143,9 +145,12 @@ public class TheFirm<T> {
 	}
 
 	private void showDepartments() {
-		System.out.println("showDepartments");
-		// TODO Auto-generated method stub
-		System.out.println("Press any key...");
+		theFirmDatabaseIO2 = new TheFirmDatabaseIO<>(Department.class);
+		List<Department> departments = theFirmDatabaseIO2.retrive("department");
+		System.out.println("Departments:\n");
+		for (Department department : departments)
+			System.out.println(department.getName());
+		System.out.println("\nPress any key...");
 		scanner.nextLine();
 		showMenu();
 	}
