@@ -105,4 +105,14 @@ public class TheFirmDatabaseIO<T> {
 		return "Connected as: " + properties.get("hibernate.connection.username") + " at: "
 				+ properties.get("hibernate.connection.url");
 	}
+	
+	public void update(Integer id, Integer salary) {
+		createFactory();
+		getSession();
+		session.beginTransaction();
+		Employee employee = session.get(Employee.class, id);
+		employee.setSalary(salary);
+		session.getTransaction().commit();
+		session.close();
+	}
 }
