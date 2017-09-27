@@ -1,12 +1,16 @@
 import java.io.IOException;
+import java.sql.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+import org.hibernate.criterion.BetweenExpression;
+import databasemodel.*;
+
 import databasecontroller.TheFirmDatabaseIO;
 import databasemodel.CompanyCar;
 import databasemodel.Department;
-import databasemodel.Employee;
+import databasemodel.EmployeeBuilder;
 import exceptions.PrintException;
 import exceptions.TheFirmParsebleException;
 
@@ -14,6 +18,7 @@ public class TheFirm<T> {
 
 	private Scanner scanner = new Scanner(System.in);
 	private TheFirmDatabaseIO<?> theFirmDatabaseIO = new TheFirmDatabaseIO<>();
+	private Class<?> Employee;
 
 	public void start() {
 		System.out.println(theFirmDatabaseIO.getDatabaseInfo());
@@ -76,7 +81,7 @@ public class TheFirm<T> {
 			removeEmployee();
 			break;
 		case 7:
-			searchEmployee();
+			//searchEmployee();
 			break;
 		case 8:
 			listAllEmployeesFromDepartment();
@@ -103,16 +108,16 @@ public class TheFirm<T> {
 
 	}
 
-	private void searchEmployee() {
-		System.out.print("Name: ");
-		String name = scanner.nextLine();
-		theFirmDatabaseIO = new TheFirmDatabaseIO<>(Employee.class);
-		List<Employee> employees = theFirmDatabaseIO.seachEmployeeName(name);
-		printEmployees(employees);
-		System.out.println("Press any key...");
-		scanner.nextLine();
-		showMenu();
-	}
+//	private void searchEmployee() {
+//		System.out.print("Name: ");
+//		String name = scanner.nextLine();
+//		theFirmDatabaseIO = new TheFirmDatabaseIO<>(Employee.class);
+//		List<Employee> employees = theFirmDatabaseIO.seachEmployeeName(name);
+//		printEmployees(employees);
+//		System.out.println("Press any key...");
+//		scanner.nextLine();
+//		showMenu();
+//	}
 
 	private void removeEmployee() {
 		System.out.println("removeEmployee");
@@ -131,8 +136,40 @@ public class TheFirm<T> {
 	}
 
 	private void addNewEmployee() {
-		System.out.println("addNewEmployee");
-		// TODO Auto-generated method stub
+		System.out.print("First name: ");
+		String firstName = scanner.nextLine();
+		System.out.print("Last name: ");
+		String lastName = scanner.nextLine();
+		System.out.print("Salary: ");
+		String salary = scanner.nextLine();
+		
+		while (!isParsable(salary)) {
+			System.out.println("in while loop");
+			System.out.print("Salary: ");
+			salary = scanner.nextLine();
+		}
+		
+		// TODO hämmta department och kolla antal, så du inte lägger till person på avdelning som inte finns (crash)!
+		
+		System.out.print("Department id: ");
+		String departmentId = scanner.nextLine();
+
+		while (!isParsable(departmentId)) {
+			System.out.println("in while loop");
+			System.out.print("Department id: ");
+			departmentId = scanner.nextLine();
+		}
+		
+		Employee employee = new EmployeeBuilder()
+				.setFname(firstName)
+				.setLname(lastName)
+				.setSalary(Integer.parseInt(salary))
+				.setDepartmentId(Integer.parseInt(departmentId))
+				.build();
+
+		theFirmDatabaseIO.setClazz(Employee.class);
+		theFirmDatabaseIO.save(employee);
+		
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();

@@ -22,7 +22,15 @@ public class Employee {
 	public Employee() {
 		
 	}
-
+	
+	public Employee(String fname, String lname, Integer salary, Date hire_date, Integer department_id) {
+		this.fname = fname;
+		this.lname = lname;
+		this.salary = salary;
+		this.hire_date = hire_date;
+		this.department_id = department_id;	
+	}
+	
 	public int getEmployee_id() {
 		return employee_id;
 	}
