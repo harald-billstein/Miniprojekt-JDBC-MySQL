@@ -129,28 +129,28 @@ public class TheFirm<T> {
 
 	private void updateSalary() {
 		theFirmDatabaseIO.setClazz(Employee.class);
-		System.out.print("Employee id: ");
-		String employeeId = scanner.nextLine();
-		while(!isParsable(employeeId)) {
+
+		String employeeId;
+		do {
 			System.out.print("Employee id: ");
 			employeeId = scanner.nextLine();
-		}
-		System.out.print("Salary: ");
-		String salary = scanner.nextLine();
-		while(!isParsable(salary)) {
+		} while (!isParsable(employeeId));
+		
+		String salary;
+		do {
 			System.out.print("Salary: ");
 			salary = scanner.nextLine();
-		}
+		} while (!isParsable(salary));
+		
 		try {
-		theFirmDatabaseIO.update(Integer.parseInt(employeeId), Integer.parseInt(salary));
-		}
-		catch(Exception e) {
+			theFirmDatabaseIO.update(Integer.parseInt(employeeId), Integer.parseInt(salary));
+		} catch (Exception e) {
 			System.out.println("Error");
 		}
+		
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
-		
 	}
 
 	private void addNewEmployee() {
@@ -158,25 +158,22 @@ public class TheFirm<T> {
 		String firstName = scanner.nextLine();
 		System.out.print("Last name: ");
 		String lastName = scanner.nextLine();
-		System.out.print("Salary: ");
-		String salary = scanner.nextLine();
 		
-		while (!isParsable(salary)) {
+		
+		// TODO hämmta department och kolla antal, så du inte lägger till person på
+		// avdelning som inte finns (crash)!
+		String salary;
+		do {
 			System.out.print("Salary: ");
 			salary = scanner.nextLine();
-		}
-		
-		// TODO hämmta department och kolla antal, så du inte lägger till person på avdelning som inte finns (crash)!
-		
-		System.out.print("Department id: ");
-		String departmentId = scanner.nextLine();
+		} while (!isParsable(salary));
 
-		while (!isParsable(departmentId)) {
-			System.out.println("in while loop");
+		String departmentId;
+		do {
 			System.out.print("Department id: ");
 			departmentId = scanner.nextLine();
-		}
-		
+		} while (!isParsable(departmentId));
+
 		Employee employee = new EmployeeBuilder()
 				.setFname(firstName)
 				.setLname(lastName)
@@ -186,7 +183,7 @@ public class TheFirm<T> {
 
 		theFirmDatabaseIO.setClazz(Employee.class);
 		theFirmDatabaseIO.save(employee);
-		
+
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
@@ -242,7 +239,7 @@ public class TheFirm<T> {
 			}
 		}
 	}
-	
+
 	private void printDepartments(List<Department> departments) {
 		for (Department department : departments) {
 			System.out.println(department.getName());
