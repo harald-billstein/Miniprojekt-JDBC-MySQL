@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity(name = "employee")
 public class Employee {
@@ -13,11 +15,23 @@ public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int employee_id;
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
 	private String fname;
 	private String lname;
 	private int salary;
 	private Date hire_date;
 	private int department_id;
+	
+	@JoinColumn(name = "department_id", insertable = false, updatable = false)
+	@ManyToOne(optional = false)
+	private Department department;
 	
 	public Employee() {
 		

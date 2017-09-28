@@ -1,9 +1,13 @@
 package databasemodel;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity(name = "department")
 public class Department {
@@ -14,6 +18,10 @@ public class Department {
 	private String name;
 	private int rent;
 	private String phone_number;
+	
+	
+	@OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
+	private Set<Employee> employees;
 	
 	public Department() {
 		
