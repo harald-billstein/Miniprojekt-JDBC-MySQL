@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import databasemodel.CompanyCar;
 import databasemodel.Department;
 import databasemodel.Employee;
 
@@ -42,11 +43,12 @@ public class TheFirmDatabaseIO<T> {
 	}
 
 	public void createFactory() {
-		if (clazz == null) {
-			factory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
-		} else {
-			factory = new Configuration().configure("hibernate.cfg.xml").addAnnotatedClass(clazz).buildSessionFactory();
-		}
+			factory = new Configuration()
+					.configure("hibernate.cfg.xml")
+					.addAnnotatedClass(Employee.class)
+					.addAnnotatedClass(Department.class)
+					.addAnnotatedClass(CompanyCar.class)
+					.buildSessionFactory();
 	}
 
 	public void getSession() {
@@ -74,6 +76,21 @@ public class TheFirmDatabaseIO<T> {
 		try {
 			session.beginTransaction();
 			theObjects = session.createQuery("from " + tableName).list();
+			session.getTransaction().commit();
+		} finally {
+			factory.close();
+		}
+		return theObjects;
+	}
+	
+	public List<?> retriveDepartmentEmployeeList(Integer departmentId) {
+		createFactory();
+		getSession();
+
+		List<?> theObjects;
+		try {
+			session.beginTransaction();
+			theObjects = session.createQuery("from employee WHERE department.department_id = '" + departmentId  + "'").list();
 			session.getTransaction().commit();
 		} finally {
 			factory.close();

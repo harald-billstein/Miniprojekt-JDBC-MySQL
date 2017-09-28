@@ -1,10 +1,14 @@
 import java.io.IOException;
 import java.sql.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.hibernate.criterion.BetweenExpression;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToStdout;
+
 import databasemodel.*;
 
 import databasecontroller.TheFirmDatabaseIO;
@@ -98,6 +102,23 @@ public class TheFirm<T> {
 
 	private void listAllEmployeesFromDepartment() {
 		System.out.println("listAllEmployeesFromDepartment");
+
+		String departmentId;
+		do {
+			System.out.print("Enter department id: ");
+			departmentId = scanner.nextLine();
+		} while (!isParsable(departmentId));
+		
+
+			
+			
+		
+		List<Employee> employeesFromDepartment = (List<Employee>) theFirmDatabaseIO.retriveDepartmentEmployeeList(Integer.parseInt(departmentId));
+		
+		printEmployeesIncludingDepartment(employeesFromDepartment);
+		
+		
+
 		// TODO Auto-generated method stub
 		System.out.println("Press any key...");
 		scanner.nextLine();
@@ -222,7 +243,20 @@ public class TheFirm<T> {
 
 	public void printEmployees(List<Employee> employees) {
 		for (Employee employee : employees) {
-			System.out.println(employee.getFname() + " " + employee.getLname());
+			System.out.println(employee.getEmployee_id() + " " + employee.getFname() + " " + employee.getLname());
+			try {
+				TimeUnit.MILLISECONDS.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				new PrintException(e);
+			}
+		}
+		System.out.println();
+	}
+	
+	public void printEmployeesIncludingDepartment(List<Employee> employees) {
+		for (Employee employee : employees) {
+			System.out.println(employee.getEmployee_id() + " " + employee.getFname() + " " + employee.getLname() + " " + employee.getDepartment().getName() );
 			try {
 				TimeUnit.MILLISECONDS.sleep(100);
 			} catch (InterruptedException e) {
