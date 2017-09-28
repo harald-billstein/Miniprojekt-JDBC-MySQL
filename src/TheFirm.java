@@ -8,9 +8,6 @@ import org.hibernate.criterion.BetweenExpression;
 import databasemodel.*;
 
 import databasecontroller.TheFirmDatabaseIO;
-import databasemodel.CompanyCar;
-import databasemodel.Department;
-import databasemodel.EmployeeBuilder;
 import exceptions.PrintException;
 import exceptions.TheFirmParsebleException;
 
@@ -120,8 +117,20 @@ public class TheFirm<T> {
 	}
 
 	private void removeEmployee() {
-		System.out.println("removeEmployee");
-		// TODO Auto-generated method stub
+		theFirmDatabaseIO.setClazz(Employee.class);
+
+		String employeeId;
+		do {
+			System.out.println("Enter ID of employee to remove: ");
+			employeeId = scanner.nextLine();
+		} while (!isParsable(employeeId));
+
+		try {
+			theFirmDatabaseIO.delete(Integer.parseInt(employeeId));
+		} catch (Exception e) {
+			System.out.println("Error");
+		}
+
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
@@ -135,19 +144,19 @@ public class TheFirm<T> {
 			System.out.print("Employee id: ");
 			employeeId = scanner.nextLine();
 		} while (!isParsable(employeeId));
-		
+
 		String salary;
 		do {
 			System.out.print("Salary: ");
 			salary = scanner.nextLine();
 		} while (!isParsable(salary));
-		
+
 		try {
 			theFirmDatabaseIO.update(Integer.parseInt(employeeId), Integer.parseInt(salary));
 		} catch (Exception e) {
 			System.out.println("Error");
 		}
-		
+
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
@@ -158,9 +167,9 @@ public class TheFirm<T> {
 		String firstName = scanner.nextLine();
 		System.out.print("Last name: ");
 		String lastName = scanner.nextLine();
-		
-		
-		// TODO hämmta department och kolla antal, så du inte lägger till person på
+
+		// TODO hämmta department och kolla antal, så du inte lägger till
+		// person på
 		// avdelning som inte finns (crash)!
 		String salary;
 		do {
@@ -174,12 +183,8 @@ public class TheFirm<T> {
 			departmentId = scanner.nextLine();
 		} while (!isParsable(departmentId));
 
-		Employee employee = new EmployeeBuilder()
-				.setFname(firstName)
-				.setLname(lastName)
-				.setSalary(Integer.parseInt(salary))
-				.setDepartmentId(Integer.parseInt(departmentId))
-				.build();
+		Employee employee = new EmployeeBuilder().setFname(firstName).setLname(lastName)
+				.setSalary(Integer.parseInt(salary)).setDepartmentId(Integer.parseInt(departmentId)).build();
 
 		theFirmDatabaseIO.setClazz(Employee.class);
 		theFirmDatabaseIO.save(employee);
