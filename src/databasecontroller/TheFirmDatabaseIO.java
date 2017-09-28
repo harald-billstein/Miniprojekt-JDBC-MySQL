@@ -81,6 +81,16 @@ public class TheFirmDatabaseIO<T> {
 		return theObjects;
 	}
 
+	public void delete(Integer id) {
+		createFactory();
+		getSession();
+		session.beginTransaction();
+		Employee employee = session.get(Employee.class, id);
+		session.delete(employee);
+		session.getTransaction().commit();
+		session.close();
+	}
+
 	public List<Employee> seachEmployeeName(String name) {
 		createFactory();
 		getSession();
@@ -105,7 +115,7 @@ public class TheFirmDatabaseIO<T> {
 		return "Connected as: " + properties.get("hibernate.connection.username") + " at: "
 				+ properties.get("hibernate.connection.url");
 	}
-	
+
 	public void update(Integer id, Integer salary) {
 		createFactory();
 		getSession();
