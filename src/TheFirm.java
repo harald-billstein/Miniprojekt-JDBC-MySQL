@@ -12,8 +12,10 @@ import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToStdout;
 import databasemodel.*;
 
 import databasecontroller.TheFirmDatabaseIO;
+import exceptions.AddEmployeeException;
 import exceptions.PrintException;
 import exceptions.TheFirmParsebleException;
+import exceptions.UpdateSalaryException;
 
 public class TheFirm<T> {
 
@@ -88,6 +90,7 @@ public class TheFirm<T> {
 			listAllEmployeesFromDepartment();
 			break;
 		case 9:
+			// TODO stäng allt skit
 			System.out.println("EXITING.....");
 			System.out.println("DONE");
 			System.exit(0);
@@ -101,7 +104,6 @@ public class TheFirm<T> {
 	}
 
 	private void listAllEmployeesFromDepartment() {
-		System.out.println("listAllEmployeesFromDepartment");
 
 		String departmentId;
 		do {
@@ -109,21 +111,11 @@ public class TheFirm<T> {
 			departmentId = scanner.nextLine();
 		} while (!isParsable(departmentId));
 		
-
-			
-			
-		
 		List<Employee> employeesFromDepartment = (List<Employee>) theFirmDatabaseIO.retriveDepartmentEmployeeList(Integer.parseInt(departmentId));
-		
 		printEmployeesIncludingDepartment(employeesFromDepartment);
-		
-		
-
-		// TODO Auto-generated method stub
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
-
 	}
 
 	private void searchEmployee() {
@@ -171,13 +163,13 @@ public class TheFirm<T> {
 			System.out.print("Salary: ");
 			salary = scanner.nextLine();
 		} while (!isParsable(salary));
+		
 
 		try {
 			theFirmDatabaseIO.update(Integer.parseInt(employeeId), Integer.parseInt(salary));
 		} catch (Exception e) {
-			System.out.println("Error");
+			new UpdateSalaryException(e);
 		}
-
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
@@ -189,9 +181,6 @@ public class TheFirm<T> {
 		System.out.print("Last name: ");
 		String lastName = scanner.nextLine();
 
-		// TODO hämmta department och kolla antal, så du inte lägger till
-		// person på
-		// avdelning som inte finns (crash)!
 		String salary;
 		do {
 			System.out.print("Salary: ");
@@ -208,7 +197,12 @@ public class TheFirm<T> {
 				.setSalary(Integer.parseInt(salary)).setDepartmentId(Integer.parseInt(departmentId)).build();
 
 		theFirmDatabaseIO.setClazz(Employee.class);
-		theFirmDatabaseIO.save(employee);
+		
+		try {
+			theFirmDatabaseIO.save(employee);			
+		} catch (Exception e) {
+			new AddEmployeeException(e);
+		}
 
 		System.out.println("Press any key...");
 		scanner.nextLine();

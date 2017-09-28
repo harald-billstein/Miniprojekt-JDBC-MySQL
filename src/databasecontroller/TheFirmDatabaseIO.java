@@ -4,11 +4,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.model.relational.Database;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToStdout;
 
 import databasemodel.CompanyCar;
+import databasemodel.DatabaseInfo;
 import databasemodel.Department;
 import databasemodel.Employee;
 
@@ -127,10 +132,15 @@ public class TheFirmDatabaseIO<T> {
 	public String getDatabaseInfo() {
 		createFactory();
 		getSession();
+			
 		session.beginTransaction();
-		Map<String, Object> properties = factory.getProperties();
-		return "Connected as: " + properties.get("hibernate.connection.username") + " at: "
-				+ properties.get("hibernate.connection.url");
+		
+		Query query = session.createNativeQuery("select TIME_FORMAT(SEC_TO_TIME(VARIABLE_VALUE ),'%Hh %im')  as Uptime " + 
+				"from information_schema.GLOBAL_STATUS " +
+				"where VARIABLE_NAME='Uptime'");
+		Object object = query.uniqueResult();
+		session.getTransaction().commit();
+		return "uptime: " + object.toString();
 	}
 
 	public void update(Integer id, Integer salary) {
