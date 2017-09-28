@@ -1,29 +1,26 @@
 import java.io.IOException;
-import java.sql.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import org.hibernate.criterion.BetweenExpression;
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToStdout;
 
 import databasemodel.*;
 
 import databasecontroller.TheFirmDatabaseIO;
 import exceptions.AddEmployeeException;
+import exceptions.CloseProgramException;
 import exceptions.PrintException;
+import exceptions.RemoveEmployeeException;
 import exceptions.TheFirmParsebleException;
 import exceptions.UpdateSalaryException;
 
-public class TheFirm<T> {
+public class TheFirm {
 
-	private Scanner scanner = new Scanner(System.in);
-	private TheFirmDatabaseIO<?> theFirmDatabaseIO = new TheFirmDatabaseIO<>();
-	private Class<?> Employee;
+	private Scanner scanner;
+	private TheFirmDatabaseIO<?> theFirmDatabaseIO;
 
 	public void start() {
+		scanner = new Scanner(System.in);
+		theFirmDatabaseIO = new TheFirmDatabaseIO<>();
 		System.out.println(theFirmDatabaseIO.getDatabaseInfo());
 		showMenu();
 	}
@@ -90,12 +87,8 @@ public class TheFirm<T> {
 			listAllEmployeesFromDepartment();
 			break;
 		case 9:
-			// TODO stäng allt skit
-			System.out.println("EXITING.....");
-			System.out.println("DONE");
-			System.exit(0);
+			close();
 			break;
-
 		default:
 			System.out.println("Not a valied menu option \n");
 			showMenu();
@@ -104,7 +97,6 @@ public class TheFirm<T> {
 	}
 
 	private void listAllEmployeesFromDepartment() {
-
 		String departmentId;
 		do {
 			System.out.print("Enter department id: ");
@@ -121,17 +113,16 @@ public class TheFirm<T> {
 	private void searchEmployee() {
 		System.out.print("Name: ");
 		String name = scanner.nextLine();
-		theFirmDatabaseIO.setClazz(Employee.class);
-		List<Employee> employees = theFirmDatabaseIO.seachEmployeeName(name);
+		
+		List<Employee> employees = (List<Employee>) theFirmDatabaseIO.seachEmployeeName(name);
 		printEmployees(employees);
+		
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
 	}
 
 	private void removeEmployee() {
-		theFirmDatabaseIO.setClazz(Employee.class);
-
 		String employeeId;
 		do {
 			System.out.println("Enter ID of employee to remove: ");
@@ -139,9 +130,10 @@ public class TheFirm<T> {
 		} while (!isParsable(employeeId));
 
 		try {
-			theFirmDatabaseIO.delete(Integer.parseInt(employeeId));
+			theFirmDatabaseIO.delete(Employee.class, Integer.parseInt(employeeId));
+			System.out.println("Success!");
 		} catch (Exception e) {
-			System.out.println("Error");
+			new RemoveEmployeeException(e);
 		}
 
 		System.out.println("Press any key...");
@@ -150,8 +142,6 @@ public class TheFirm<T> {
 	}
 
 	private void updateSalary() {
-		theFirmDatabaseIO.setClazz(Employee.class);
-
 		String employeeId;
 		do {
 			System.out.print("Employee id: ");
@@ -164,12 +154,13 @@ public class TheFirm<T> {
 			salary = scanner.nextLine();
 		} while (!isParsable(salary));
 		
-
 		try {
 			theFirmDatabaseIO.update(Integer.parseInt(employeeId), Integer.parseInt(salary));
+			System.out.println("Succsses!");
 		} catch (Exception e) {
 			new UpdateSalaryException(e);
 		}
+		
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
@@ -178,6 +169,7 @@ public class TheFirm<T> {
 	private void addNewEmployee() {
 		System.out.print("First name: ");
 		String firstName = scanner.nextLine();
+		
 		System.out.print("Last name: ");
 		String lastName = scanner.nextLine();
 
@@ -193,10 +185,12 @@ public class TheFirm<T> {
 			departmentId = scanner.nextLine();
 		} while (!isParsable(departmentId));
 
-		Employee employee = new EmployeeBuilder().setFname(firstName).setLname(lastName)
-				.setSalary(Integer.parseInt(salary)).setDepartmentId(Integer.parseInt(departmentId)).build();
-
-		theFirmDatabaseIO.setClazz(Employee.class);
+		Employee employee = new EmployeeBuilder()
+				.setFname(firstName)
+				.setLname(lastName)
+				.setSalary(Integer.parseInt(salary))
+				.setDepartmentId(Integer.parseInt(departmentId))
+				.build();
 		
 		try {
 			theFirmDatabaseIO.save(employee);			
@@ -210,32 +204,36 @@ public class TheFirm<T> {
 	}
 
 	private void showAllCompanyCars() {
-		theFirmDatabaseIO.setClazz(CompanyCar.class);
 		List<CompanyCar> companyCars = (List<CompanyCar>) theFirmDatabaseIO.retrive("company_car");
 		printCompanyCars(companyCars);
+		
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
 	}
 
 	private void showDepartments() {
-		theFirmDatabaseIO.setClazz(Department.class);
 		printDepartments((List<Department>) theFirmDatabaseIO.retrive("department"));
-		System.out.println("\nPress any key...");
+		
+		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
 	}
 
 	private void showEmployees() {
-		theFirmDatabaseIO.setClazz(Employee.class);
 		List<Employee> employees = (List<Employee>) theFirmDatabaseIO.retrive("employee");
 		printEmployees(employees);
+		
 		System.out.println("Press any key...");
 		scanner.nextLine();
 		showMenu();
 	}
 
 	public void printEmployees(List<Employee> employees) {
+		if (employees.isEmpty()) {
+			System.out.println("Empty result!");
+		}
+		
 		for (Employee employee : employees) {
 			System.out.println(employee.getEmployee_id() + " " + employee.getFname() + " " + employee.getLname());
 			try {
@@ -249,8 +247,12 @@ public class TheFirm<T> {
 	}
 	
 	public void printEmployeesIncludingDepartment(List<Employee> employees) {
+		if (employees.isEmpty()) {
+			System.out.println("Empty result!");
+		}
+		
 		for (Employee employee : employees) {
-			System.out.println(employee.getEmployee_id() + " " + employee.getFname() + " " + employee.getLname() + " " + employee.getDepartment().getName() );
+			System.out.println(employee.getFname() + " " + employee.getLname() + " " + employee.getDepartment().getName() );
 			try {
 				TimeUnit.MILLISECONDS.sleep(100);
 			} catch (InterruptedException e) {
@@ -262,8 +264,12 @@ public class TheFirm<T> {
 	}
 
 	private void printCompanyCars(List<CompanyCar> companyCars) {
+		if (companyCars.isEmpty()) {
+			System.out.println("Empty result!");
+		}
+		
 		for (CompanyCar companyCar : companyCars) {
-			System.out.println(companyCar.getReg_nr() + " - " + companyCar.getBrand() + " - " + companyCar.getModel());
+			System.out.println("Reg: " + companyCar.getReg_nr() + " Brand: " + companyCar.getBrand() + " Model: " + companyCar.getModel());
 			try {
 				TimeUnit.MILLISECONDS.sleep(100);
 			} catch (InterruptedException e) {
@@ -274,6 +280,10 @@ public class TheFirm<T> {
 	}
 
 	private void printDepartments(List<Department> departments) {
+		if (departments.isEmpty()) {
+			System.out.println("Empty result!");
+		}
+		
 		for (Department department : departments) {
 			System.out.println(department.getName());
 			try {
@@ -284,8 +294,22 @@ public class TheFirm<T> {
 			}
 		}
 	}
-
-	public void clearScreen() {
-		// TODO can this be done?
+	
+	public void close() {
+		try {
+			theFirmDatabaseIO.close();
+			System.in.close();
+			scanner.close();
+			System.out.println("EXITING.....");
+			System.out.println("DONE");
+			System.exit(0);
+			
+		} catch (IOException e) {
+			System.out.println("EXITING.....");
+			System.out.println("DONE");
+			System.exit(-1);
+			e.printStackTrace();
+			new CloseProgramException(e);
+		}
 	}
 }

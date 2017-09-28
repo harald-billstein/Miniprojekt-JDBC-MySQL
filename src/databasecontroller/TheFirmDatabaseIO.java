@@ -21,30 +21,9 @@ public class TheFirmDatabaseIO<T> {
 
 	private SessionFactory factory;
 	private Session session;
-	private Class<?> clazz;
-	private Object object;
-	private String tableName;
-
-	public void setClazz(Class<?> clazz) {
-		this.clazz = clazz;
-	}
 
 	public TheFirmDatabaseIO() {
-
-	}
-
-	public TheFirmDatabaseIO(Class<T> clazz) {
-		this.clazz = clazz;
-	}
-
-	public TheFirmDatabaseIO(Class<T> clazz, Object object) {
-		this.clazz = clazz;
-		this.object = object;
-	}
-
-	public TheFirmDatabaseIO(Class<T> clazz, String tableName) {
-		this.clazz = clazz;
-		this.tableName = tableName;
+		createFactory();
 	}
 
 	public void createFactory() {
@@ -58,98 +37,100 @@ public class TheFirmDatabaseIO<T> {
 
 	public void getSession() {
 		session = factory.getCurrentSession();
+		session.beginTransaction();
 	}
 
 	public void save(Object object) {
-		createFactory();
 		getSession();
+		
 		try {
-			session.beginTransaction();
 			session.save(object);
 			session.getTransaction().commit();
 			System.out.println("Succsses!");
 		} finally {
-			factory.close();
+			session.close();
 		}
 	}
 
 	public List<?> retrive(String tableName) {
-		createFactory();
 		getSession();
-
 		List<?> theObjects;
 		try {
-			session.beginTransaction();
 			theObjects = session.createQuery("from " + tableName).list();
 			session.getTransaction().commit();
 		} finally {
-			factory.close();
+			session.close();
 		}
 		return theObjects;
 	}
 	
 	public List<?> retriveDepartmentEmployeeList(Integer departmentId) {
-		createFactory();
 		getSession();
-
 		List<?> theObjects;
 		try {
-			session.beginTransaction();
 			theObjects = session.createQuery("from employee WHERE department.department_id = '" + departmentId  + "'").list();
 			session.getTransaction().commit();
 		} finally {
-			factory.close();
+			session.close();
 		}
 		return theObjects;
 	}
 
-	public void delete(Integer id) {
-		createFactory();
+	public void delete(Class<?> clazz, Integer id) {
 		getSession();
-		session.beginTransaction();
-		Employee employee = session.get(Employee.class, id);
-		session.delete(employee);
-		session.getTransaction().commit();
-		session.close();
+		try {
+			Object object = session.get(clazz, id);
+			session.delete(object);
+			session.getTransaction().commit();
+		} finally {
+			session.close();
+		}
 	}
 
-	public List<Employee> seachEmployeeName(String name) {
-		createFactory();
+	public List<?> seachEmployeeName(String name) {
 		getSession();
-		List<Employee> employee;
-
+		
+		List<?> employee;
 		try {
-			session.beginTransaction();
 			employee = session
 					.createQuery("from employee e where e.fname LIKE '%" + name + "%' OR e.lname LIKE '%" + name + "%'")
 					.list();
 		} finally {
-			factory.close();
+			session.close();
 		}
 		return employee;
 	}
 
-	public String getDatabaseInfo() {
-		createFactory();
+	public String getDatabaseInfo() {		
 		getSession();
-			
-		session.beginTransaction();
+		Object object;
 		
-		Query query = session.createNativeQuery("select TIME_FORMAT(SEC_TO_TIME(VARIABLE_VALUE ),'%Hh %im')  as Uptime " + 
-				"from information_schema.GLOBAL_STATUS " +
-				"where VARIABLE_NAME='Uptime'");
-		Object object = query.uniqueResult();
-		session.getTransaction().commit();
+		try {
+			Query<?> query = session.createNativeQuery("select TIME_FORMAT(SEC_TO_TIME(VARIABLE_VALUE ),'%Hh %im')  as Uptime " + 
+					"from information_schema.GLOBAL_STATUS " +
+					"where VARIABLE_NAME='Uptime'");
+			object = query.uniqueResult();
+			session.getTransaction().commit();
+		} finally {
+			session.close();
+		}
 		return "uptime: " + object.toString();
 	}
 
 	public void update(Integer id, Integer salary) {
-		createFactory();
 		getSession();
-		session.beginTransaction();
-		Employee employee = session.get(Employee.class, id);
-		employee.setSalary(salary);
-		session.getTransaction().commit();
+		
+		try {
+			Employee employee = session.get(Employee.class, id);
+			employee.setSalary(salary);
+			session.getTransaction().commit();
+		} finally {
+			session.close();
+		}
+	}
+	
+	public void close() {
 		session.close();
+		factory.close();
 	}
 }
