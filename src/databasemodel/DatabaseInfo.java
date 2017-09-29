@@ -3,7 +3,7 @@ package databasemodel;
 import javax.persistence.Entity;
 
 @Entity(name = "information_schema.GLOBAL_STATUS")
-public class DatabaseInfo {
+class DatabaseInfo {
 	
 	private Integer Uptime;
 	

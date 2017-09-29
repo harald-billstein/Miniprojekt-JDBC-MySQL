@@ -1,12 +1,11 @@
 import java.util.logging.Level;
 
-public class Main {
+class Main {
 
-	public static void main(String[] args) {
-		// TURN OFF HIBERNATE LOGGER
-		java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
-		TheFirm theFirm = new TheFirm();
-		theFirm.start();
-
-	}
+  public static void main(String[] args) {
+    // TURN OFF HIBERNATE LOGGER
+    java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
+    TheFirm theFirm = new TheFirm();
+    theFirm.start();
+  }
 }

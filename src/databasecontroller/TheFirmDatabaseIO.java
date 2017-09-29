@@ -1,19 +1,14 @@
 package databasecontroller;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.model.relational.Database;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToStdout;
 
 import databasemodel.CompanyCar;
-import databasemodel.DatabaseInfo;
 import databasemodel.Department;
 import databasemodel.Employee;
 
@@ -26,7 +21,7 @@ public class TheFirmDatabaseIO<T> {
 		createFactory();
 	}
 
-	public void createFactory() {
+	private void createFactory() {
 			factory = new Configuration()
 					.configure("hibernate.cfg.xml")
 					.addAnnotatedClass(Employee.class)
@@ -35,7 +30,7 @@ public class TheFirmDatabaseIO<T> {
 					.buildSessionFactory();
 	}
 
-	public void getSession() {
+	private void getSession() {
 		session = factory.getCurrentSession();
 		session.beginTransaction();
 	}
