@@ -112,12 +112,12 @@ public class TheFirmDatabaseIO<T> {
 		return "uptime: " + object.toString();
 	}
 
-	public void update(Integer id, Integer salary) {
+	public void updateEmployee(Employee updatedEmployee) {
 		getSession();
 		
 		try {
-			Employee employee = session.get(Employee.class, id);
-			employee.setSalary(salary);
+			Employee employee = session.get(updatedEmployee.getClass(), updatedEmployee.getEmployee_id());
+			employee.setSalary(updatedEmployee.getSalary());
 			session.getTransaction().commit();
 		} finally {
 			session.close();
