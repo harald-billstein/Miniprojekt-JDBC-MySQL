@@ -28,9 +28,9 @@ public class Employee {
 
 	private String fname;
 	private String lname;
-	private int salary;
+	private Integer salary;
 	private Date hire_date;
-	private int department_id;
+	private Integer department_id;
 	
 	@JoinColumn(name = "department_id", insertable = false, updatable = false)
 	@ManyToOne(optional = false)
@@ -72,11 +72,11 @@ public class Employee {
 		this.lname = lname;
 	}
 
-	public int getSalary() {
+	public Integer getSalary() {
 		return salary;
 	}
 
-	public void setSalary(int salary) {
+	public void setSalary(Integer salary) {
 		this.salary = salary;
 	}
 
@@ -88,11 +88,11 @@ public class Employee {
 		this.hire_date = hire_date;
 	}
 
-	public int getDepartment_id() {
+	public Integer getDepartment_id() {
 		return department_id;
 	}
 
-	public void setDepartment_id(int department_id) {
+	public void setDepartment_id(Integer department_id) {
 		this.department_id = department_id;
 	}
 }
