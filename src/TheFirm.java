@@ -174,7 +174,7 @@ class TheFirm {
 
       System.out.println("Success!");
     } catch (Exception e) {
-      System.out.println("Could not find employee.");
+      System.out.println("Could not find employee." + e.getMessage());
     }
 
     System.out.println("Press any key...");

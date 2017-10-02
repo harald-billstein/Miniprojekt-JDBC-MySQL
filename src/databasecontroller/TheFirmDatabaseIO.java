@@ -118,7 +118,22 @@ public class TheFirmDatabaseIO<T> {
 		
 		try {
 			Employee employee = session.get(updatedEmployee.getClass(), updatedEmployee.getEmployee_id());
+
+			if (updatedEmployee.getFname() != null) {
+			employee.setFname(updatedEmployee.getFname());
+			}
+			
+			if (updatedEmployee.getLname() != null) {
+			employee.setLname(updatedEmployee.getLname());
+			}
+			
+			if (updatedEmployee.getDepartment_id() != null) {
+			employee.setDepartment_id(updatedEmployee.getDepartment_id());
+			}
+			
+			if (updatedEmployee.getSalary() != null) {
 			employee.setSalary(updatedEmployee.getSalary());
+			}
 			session.getTransaction().commit();
 		} finally {
 			session.close();
