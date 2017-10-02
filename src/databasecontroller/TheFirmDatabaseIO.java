@@ -64,7 +64,7 @@ public class TheFirmDatabaseIO<T> {
 		getSession();
 		List<?> theObjects;
 		try {
-			theObjects = session.createQuery("from employee WHERE department.department_id = '" + departmentId  + "'").list();
+			theObjects = session.createQuery("FROM employee WHERE department.department_id = '" + departmentId  + "'").list();
 			session.getTransaction().commit();
 		} finally {
 			session.close();

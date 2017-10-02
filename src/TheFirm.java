@@ -7,322 +7,324 @@ import databasecontroller.TheFirmDatabaseIO;
 
 class TheFirm {
 
-  private Scanner scanner;
-  private TheFirmDatabaseIO<?> theFirmDatabaseIO;
+	private Scanner scanner;
+	private TheFirmDatabaseIO<?> theFirmDatabaseIO;
 
-  void start() {
-    scanner = new Scanner(System.in);
-    try {
-    	theFirmDatabaseIO = new TheFirmDatabaseIO<>();		
-	} catch (Exception e) {
-		System.out.println("Exception thrown " + e.getMessage());
-		System.out.print("Try again? yes/no: ");
-		
-		if (scanner.nextLine().equalsIgnoreCase("yes")) {
-			start();
+	void start() {
+		scanner = new Scanner(System.in);
+		try {
+			theFirmDatabaseIO = new TheFirmDatabaseIO<>();
+		} catch (Exception e) {
+			System.out.println("Exception thrown " + e.getMessage());
+			System.out.print("Try again? yes/no: ");
+
+			if (scanner.nextLine().equalsIgnoreCase("yes")) {
+				start();
+			} else {
+				System.out.println("shut of system");
+				close();
+			}
+		}
+		System.out.println(theFirmDatabaseIO.getDatabaseInfo());
+		showMenu();
+	}
+
+	private void showMenu() {
+		System.out.println("#################################################");
+		System.out.println("1: Show all employees                           |");
+		System.out.println("2: Show departments                             |");
+		System.out.println("3: Show all company cars                        |");
+		System.out.println("4: Add new Employee                             |");
+		System.out.println("5: Update salary                                |");
+		System.out.println("6: Remove employee                              |");
+		System.out.println("7: Search for an employee                       |");
+		System.out.println("8: List all employees from specific department  |");
+		System.out.println("9: Exit program                                 |");
+		System.out.println("#################################################");
+		System.out.print("--> ");
+		String answer = scanner.nextLine();
+
+		boolean isParable = isParsable(answer);
+
+		if (isParable) {
+			MenuChoice(Integer.parseInt(answer));
 		} else {
-			System.out.println("shut of system");
-			close();
+			showMenu();
 		}
 	}
-    System.out.println(theFirmDatabaseIO.getDatabaseInfo());
-    showMenu();
-  }
 
-  private void showMenu() {
-    System.out.println("#################################################");
-    System.out.println("1: Show all employees                           |");
-    System.out.println("2: Show departments                             |");
-    System.out.println("3: Show all company cars                        |");
-    System.out.println("4: Add new Employee                             |");
-    System.out.println("5: Update salary                                |");
-    System.out.println("6: Remove employee                              |");
-    System.out.println("7: Search for an employee                       |");
-    System.out.println("8: List all employees from specific department  |");
-    System.out.println("9: Exit program                                 |");
-    System.out.println("#################################################");
-    System.out.print("--> ");
-    String answer = scanner.nextLine();
+	private boolean isParsable(String s) {
+		boolean success = false;
+		try {
+			Integer.parseInt(s);
+			success = true;
+		} catch (Exception e) {
+			System.out.println("Error parsing string. " + e.getMessage());
+		}
+		return success;
+	}
 
-    boolean isParable = isParsable(answer);
+	private void MenuChoice(int answer) {
+		switch (answer) {
+		case 1:
+			showEmployees();
+			break;
+		case 2:
+			showDepartments();
+			break;
+		case 3:
+			showAllCompanyCars();
+			break;
+		case 4:
+			addNewEmployee();
+			break;
+		case 5:
+			updateSalary();
+			break;
+		case 6:
+			removeEmployee();
+			break;
+		case 7:
+			searchEmployee();
+			break;
+		case 8:
+			listAllEmployeesFromDepartment();
+			break;
+		case 9:
+			close();
+			break;
+		default:
+			System.out.println("Not a valied menu option \n");
+			showMenu();
+			break;
+		}
+	}
 
-    if (isParable) {
-      MenuChoice(Integer.parseInt(answer));
-    } else {
-      showMenu();
-    }
-  }
+	private void listAllEmployeesFromDepartment() {
+		String departmentId;
+		printDepartments((List<Department>) theFirmDatabaseIO.retrive("department"));
+		do {
+			System.out.print("Enter department id: ");
+			departmentId = scanner.nextLine();
+		} while (!isParsable(departmentId));
 
-  private boolean isParsable(String s) {
-    boolean success = false;
-    try {
-      Integer.parseInt(s);
-      success = true;
-    } catch (Exception e) {
-      System.out.println("Error parsing string. " + e.getMessage());
-    }
-    return success;
-  }
+		List<Employee> employeesFromDepartment = (List<Employee>) theFirmDatabaseIO
+				.retriveDepartmentEmployeeList(Integer.parseInt(departmentId));
+		printEmployeesIncludingDepartment(employeesFromDepartment);
+		System.out.println("Press any key...");
+		scanner.nextLine();
+		showMenu();
+	}
 
-  private void MenuChoice(int answer) {
-    switch (answer) {
-      case 1:
-        showEmployees();
-        break;
-      case 2:
-        showDepartments();
-        break;
-      case 3:
-        showAllCompanyCars();
-        break;
-      case 4:
-        addNewEmployee();
-        break;
-      case 5:
-        updateSalary();
-        break;
-      case 6:
-        removeEmployee();
-        break;
-      case 7:
-        searchEmployee();
-        break;
-      case 8:
-        listAllEmployeesFromDepartment();
-        break;
-      case 9:
-        close();
-        break;
-      default:
-        System.out.println("Not a valied menu option \n");
-        showMenu();
-        break;
-    }
-  }
+	private void searchEmployee() {
+		System.out.print("Name: ");
+		String name = scanner.nextLine();
 
-  private void listAllEmployeesFromDepartment() {
-    String departmentId;
-    printDepartments((List<Department>) theFirmDatabaseIO.retrive("department"));
-    do {
-      System.out.print("Enter department id: ");
-      departmentId = scanner.nextLine();
-    } while (!isParsable(departmentId));
+		List<Employee> employees = (List<Employee>) theFirmDatabaseIO.seachEmployeeName(name);
+		printEmployees(employees);
 
-    List<Employee> employeesFromDepartment = (List<Employee>) theFirmDatabaseIO
-        .retriveDepartmentEmployeeList(Integer.parseInt(departmentId));
-    printEmployeesIncludingDepartment(employeesFromDepartment);
-    System.out.println("Press any key...");
-    scanner.nextLine();
-    showMenu();
-  }
+		System.out.println("Press any key...");
+		scanner.nextLine();
+		showMenu();
+	}
 
-  private void searchEmployee() {
-    System.out.print("Name: ");
-    String name = scanner.nextLine();
+	private void removeEmployee() {
+		String employeeId;
+		do {
+			System.out.println("Enter ID of employee to remove: ");
+			employeeId = scanner.nextLine();
+		} while (!isParsable(employeeId));
 
-    List<Employee> employees = (List<Employee>) theFirmDatabaseIO.seachEmployeeName(name);
-    printEmployees(employees);
+		try {
+			theFirmDatabaseIO.delete(Employee.class, Integer.parseInt(employeeId));
+			System.out.println("Success!");
+		} catch (Exception e) {
+			System.out.println("Error removing employee: " + e.getMessage());
+		}
 
-    System.out.println("Press any key...");
-    scanner.nextLine();
-    showMenu();
-  }
+		System.out.println("Press any key...");
+		scanner.nextLine();
+		showMenu();
+	}
 
-  private void removeEmployee() {
-    String employeeId;
-    do {
-      System.out.println("Enter ID of employee to remove: ");
-      employeeId = scanner.nextLine();
-    } while (!isParsable(employeeId));
+	private void updateSalary() {
+		String employeeId;
+		do {
+			System.out.print("Employee id: ");
+			employeeId = scanner.nextLine();
+		} while (!isParsable(employeeId));
 
-    try {
-      theFirmDatabaseIO.delete(Employee.class, Integer.parseInt(employeeId));
-      System.out.println("Success!");
-    } catch (Exception e) {
-      System.out.println("Error removing employee: " + e.getMessage());
-    }
+		String salary;
+		do {
+			System.out.print("Salary: ");
+			salary = scanner.nextLine();
+		} while (!isParsable(salary));
+		// TODO: do while? Retry until employee is found.
+		try {
 
-    System.out.println("Press any key...");
-    scanner.nextLine();
-    showMenu();
-  }
+			Employee employee = new Employee();
+			employee.setEmployee_id(Integer.parseInt(employeeId));
+			employee.setSalary(Integer.parseInt(salary));
+			theFirmDatabaseIO.updateEmployee(employee);
 
-  private void updateSalary() {
-    String employeeId;
-    do {
-      System.out.print("Employee id: ");
-      employeeId = scanner.nextLine();
-    } while (!isParsable(employeeId));
+			System.out.println("Success!");
+		} catch (Exception e) {
+			System.out.println("Could not find employee." + e.getMessage());
+		}
 
-    String salary;
-    do {
-      System.out.print("Salary: ");
-      salary = scanner.nextLine();
-    } while (!isParsable(salary));
-    // TODO: do while? Retry until employee is found.
-    try {
+		System.out.println("Press any key...");
+		scanner.nextLine();
+		showMenu();
+	}
 
-      Employee employee = new Employee();
-      employee.setEmployee_id(Integer.parseInt(employeeId));
-      employee.setSalary(Integer.parseInt(salary));
-      theFirmDatabaseIO.updateEmployee(employee);
+	private void addNewEmployee() {
+		System.out.print("First name: ");
+		String firstName = scanner.nextLine();
 
-      System.out.println("Success!");
-    } catch (Exception e) {
-      System.out.println("Could not find employee." + e.getMessage());
-    }
+		System.out.print("Last name: ");
+		String lastName = scanner.nextLine();
 
-    System.out.println("Press any key...");
-    scanner.nextLine();
-    showMenu();
-  }
+		String salary;
+		do {
+			System.out.print("Salary: ");
+			salary = scanner.nextLine();
+		} while (!isParsable(salary));
 
-  private void addNewEmployee() {
-    System.out.print("First name: ");
-    String firstName = scanner.nextLine();
+		String departmentId;
+		do {
+			System.out.print("Department id: ");
+			departmentId = scanner.nextLine();
+		} while (!isParsable(departmentId));
 
-    System.out.print("Last name: ");
-    String lastName = scanner.nextLine();
+		Employee employee = new EmployeeBuilder()
+				.setFname(firstName)
+				.setLname(lastName)
+				.setSalary(Integer.parseInt(salary))
+				.setDepartmentId(Integer.parseInt(departmentId))
+				.build();
+		
+		try {
+			theFirmDatabaseIO.save(employee);
+		} catch (Exception e) {
+			System.out.println("Error saving employee. " + e.getMessage());
+		}
 
-    String salary;
-    do {
-      System.out.print("Salary: ");
-      salary = scanner.nextLine();
-    } while (!isParsable(salary));
+		System.out.println("Press any key...");
+		scanner.nextLine();
+		showMenu();
+	}
 
-    String departmentId;
-    do {
-      System.out.print("Department id: ");
-      departmentId = scanner.nextLine();
-    } while (!isParsable(departmentId));
+	private void showAllCompanyCars() {
+		List<CompanyCar> companyCars = (List<CompanyCar>) theFirmDatabaseIO.retrive("company_car");
+		printCompanyCars(companyCars);
 
-    Employee employee = new EmployeeBuilder().setFname(firstName).setLname(lastName)
-        .setSalary(Integer.parseInt(salary)).setDepartmentId(Integer.parseInt(departmentId))
-        .build();
+		System.out.println("Press any key...");
+		scanner.nextLine();
+		showMenu();
+	}
 
-    try {
-      theFirmDatabaseIO.save(employee);
-    } catch (Exception e) {
-      System.out.println("Error saving employee. " + e.getMessage());
-    }
+	private void showDepartments() {
+		printDepartments((List<Department>) theFirmDatabaseIO.retrive("department"));
 
-    System.out.println("Press any key...");
-    scanner.nextLine();
-    showMenu();
-  }
+		System.out.println("Press any key...");
+		scanner.nextLine();
+		showMenu();
+	}
 
-  private void showAllCompanyCars() {
-    List<CompanyCar> companyCars =
-        (List<CompanyCar>) theFirmDatabaseIO.retrive("company_car");
-    printCompanyCars(companyCars);
+	private void showEmployees() {
+		List<Employee> employees = (List<Employee>) theFirmDatabaseIO.retrive("employee");
+		printEmployees(employees);
 
-    System.out.println("Press any key...");
-    scanner.nextLine();
-    showMenu();
-  }
+		System.out.println("Press any key...");
+		scanner.nextLine();
+		showMenu();
+	}
 
-  private void showDepartments() {
-    printDepartments((List<Department>) theFirmDatabaseIO.retrive("department"));
+	private void printEmployees(List<Employee> employees) {
+		if (employees.isEmpty()) {
+			System.out.println("Empty result!");
+		} else {
+			for (Employee employee : employees) {
+				System.out.println(employee.getEmployee_id() + " " + employee.getFname() + " " + employee.getLname() + " Salary: " + employee.getSalary());
+				try {
+					TimeUnit.MILLISECONDS.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					System.out.println("TimeUnit sleep exception: " + e.getMessage());
+				}
+			}
+		}
 
-    System.out.println("Press any key...");
-    scanner.nextLine();
-    showMenu();
-  }
+		System.out.println();
+	}
 
-  private void showEmployees() {
-    List<Employee> employees = (List<Employee>) theFirmDatabaseIO.retrive("employee");
-    printEmployees(employees);
+	private void printEmployeesIncludingDepartment(List<Employee> employees) {
+		if (employees.isEmpty()) {
+			System.out.println("Empty result!");
+		} else {
+			for (Employee employee : employees) {
+				System.out.println(
+						employee.getFname() + " " + employee.getLname() + " " + employee.getDepartment().getName());
+				try {
+					TimeUnit.MILLISECONDS.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					System.out.println("TimeUnit sleep exception: " + e.getMessage());
+				}
+			}
+		}
+		System.out.println();
+	}
 
-    System.out.println("Press any key...");
-    scanner.nextLine();
-    showMenu();
-  }
+	private void printCompanyCars(List<CompanyCar> companyCars) {
+		if (companyCars.isEmpty()) {
+			System.out.println("Empty result!");
+		} else {
+			for (CompanyCar companyCar : companyCars) {
+				System.out.printf("%-20s %-14s %-15s %-15s %n", "Employee_id: " + companyCar.getEmployee_id(),
+						" Reg: " + companyCar.getReg_nr().toUpperCase(), "Brand: " + companyCar.getBrand(),
+						" Model: " + companyCar.getModel());
+				try {
+					TimeUnit.MILLISECONDS.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					System.out.println("TimeUnit sleep exception: " + e.getMessage());
+				}
+			}
+		}
+	}
 
-  private void printEmployees(List<Employee> employees) {
-    if (employees.isEmpty()) {
-      System.out.println("Empty result!");
-    }
+	private void printDepartments(List<Department> departments) {
+		if (departments.isEmpty()) {
+			System.out.println("Empty result!");
+		} else {
+			for (Department department : departments) {
+				System.out.println(department.getDepartment_id() + ". " + department.getName());
+				try {
+					TimeUnit.MILLISECONDS.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					System.out.println("TimeUnit sleep exception: " + e.getMessage());
+				}
+			}
+		}
+	}
 
-    for (Employee employee : employees) {
-      System.out.println(
-          employee.getEmployee_id() + " " + employee.getFname() + " " + employee.getLname());
-      try {
-        TimeUnit.MILLISECONDS.sleep(100);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-        System.out.println("TimeUnit sleep exception: " + e.getMessage());
-      }
-    }
-    System.out.println();
-  }
+	private void close() {
+		try {
+			if (!(theFirmDatabaseIO == null)) {
+				theFirmDatabaseIO.close();
+			}
+			System.in.close();
+			scanner.close();
+			System.out.println("EXITING.....");
+			System.out.println("DONE");
+			System.exit(0);
 
-  private void printEmployeesIncludingDepartment(List<Employee> employees) {
-    if (employees.isEmpty()) {
-      System.out.println("Empty result!");
-    }
-
-    for (Employee employee : employees) {
-      System.out.println(
-          employee.getFname() + " " + employee.getLname() + " " + employee.getDepartment()
-              .getName());
-      try {
-        TimeUnit.MILLISECONDS.sleep(100);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-        System.out.println("TimeUnit sleep exception: " + e.getMessage());
-      }
-    }
-    System.out.println();
-  }
-
-  private void printCompanyCars(List<CompanyCar> companyCars) {
-    if (companyCars.isEmpty()) {
-      System.out.println("Empty result!");
-    }
-
-    for (CompanyCar companyCar : companyCars) {
-      System.out.printf("%-20s %-14s %-15s %-15s %n", "Employee_id: " + companyCar.getEmployee_id(), " Reg: " + companyCar.getReg_nr().toUpperCase(),
-          "Brand: " + companyCar.getBrand(), " Model: " + companyCar.getModel());
-      try {
-        TimeUnit.MILLISECONDS.sleep(100);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-        System.out.println("TimeUnit sleep exception: " + e.getMessage());
-      }
-    }
-  }
-
-  private void printDepartments(List<Department> departments) {
-    if (departments.isEmpty()) {
-      System.out.println("Empty result!");
-    }
-
-    for (Department department : departments) {
-      System.out.println(department.getDepartment_id() + ". " + department.getName());
-      try {
-        TimeUnit.MILLISECONDS.sleep(100);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-        System.out.println("TimeUnit sleep exception: " + e.getMessage());
-      }
-    }
-  }
-
-  private void close() {
-    try {
-    	if (!(theFirmDatabaseIO == null)) {
-    		theFirmDatabaseIO.close();    		    		
-    	}
-      System.in.close();
-      scanner.close();
-      System.out.println("EXITING.....");
-      System.out.println("DONE");
-      System.exit(0);
-
-    } catch (IOException e) {
-      System.exit(-1);
-      e.printStackTrace();
-      System.out.println("Something went wrong when closing the program: " + e.getMessage());
-    }
-  }
+		} catch (IOException e) {
+			System.exit(-1);
+			e.printStackTrace();
+			System.out.println("Something went wrong when closing the program: " + e.getMessage());
+		}
+	}
 }
