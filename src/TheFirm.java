@@ -2,11 +2,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-
-import javax.imageio.ImageTypeSpecifier;
-
 import databasemodel.*;
-
 import databasecontroller.TheFirmDatabaseIO;
 
 class TheFirm {
@@ -14,7 +10,7 @@ class TheFirm {
   private Scanner scanner;
   private TheFirmDatabaseIO<?> theFirmDatabaseIO;
 
-  public void start() {
+  void start() {
     scanner = new Scanner(System.in);
     try {
     	theFirmDatabaseIO = new TheFirmDatabaseIO<>();		
@@ -34,17 +30,17 @@ class TheFirm {
   }
 
   private void showMenu() {
-    System.out.println("##########################");
-    System.out.println("1: Show all employees");
-    System.out.println("2: Show departments");
-    System.out.println("3: Show all company cars");
-    System.out.println("4: Add new Employee");
-    System.out.println("5: Update salary");
-    System.out.println("6: Remove employee");
-    System.out.println("7: Search for an employee");
-    System.out.println("8: List all employees from specific department");
-    System.out.println("9: Exit program");
-    System.out.println("##########################");
+    System.out.println("#################################################");
+    System.out.println("1: Show all employees                           |");
+    System.out.println("2: Show departments                             |");
+    System.out.println("3: Show all company cars                        |");
+    System.out.println("4: Add new Employee                             |");
+    System.out.println("5: Update salary                                |");
+    System.out.println("6: Remove employee                              |");
+    System.out.println("7: Search for an employee                       |");
+    System.out.println("8: List all employees from specific department  |");
+    System.out.println("9: Exit program                                 |");
+    System.out.println("#################################################");
     System.out.print("--> ");
     String answer = scanner.nextLine();
 
@@ -105,9 +101,8 @@ class TheFirm {
   }
 
   private void listAllEmployeesFromDepartment() {
-    // TODO show a list of departments
-
     String departmentId;
+    printDepartments((List<Department>) theFirmDatabaseIO.retrive("department"));
     do {
       System.out.print("Enter department id: ");
       departmentId = scanner.nextLine();
@@ -217,7 +212,8 @@ class TheFirm {
   }
 
   private void showAllCompanyCars() {
-    List<CompanyCar> companyCars = (List<CompanyCar>) theFirmDatabaseIO.retrive("company_car");
+    List<CompanyCar> companyCars =
+        (List<CompanyCar>) theFirmDatabaseIO.retrive("company_car");
     printCompanyCars(companyCars);
 
     System.out.println("Press any key...");
@@ -302,7 +298,7 @@ class TheFirm {
     }
 
     for (Department department : departments) {
-      System.out.println(department.getName());
+      System.out.println(department.getDepartment_id() + ". " + department.getName());
       try {
         TimeUnit.MILLISECONDS.sleep(100);
       } catch (InterruptedException e) {
