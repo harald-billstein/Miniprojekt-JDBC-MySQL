@@ -3,6 +3,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+import javax.imageio.ImageTypeSpecifier;
+
 import databasemodel.*;
 
 import databasecontroller.TheFirmDatabaseIO;
@@ -14,7 +16,19 @@ class TheFirm {
 
   public void start() {
     scanner = new Scanner(System.in);
-    theFirmDatabaseIO = new TheFirmDatabaseIO<>();
+    try {
+    	theFirmDatabaseIO = new TheFirmDatabaseIO<>();		
+	} catch (Exception e) {
+		System.out.println("Exception thrown " + e.getMessage());
+		System.out.print("Try again? yes/no: ");
+		
+		if (scanner.nextLine().equalsIgnoreCase("yes")) {
+			start();
+		} else {
+			System.out.println("shut of system");
+			close();
+		}
+	}
     System.out.println(theFirmDatabaseIO.getDatabaseInfo());
     showMenu();
   }
@@ -300,7 +314,9 @@ class TheFirm {
 
   private void close() {
     try {
-      theFirmDatabaseIO.close();
+    	if (!(theFirmDatabaseIO == null)) {
+    		theFirmDatabaseIO.close();    		    		
+    	}
       System.in.close();
       scanner.close();
       System.out.println("EXITING.....");
