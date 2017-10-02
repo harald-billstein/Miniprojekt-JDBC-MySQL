@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.hibernate.service.spi.ServiceException;
 
 import databasemodel.CompanyCar;
 import databasemodel.Department;
@@ -17,11 +18,11 @@ public class TheFirmDatabaseIO<T> {
 	private SessionFactory factory;
 	private Session session;
 
-	public TheFirmDatabaseIO() {
+	public TheFirmDatabaseIO() throws ServiceException {
 		createFactory();
 	}
 
-	private void createFactory() {
+	private void createFactory() throws ServiceException {
 			factory = new Configuration()
 					.configure("hibernate.cfg.xml")
 					.addAnnotatedClass(Employee.class)
@@ -125,7 +126,11 @@ public class TheFirmDatabaseIO<T> {
 	}
 	
 	public void close() {
-		session.close();
-		factory.close();
+		if (!(session == null)) {
+			session.close();			
+		}
+		if (!(factory == null)) {
+			factory.close();
+		}
 	}
 }
