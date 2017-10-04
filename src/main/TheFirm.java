@@ -3,7 +3,6 @@ package main;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 import databasemodel.*;
 import view.ConsoleView;
 import databasecontroller.TheFirmDatabaseIO;
@@ -110,14 +109,14 @@ class TheFirm extends ConsoleView {
 
 	private void listAllEmployeesFromDepartment() {
 		String departmentId;
-		this.printDepartments((List<Department>) theFirmDatabaseIO.retrive("department"));
+		this.printDepartments((List<?>) theFirmDatabaseIO.retrive("department"));
 
 		do {
 			System.out.print("Enter department id: ");
 			departmentId = scanner.nextLine();
 		} while (!isParsable(departmentId));
 
-		List<Employee> employeesFromDepartment = (List<Employee>) theFirmDatabaseIO
+		List<?> employeesFromDepartment = (List<?>) theFirmDatabaseIO
 				.retriveDepartmentEmployeeList(Integer.parseInt(departmentId));
 		printEmployeesIncludingDepartment(employeesFromDepartment);
 		System.out.println("Press any key...");
@@ -128,7 +127,7 @@ class TheFirm extends ConsoleView {
 		System.out.print("Name: ");
 		String name = scanner.nextLine();
 
-		List<Employee> employees = (List<Employee>) theFirmDatabaseIO.seachEmployeeName(name);
+		List<?> employees = (List<?>) theFirmDatabaseIO.seachEmployeeName(name);
 		this.printEmployees(employees);
 
 		System.out.println("Press any key...");
@@ -215,7 +214,7 @@ class TheFirm extends ConsoleView {
 	}
 
 	private void showAllCompanyCars() {
-		List<CompanyCar> companyCars = (List<CompanyCar>) theFirmDatabaseIO.retrive("company_car");
+		List<?> companyCars = (List<?>) theFirmDatabaseIO.retrive("company_car");
 		this.printCompanyCars(companyCars);
 
 		System.out.println("Press any key...");
@@ -223,14 +222,14 @@ class TheFirm extends ConsoleView {
 	}
 
 	private void showDepartments() {
-		this.printDepartments((List<Department>) theFirmDatabaseIO.retrive("department"));
+		this.printDepartments((List<?>) theFirmDatabaseIO.retrive("department"));
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
 	}
 
 	private void showEmployees() {
-		List<Employee> employees = (List<Employee>) theFirmDatabaseIO.retrive("employee");
+		List<?> employees = (List<?>) theFirmDatabaseIO.retrive("employee");
 		this.printEmployees(employees);
 
 		System.out.println("Press any key...");
