@@ -9,9 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.type.TrueFalseType;
-
 @Entity(name = "employee")
 public class Employee {
 	

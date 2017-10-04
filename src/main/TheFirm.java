@@ -7,7 +7,6 @@ import java.util.Scanner;
 import databasemodel.*;
 import view.ConsoleView;
 import databasecontroller.CompanyCarIO;
-import databasecontroller.DatabaseIO;
 import databasecontroller.DepartmentIO;
 import databasecontroller.EmployeeIO;
 import databasecontroller.HibernateSessionManager;
@@ -17,12 +16,10 @@ class TheFirm extends ConsoleView {
 	private Scanner scanner;
 	boolean runApplication;
 	
-	//## IO CHANGES
 	private HibernateSessionManager hibernateSessionManager;
 	private EmployeeIO employeeIO;
 	private CompanyCarIO companyCarIO;
 	private DepartmentIO departmentIO;
-	//## IO CHANGES 
 
 	void start() {
 		scanner = new Scanner(System.in);
@@ -62,7 +59,7 @@ class TheFirm extends ConsoleView {
 			System.out.println("2: Show departments                             |");
 			System.out.println("3: Show all company cars                        |");
 			System.out.println("4: Add new Employee                             |");
-			System.out.println("5: Update salary                                |");
+			System.out.println("5: Update salary (Not working)                  |");
 			System.out.println("6: Remove employee                              |");
 			System.out.println("7: Search for an employee                       |");
 			System.out.println("8: List all employees from specific department  |");
@@ -135,7 +132,7 @@ class TheFirm extends ConsoleView {
 			departmentId = scanner.nextLine();
 		} while (!isParsable(departmentId));
 		
-		printEmployeesIncludingDepartment(departmentIO.getDepartmentEmployeeList(Integer.parseInt(departmentId)));
+		printEmployeesIncludingDepartment(employeeIO.getDepartmentEmployeeList(Integer.parseInt(departmentId)));
 		System.out.println("Press any key...");
 		scanner.nextLine();
 	}

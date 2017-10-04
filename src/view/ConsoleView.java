@@ -10,8 +10,7 @@ import databasemodel.Employee;
 public class ConsoleView {
 	
 	
-	public void printEmployees(List<?> objects) {
-		List<Employee> employees = (List<Employee>) objects;
+	public void printEmployees(List<Employee> employees) {
 			
 		if (employees.isEmpty()) {
 			System.out.println("Empty result!");
@@ -31,8 +30,7 @@ public class ConsoleView {
 		System.out.println();
 	}
 	
-	public void printEmployeesIncludingDepartment(List<?> objects) {
-		List<Employee> employees = (List<Employee>) objects;
+	public void printEmployeesIncludingDepartment(List<Employee> employees) {
 		
 		if (employees.isEmpty()) {
 			System.out.println("Empty result!");
@@ -51,8 +49,7 @@ public class ConsoleView {
 		System.out.println();
 	}
 	
-	public void printDepartments(List<?> objects) {
-		List<Department> departments = (List<Department>) objects;
+	public void printDepartments(List<Department> departments) {
 
 		if (departments.isEmpty()) {
 			System.out.println("Empty result!");
@@ -69,8 +66,7 @@ public class ConsoleView {
 		}
 	}
 	
-	public void printCompanyCars(List<?> objects) {
-		List<CompanyCar> companyCars = (List<CompanyCar>) objects;
+	public void printCompanyCars(List<CompanyCar> companyCars) {
 		
 		if (companyCars.isEmpty()) {
 			System.out.println("Empty result!");
