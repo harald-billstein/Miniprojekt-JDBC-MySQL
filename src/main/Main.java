@@ -1,6 +1,8 @@
 package main;
 import java.util.logging.Level;
 
+import databasemodel.DepartmentBuilder;
+
 class Main {
 
   public static void main(String[] args) {

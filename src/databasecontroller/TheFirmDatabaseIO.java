@@ -31,13 +31,13 @@ public class TheFirmDatabaseIO<T> {
 					.buildSessionFactory();
 	}
 
-	private void getSession() {
+	private void createSession() {
 		session = factory.getCurrentSession();
 		session.beginTransaction();
 	}
 
 	public void save(Object object) {
-		getSession();
+		createSession();
 		
 		try {
 			session.save(object);
@@ -49,7 +49,7 @@ public class TheFirmDatabaseIO<T> {
 	}
 
 	public List<?> retrive(String tableName) {
-		getSession();
+		createSession();
 		List<?> theObjects;
 		try {
 			theObjects = session.createQuery("from " + tableName).list();
@@ -61,7 +61,7 @@ public class TheFirmDatabaseIO<T> {
 	}
 	
 	public List<?> retriveDepartmentEmployeeList(Integer departmentId) {
-		getSession();
+		createSession();
 		List<?> theObjects;
 		try {
 			theObjects = session.createQuery("FROM employee WHERE department.department_id = '" + departmentId  + "'").list();
@@ -73,7 +73,7 @@ public class TheFirmDatabaseIO<T> {
 	}
 
 	public void delete(Class<?> clazz, Integer id) {
-		getSession();
+		createSession();
 		try {
 			Object object = session.get(clazz, id);
 			session.delete(object);
@@ -84,7 +84,7 @@ public class TheFirmDatabaseIO<T> {
 	}
 
 	public List<?> seachEmployeeName(String name) {
-		getSession();
+		createSession();
 		
 		List<?> employee;
 		try {
@@ -98,7 +98,7 @@ public class TheFirmDatabaseIO<T> {
 	}
 
 	public String getDatabaseInfo() {		
-		getSession();
+		createSession();
 		Object object;
 		
 		try {
@@ -114,7 +114,7 @@ public class TheFirmDatabaseIO<T> {
 	}
 
 	public void updateEmployee(Employee updatedEmployee) {
-		getSession();
+		createSession();
 		
 		try {
 			Employee employee = session.get(updatedEmployee.getClass(), updatedEmployee.getEmployee_id());

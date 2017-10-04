@@ -27,6 +27,12 @@ public class Department {
 		
 	}
 
+	public Department(String name, int rent, String phone_number) {
+		this.name = name;
+		this.rent = rent;
+		this.phone_number = phone_number;
+	}
+
 	public int getDepartment_id() {
 		return department_id;
 	}

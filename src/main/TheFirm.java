@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import databasemodel.*;
+import view.ConsoleView;
 import databasecontroller.TheFirmDatabaseIO;
 
-class TheFirm {
+class TheFirm extends ConsoleView {
 
 	private Scanner scanner;
 	private TheFirmDatabaseIO<?> theFirmDatabaseIO;
@@ -109,7 +110,8 @@ class TheFirm {
 
 	private void listAllEmployeesFromDepartment() {
 		String departmentId;
-		printDepartments((List<Department>) theFirmDatabaseIO.retrive("department"));
+		this.printDepartments((List<Department>) theFirmDatabaseIO.retrive("department"));
+
 		do {
 			System.out.print("Enter department id: ");
 			departmentId = scanner.nextLine();
@@ -127,7 +129,7 @@ class TheFirm {
 		String name = scanner.nextLine();
 
 		List<Employee> employees = (List<Employee>) theFirmDatabaseIO.seachEmployeeName(name);
-		printEmployees(employees);
+		this.printEmployees(employees);
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
@@ -214,14 +216,14 @@ class TheFirm {
 
 	private void showAllCompanyCars() {
 		List<CompanyCar> companyCars = (List<CompanyCar>) theFirmDatabaseIO.retrive("company_car");
-		printCompanyCars(companyCars);
+		this.printCompanyCars(companyCars);
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
 	}
 
 	private void showDepartments() {
-		printDepartments((List<Department>) theFirmDatabaseIO.retrive("department"));
+		this.printDepartments((List<Department>) theFirmDatabaseIO.retrive("department"));
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
@@ -229,81 +231,10 @@ class TheFirm {
 
 	private void showEmployees() {
 		List<Employee> employees = (List<Employee>) theFirmDatabaseIO.retrive("employee");
-		printEmployees(employees);
+		this.printEmployees(employees);
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
-	}
-
-	private void printEmployees(List<Employee> employees) {
-		if (employees.isEmpty()) {
-			System.out.println("Empty result!");
-		} else {
-			for (Employee employee : employees) {
-				System.out.println(employee.getEmployee_id() + " " + employee.getFname() + " " + employee.getLname()
-						+ " Salary: " + employee.getSalary());
-				try {
-					TimeUnit.MILLISECONDS.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					System.out.println("TimeUnit sleep exception: " + e.getMessage());
-				}
-			}
-		}
-
-		System.out.println();
-	}
-
-	private void printEmployeesIncludingDepartment(List<Employee> employees) {
-		if (employees.isEmpty()) {
-			System.out.println("Empty result!");
-		} else {
-			for (Employee employee : employees) {
-				System.out.println(
-						employee.getFname() + " " + employee.getLname() + " " + employee.getDepartment().getName());
-				try {
-					TimeUnit.MILLISECONDS.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					System.out.println("TimeUnit sleep exception: " + e.getMessage());
-				}
-			}
-		}
-		System.out.println();
-	}
-
-	private void printCompanyCars(List<CompanyCar> companyCars) {
-		if (companyCars.isEmpty()) {
-			System.out.println("Empty result!");
-		} else {
-			for (CompanyCar companyCar : companyCars) {
-				System.out.printf("%-20s %-14s %-15s %-15s %n", "Employee_id: " + companyCar.getEmployee_id(),
-						" Reg: " + companyCar.getReg_nr().toUpperCase(), "Brand: " + companyCar.getBrand(),
-						" Model: " + companyCar.getModel());
-				try {
-					TimeUnit.MILLISECONDS.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					System.out.println("TimeUnit sleep exception: " + e.getMessage());
-				}
-			}
-		}
-	}
-
-	private void printDepartments(List<Department> departments) {
-		if (departments.isEmpty()) {
-			System.out.println("Empty result!");
-		} else {
-			for (Department department : departments) {
-				System.out.println(department.getDepartment_id() + ". " + department.getName());
-				try {
-					TimeUnit.MILLISECONDS.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-					System.out.println("TimeUnit sleep exception: " + e.getMessage());
-				}
-			}
-		}
 	}
 
 	private void close() {

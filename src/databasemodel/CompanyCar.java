@@ -23,6 +23,17 @@ import javax.persistence.Id;
 
 		}
 		
+		public CompanyCar(String reg_nr, String brand, String model, Integer purchase_price, Date purchase_date,
+				Integer employee_id) {
+			super();
+			this.reg_nr = reg_nr;
+			this.brand = brand;
+			this.model = model;
+			this.purchase_price = purchase_price;
+			this.purchase_date = purchase_date;
+			this.employee_id = employee_id;
+		}
+
 		public String getReg_nr() {
 			return reg_nr;
 		}
