@@ -9,6 +9,7 @@ class TheFirm {
 
 	private Scanner scanner;
 	private TheFirmDatabaseIO<?> theFirmDatabaseIO;
+	boolean runApplication;
 
 	void start() {
 		scanner = new Scanner(System.in);
@@ -30,26 +31,30 @@ class TheFirm {
 	}
 
 	private void showMenu() {
-		System.out.println("#################################################");
-		System.out.println("1: Show all employees                           |");
-		System.out.println("2: Show departments                             |");
-		System.out.println("3: Show all company cars                        |");
-		System.out.println("4: Add new Employee                             |");
-		System.out.println("5: Update salary                                |");
-		System.out.println("6: Remove employee                              |");
-		System.out.println("7: Search for an employee                       |");
-		System.out.println("8: List all employees from specific department  |");
-		System.out.println("9: Exit program                                 |");
-		System.out.println("#################################################");
-		System.out.print("--> ");
-		String answer = scanner.nextLine();
 
-		boolean isParable = isParsable(answer);
+		runApplication = true;
 
-		if (isParable) {
-			MenuChoice(Integer.parseInt(answer));
-		} else {
-			showMenu();
+		while (runApplication) {
+
+			System.out.println("#################################################");
+			System.out.println("1: Show all employees                           |");
+			System.out.println("2: Show departments                             |");
+			System.out.println("3: Show all company cars                        |");
+			System.out.println("4: Add new Employee                             |");
+			System.out.println("5: Update salary                                |");
+			System.out.println("6: Remove employee                              |");
+			System.out.println("7: Search for an employee                       |");
+			System.out.println("8: List all employees from specific department  |");
+			System.out.println("9: Exit program                                 |");
+			System.out.println("#################################################");
+			System.out.print("--> ");
+			String answer = scanner.nextLine();
+
+			boolean isParable = isParsable(answer);
+
+			if (isParable) {
+				MenuChoice(Integer.parseInt(answer));
+			}
 		}
 	}
 
@@ -113,7 +118,6 @@ class TheFirm {
 		printEmployeesIncludingDepartment(employeesFromDepartment);
 		System.out.println("Press any key...");
 		scanner.nextLine();
-		showMenu();
 	}
 
 	private void searchEmployee() {
@@ -125,7 +129,6 @@ class TheFirm {
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
-		showMenu();
 	}
 
 	private void removeEmployee() {
@@ -144,7 +147,6 @@ class TheFirm {
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
-		showMenu();
 	}
 
 	private void updateSalary() {
@@ -174,7 +176,6 @@ class TheFirm {
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
-		showMenu();
 	}
 
 	private void addNewEmployee() {
@@ -196,13 +197,9 @@ class TheFirm {
 			departmentId = scanner.nextLine();
 		} while (!isParsable(departmentId));
 
-		Employee employee = new EmployeeBuilder()
-				.setFname(firstName)
-				.setLname(lastName)
-				.setSalary(Integer.parseInt(salary))
-				.setDepartmentId(Integer.parseInt(departmentId))
-				.build();
-		
+		Employee employee = new EmployeeBuilder().setFname(firstName).setLname(lastName)
+				.setSalary(Integer.parseInt(salary)).setDepartmentId(Integer.parseInt(departmentId)).build();
+
 		try {
 			theFirmDatabaseIO.save(employee);
 		} catch (Exception e) {
@@ -211,7 +208,6 @@ class TheFirm {
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
-		showMenu();
 	}
 
 	private void showAllCompanyCars() {
@@ -220,7 +216,6 @@ class TheFirm {
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
-		showMenu();
 	}
 
 	private void showDepartments() {
@@ -228,7 +223,6 @@ class TheFirm {
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
-		showMenu();
 	}
 
 	private void showEmployees() {
@@ -237,7 +231,6 @@ class TheFirm {
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
-		showMenu();
 	}
 
 	private void printEmployees(List<Employee> employees) {
@@ -245,7 +238,8 @@ class TheFirm {
 			System.out.println("Empty result!");
 		} else {
 			for (Employee employee : employees) {
-				System.out.println(employee.getEmployee_id() + " " + employee.getFname() + " " + employee.getLname() + " Salary: " + employee.getSalary());
+				System.out.println(employee.getEmployee_id() + " " + employee.getFname() + " " + employee.getLname()
+						+ " Salary: " + employee.getSalary());
 				try {
 					TimeUnit.MILLISECONDS.sleep(100);
 				} catch (InterruptedException e) {
@@ -311,6 +305,7 @@ class TheFirm {
 	}
 
 	private void close() {
+		runApplication = false;
 		try {
 			if (!(theFirmDatabaseIO == null)) {
 				theFirmDatabaseIO.close();
