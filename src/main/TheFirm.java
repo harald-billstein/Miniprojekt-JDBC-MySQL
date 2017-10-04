@@ -1,22 +1,41 @@
 package main;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import databasemodel.*;
 import view.ConsoleView;
-import databasecontroller.TheFirmDatabaseIO;
+import databasecontroller.CompanyCarIO;
+import databasecontroller.DatabaseIO;
+import databasecontroller.DepartmentIO;
+import databasecontroller.EmployeeIO;
+import databasecontroller.HibernateSessionManager;
 
 class TheFirm extends ConsoleView {
 
 	private Scanner scanner;
-	private TheFirmDatabaseIO<?> theFirmDatabaseIO;
 	boolean runApplication;
+	
+	//## IO CHANGES
+	private HibernateSessionManager hibernateSessionManager;
+	private EmployeeIO employeeIO;
+	private CompanyCarIO companyCarIO;
+	private DepartmentIO departmentIO;
+	//## IO CHANGES 
 
 	void start() {
 		scanner = new Scanner(System.in);
 		try {
-			theFirmDatabaseIO = new TheFirmDatabaseIO<>();
+			List<Class<?>> clazzes = new ArrayList<Class<?>>();
+			clazzes.add(Employee.class);
+			clazzes.add(Department.class);
+			clazzes.add(CompanyCar.class);
+			hibernateSessionManager = new HibernateSessionManager(clazzes);
+			employeeIO = new EmployeeIO(hibernateSessionManager);
+			companyCarIO = new CompanyCarIO(hibernateSessionManager);
+			departmentIO = new DepartmentIO(hibernateSessionManager);
+			
 		} catch (Exception e) {
 			System.out.println("Exception thrown " + e.getMessage());
 			System.out.print("Try again? yes/no: ");
@@ -28,7 +47,7 @@ class TheFirm extends ConsoleView {
 				close();
 			}
 		}
-		System.out.println(theFirmDatabaseIO.getDatabaseInfo());
+		System.out.println(employeeIO.getDatabaseInfo(hibernateSessionManager.getSession()));
 		showMenu();
 	}
 
@@ -109,16 +128,14 @@ class TheFirm extends ConsoleView {
 
 	private void listAllEmployeesFromDepartment() {
 		String departmentId;
-		this.printDepartments((List<?>) theFirmDatabaseIO.retrive("department"));
+		printDepartments(departmentIO.read(hibernateSessionManager.getSession(), Department.class));	
 
 		do {
 			System.out.print("Enter department id: ");
 			departmentId = scanner.nextLine();
 		} while (!isParsable(departmentId));
-
-		List<?> employeesFromDepartment = (List<?>) theFirmDatabaseIO
-				.retriveDepartmentEmployeeList(Integer.parseInt(departmentId));
-		printEmployeesIncludingDepartment(employeesFromDepartment);
+		
+		printEmployeesIncludingDepartment(departmentIO.getDepartmentEmployeeList(Integer.parseInt(departmentId)));
 		System.out.println("Press any key...");
 		scanner.nextLine();
 	}
@@ -126,9 +143,7 @@ class TheFirm extends ConsoleView {
 	private void searchEmployee() {
 		System.out.print("Name: ");
 		String name = scanner.nextLine();
-
-		List<?> employees = (List<?>) theFirmDatabaseIO.seachEmployeeName(name);
-		this.printEmployees(employees);
+		printEmployees(employeeIO.seachEmployeeName(name));
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
@@ -142,7 +157,7 @@ class TheFirm extends ConsoleView {
 		} while (!isParsable(employeeId));
 
 		try {
-			theFirmDatabaseIO.delete(Employee.class, Integer.parseInt(employeeId));
+			employeeIO.delete(Employee.class, Integer.parseInt(employeeId));
 			System.out.println("Success!");
 		} catch (Exception e) {
 			System.out.println("Error removing employee: " + e.getMessage());
@@ -170,9 +185,9 @@ class TheFirm extends ConsoleView {
 			Employee employee = new Employee();
 			employee.setEmployee_id(Integer.parseInt(employeeId));
 			employee.setSalary(Integer.parseInt(salary));
-			theFirmDatabaseIO.updateEmployee(employee);
-
-			System.out.println("Success!");
+			throw new Exception("Not implemented...");
+			//theFirmDatabaseIO.updateEmployee(employee);
+			//System.out.println("Success!");
 		} catch (Exception e) {
 			System.out.println("Could not find employee." + e.getMessage());
 		}
@@ -204,7 +219,9 @@ class TheFirm extends ConsoleView {
 				.setSalary(Integer.parseInt(salary)).setDepartmentId(Integer.parseInt(departmentId)).build();
 
 		try {
-			theFirmDatabaseIO.save(employee);
+			EmployeeIO employeeIO = new EmployeeIO(hibernateSessionManager);
+			employeeIO.create(employee);
+
 		} catch (Exception e) {
 			System.out.println("Error saving employee. " + e.getMessage());
 		}
@@ -214,23 +231,21 @@ class TheFirm extends ConsoleView {
 	}
 
 	private void showAllCompanyCars() {
-		List<?> companyCars = (List<?>) theFirmDatabaseIO.retrive("company_car");
-		this.printCompanyCars(companyCars);
+		printCompanyCars(companyCarIO.read(hibernateSessionManager.getSession(), CompanyCar.class));
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
 	}
 
 	private void showDepartments() {
-		this.printDepartments((List<?>) theFirmDatabaseIO.retrive("department"));
+		printDepartments(departmentIO.read(hibernateSessionManager.getSession(), Department.class));	
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
 	}
 
 	private void showEmployees() {
-		List<?> employees = (List<?>) theFirmDatabaseIO.retrive("employee");
-		this.printEmployees(employees);
+		printEmployees(employeeIO.read(hibernateSessionManager.getSession(), Employee.class));	
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
@@ -239,9 +254,7 @@ class TheFirm extends ConsoleView {
 	private void close() {
 		runApplication = false;
 		try {
-			if (!(theFirmDatabaseIO == null)) {
-				theFirmDatabaseIO.close();
-			}
+			// close hibernate factory etc
 			System.in.close();
 			scanner.close();
 			System.out.println("EXITING.....");
