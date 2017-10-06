@@ -8,5 +8,6 @@ class Main {
     java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
     TheFirm theFirm = new TheFirm();
     theFirm.start();
+    
   }
 }

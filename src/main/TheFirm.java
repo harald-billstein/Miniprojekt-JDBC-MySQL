@@ -1,10 +1,13 @@
 package main;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.sql.SQLData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import databasemodel.*;
+import javassist.expr.NewArray;
 import view.ConsoleView;
 import databasecontroller.CompanyCarIO;
 import databasecontroller.DepartmentIO;
@@ -125,7 +128,7 @@ class TheFirm extends ConsoleView {
 
 	private void listAllEmployeesFromDepartment() {
 		String departmentId;
-		printDepartments(departmentIO.read(hibernateSessionManager.getSession(), Department.class));	
+		printDepartments(departmentIO.read(Department.class));	
 
 		do {
 			System.out.print("Enter department id: ");
@@ -178,13 +181,11 @@ class TheFirm extends ConsoleView {
 		} while (!isParsable(salary));
 		// TODO: do while? Retry until employee is found.
 		try {
-
 			Employee employee = new Employee();
 			employee.setEmployee_id(Integer.parseInt(employeeId));
 			employee.setSalary(Integer.parseInt(salary));
-			throw new Exception("Not implemented...");
-			//theFirmDatabaseIO.updateEmployee(employee);
-			//System.out.println("Success!");
+			employeeIO.updateEmployee(employee);
+			System.out.println("Success!");
 		} catch (Exception e) {
 			System.out.println("Could not find employee." + e.getMessage());
 		}
@@ -228,21 +229,21 @@ class TheFirm extends ConsoleView {
 	}
 
 	private void showAllCompanyCars() {
-		printCompanyCars(companyCarIO.read(hibernateSessionManager.getSession(), CompanyCar.class));
+		printCompanyCars(companyCarIO.read(CompanyCar.class));
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
 	}
 
 	private void showDepartments() {
-		printDepartments(departmentIO.read(hibernateSessionManager.getSession(), Department.class));	
+		printDepartments(departmentIO.read(Department.class));	
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
 	}
 
 	private void showEmployees() {
-		printEmployees(employeeIO.read(hibernateSessionManager.getSession(), Employee.class));	
+		printEmployees(employeeIO.read(Employee.class));	
 
 		System.out.println("Press any key...");
 		scanner.nextLine();

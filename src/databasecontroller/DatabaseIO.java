@@ -7,6 +7,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public abstract class DatabaseIO {
 	
 	private HibernateSessionManager hibernateSessionManager;
@@ -40,7 +43,8 @@ public abstract class DatabaseIO {
 		session.close();
 	}
 
-	public <T> List<T> read(Session session, Class<T> clazz) {
+	public <T> List<T> read(Class<T> clazz) {
+		Session session = getSession();
 		session.beginTransaction();
 
 		List<T> objects;
@@ -54,7 +58,7 @@ public abstract class DatabaseIO {
 	}
 	
 	public <T> void delete(Class<T> clazz, int id) {
-		Session session = hibernateSessionManager.getSession();
+		Session session = getSession();
 		session.beginTransaction();
 		try {
 			Object object = session.get(clazz, id);
@@ -65,8 +69,16 @@ public abstract class DatabaseIO {
 		}
 	}
 
-	public void update() {
-
+	public void update(Object object) {
+		
+		Session session = getSession();
+		try {
+			session.beginTransaction();
+			session.save(object);
+			session.getTransaction().commit();
+		} finally {
+			session.close();	
+		} 
 	}
 
 	public Session getSession() {

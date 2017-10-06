@@ -43,6 +43,7 @@ public class EmployeeIO extends DatabaseIO {
 
 	public void updateEmployee(Employee updatedEmployee) {
 		Session session = getSession();
+		session.beginTransaction();
 		
 		try {
 			Employee employee = session.get(updatedEmployee.getClass(), updatedEmployee.getEmployee_id());
