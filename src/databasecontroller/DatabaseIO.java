@@ -31,7 +31,7 @@ public abstract class DatabaseIO<T> {
 		return "uptime: " + object.toString();
 	}
 
-	public void create(Object object) {
+	public void create(T object) {
 		Session session = hibernateSessionManager.getSession();
 		session.beginTransaction();
 
@@ -59,7 +59,7 @@ public abstract class DatabaseIO<T> {
 		Session session = getSession();
 		session.beginTransaction();
 		try {
-			Object object = session.get(clazz, id);
+			T object = session.get(clazz, id);
 			session.delete(object);
 			session.getTransaction().commit();
 		} finally {
@@ -67,7 +67,7 @@ public abstract class DatabaseIO<T> {
 		}
 	}
 
-	public void update(Object object) {
+	public void update(T object) {
 		
 		Session session = getSession();
 		try {
