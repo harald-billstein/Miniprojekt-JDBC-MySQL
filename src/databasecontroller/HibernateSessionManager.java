@@ -12,30 +12,35 @@ public class HibernateSessionManager {
 	private SessionFactory factory;
 	private Configuration configuration;
 	private List<Class<?>> clazzes;
-	
+
 	public HibernateSessionManager(List<Class<?>> clazzes) {
 		this.clazzes = clazzes;
 		createConfiguration();
 		addAnnotatedClasses();
 		buildFactory();
 	}
-	
+
 	private void createConfiguration() throws ServiceException {
-		this.configuration = new Configuration()
-				.configure("hibernate.cfg.xml");
+		this.configuration = new Configuration().configure("hibernate.cfg.xml");
 	}
-	
+
 	private void addAnnotatedClasses() {
-		for (Class<?> clazz : this.clazzes) {
+		for (Class<?> clazz : clazzes) {
 			configuration.addAnnotatedClass(clazz);
 		}
 	}
-	
+
 	private void buildFactory() {
-		this.factory = this.configuration.buildSessionFactory();	
+		this.factory = configuration.buildSessionFactory();
 	}
-	
+
 	public Session getSession() {
-		return this.factory.getCurrentSession();
+		return factory.getCurrentSession();
+	}
+
+	public void close() {
+		if (factory.isClosed()) {
+			factory.close();
+		}
 	}
 }

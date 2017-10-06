@@ -19,10 +19,7 @@ public class EmployeeIO extends DatabaseIO<Employee> {
 		List<Employee> employees;
 
 		try {
-			employees = session
-					.createQuery(hql)
-					.setParameter("departmentId", departmentId)
-					.list();
+			employees = session.createQuery(hql, Employee.class).setParameter("departmentId", departmentId).list();
 		} finally {
 			session.close();
 		}
@@ -37,11 +34,8 @@ public class EmployeeIO extends DatabaseIO<Employee> {
 		List<Employee> employee;
 
 		try {
-			employee = session
-					.createQuery(hql)
-					.setParameter("fname", "%" + name + "%")
-					.setParameter("lname", "%" + name + "%")
-					.list();
+			employee = session.createQuery(hql, Employee.class).setParameter("fname", "%" + name + "%")
+					.setParameter("lname", "%" + name + "%").list();
 		} finally {
 			session.close();
 		}
