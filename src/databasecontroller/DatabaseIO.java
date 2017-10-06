@@ -5,17 +5,15 @@ import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
+import org.hibernate.query.Query; 
 
-import lombok.Getter;
-import lombok.Setter;
-
-public abstract class DatabaseIO {
-	
+public abstract class DatabaseIO<T> {
 	private HibernateSessionManager hibernateSessionManager;
+	private Class<T> clazz;
 	
-	public DatabaseIO(HibernateSessionManager hibernateSessionManager) {
+	public DatabaseIO(HibernateSessionManager hibernateSessionManager, Class<T> clazz) {
 		this.hibernateSessionManager = hibernateSessionManager;
+		this.clazz = clazz;
 	}
 
 	public String getDatabaseInfo(Session session) {
@@ -43,7 +41,7 @@ public abstract class DatabaseIO {
 		session.close();
 	}
 
-	public <T> List<T> read(Class<T> clazz) {
+	public List<T> read() {
 		Session session = getSession();
 		session.beginTransaction();
 
@@ -57,7 +55,7 @@ public abstract class DatabaseIO {
 		return objects;
 	}
 	
-	public <T> void delete(Class<T> clazz, int id) {
+	public void delete(int id) {
 		Session session = getSession();
 		session.beginTransaction();
 		try {

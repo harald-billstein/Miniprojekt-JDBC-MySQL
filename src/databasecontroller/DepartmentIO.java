@@ -1,9 +1,11 @@
 package databasecontroller;
 
-public class DepartmentIO extends DatabaseIO {
+import databasemodel.Department;
+
+public class DepartmentIO extends DatabaseIO<Department> {
 	
 	public DepartmentIO(HibernateSessionManager hibernateSessionManager) {
-		super(hibernateSessionManager);
+		super(hibernateSessionManager, Department.class);
 	}
 	
 

@@ -1,13 +1,10 @@
 package main;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.sql.SQLData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import databasemodel.*;
-import javassist.expr.NewArray;
 import view.ConsoleView;
 import databasecontroller.CompanyCarIO;
 import databasecontroller.DepartmentIO;
@@ -128,7 +125,7 @@ class TheFirm extends ConsoleView {
 
 	private void listAllEmployeesFromDepartment() {
 		String departmentId;
-		printDepartments(departmentIO.read(Department.class));	
+		printDepartments(departmentIO.read());	
 
 		do {
 			System.out.print("Enter department id: ");
@@ -157,7 +154,7 @@ class TheFirm extends ConsoleView {
 		} while (!isParsable(employeeId));
 
 		try {
-			employeeIO.delete(Employee.class, Integer.parseInt(employeeId));
+			employeeIO.delete(Integer.parseInt(employeeId));
 			System.out.println("Success!");
 		} catch (Exception e) {
 			System.out.println("Error removing employee: " + e.getMessage());
@@ -229,21 +226,21 @@ class TheFirm extends ConsoleView {
 	}
 
 	private void showAllCompanyCars() {
-		printCompanyCars(companyCarIO.read(CompanyCar.class));
+		printCompanyCars(companyCarIO.read());
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
 	}
 
 	private void showDepartments() {
-		printDepartments(departmentIO.read(Department.class));	
+		printDepartments(departmentIO.read());	
 
 		System.out.println("Press any key...");
 		scanner.nextLine();
 	}
 
 	private void showEmployees() {
-		printEmployees(employeeIO.read(Employee.class));	
+		printEmployees(employeeIO.read());	
 
 		System.out.println("Press any key...");
 		scanner.nextLine();

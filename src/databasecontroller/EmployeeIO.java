@@ -5,10 +5,10 @@ import java.util.List;
 import org.hibernate.Session;
 import databasemodel.Employee;
 
-public class EmployeeIO extends DatabaseIO {
+public class EmployeeIO extends DatabaseIO<Employee> {
 	
 	public EmployeeIO(HibernateSessionManager hibernateSessionManager) {
-		super(hibernateSessionManager);
+		super(hibernateSessionManager, Employee.class);
 	}
 	
 	public List<Employee> getDepartmentEmployeeList(Integer departmentId) {
