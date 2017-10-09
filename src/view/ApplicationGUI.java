@@ -1,5 +1,10 @@
 package view;
+
+import java.sql.Date;
 import java.util.ArrayList;
+
+import controller.TheFirmController;
+import databasemodel.Employee;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,155 +20,136 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ApplicationGUI extends Application implements EventHandler<ActionEvent> {
+public class ApplicationGUI extends Application {
 
-  //private static Stage stage;
-  private BorderPane mainPane;
-  private HBox topPane;
-  private VBox leftPane;
-  private TableView<String> centerTable;
-  private VBox rightPane;
-  private HBox bottomPane;
-  private ArrayList buttons;
-  private ArrayList tableColumns;
-  private MenuBar menuBar;
-  private ArrayList menus;
+	private BorderPane mainPane;
+	private HBox topPane;
+	private VBox leftPane;
+	private TableView<Employee> centerTable;
+	private VBox rightPane;
+	private HBox bottomPane;
+	private ArrayList<Button> buttons;
+	private EventHandler<ActionEvent> eventHandler;
 
+	public ArrayList<Button> getButtons() {
+		return buttons;
+	}
 
-  public void launch() {
-	    launch(null);
-  }
+	private ArrayList tableColumns;
+	private MenuBar menuBar;
+	private ArrayList<Menu> menus;
 
-  public void setupTopPane() {
-    Menu menuFile = new Menu("File");
-    Menu menuEdit = new Menu("Edit");
-    Menu menuView = new Menu("About");
+	public void kickstartGUIRecources(EventHandler<ActionEvent> eventHandler) {
+		System.out.println("GUI kickstartGUIRecources");
+		this.eventHandler = eventHandler;
+		launch(null);
+	}
 
-    menus = new ArrayList();
-    menus.add(menuFile);
-    menus.add(menuEdit);
-    menus.add(menuView);
+	public void setupTopPane() {
+		Menu menuFile = new Menu("File");
+		Menu menuEdit = new Menu("Edit");
+		Menu menuView = new Menu("About");
 
-    menuBar = new MenuBar();
-    menuBar.setPrefSize(600,12);
-    menuBar.getMenus().addAll(menuFile,menuEdit,menuView);
+		menus = new ArrayList<Menu>();
+		menus.add(menuFile);
+		menus.add(menuEdit);
+		menus.add(menuView);
 
-    topPane = new HBox();
-    topPane.getChildren().add(menuBar);
-  }
+		menuBar = new MenuBar();
+		menuBar.setPrefSize(600, 12);
+		menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
 
-  public void setupLeftPane() {
-    leftPane = new VBox();
-    leftPane.getChildren().addAll(buttons);
-  }
+		topPane = new HBox();
+		topPane.getChildren().add(menuBar);
+	}
 
-  public void setupCenterPane() {
-    centerTable = new TableView();
-    tableColumns = new ArrayList();
+	public void setupLeftPane() {
+		System.out.println("setupleftpane");
+		leftPane = new VBox();
+		leftPane.getChildren().addAll(buttons);
+	}
 
-    TableColumn fname = new TableColumn("First name");
-    fname.setMinWidth(150);
+	public void setupCenterPane() {
+		System.out.println("setupCenterPane");
+		centerTable = new TableView<Employee>();
+		centerTable.setEditable(true);
 
-    TableColumn lname = new TableColumn("Last name");
-    lname.setMinWidth(150);
-    TableColumn adress = new TableColumn("Adress");
-    adress.setMinWidth(150);
+		TableColumn<Employee, String> fname = new TableColumn<Employee, String>("First name");
+		fname.setCellValueFactory(new PropertyValueFactory<Employee, String>("fname"));
+		fname.setMinWidth(50);
 
+		TableColumn<Employee, String> lname = new TableColumn<Employee, String>("Last name");
+		lname.setCellValueFactory(new PropertyValueFactory<Employee, String>("lname"));
+		lname.setMinWidth(50);
 
+		TableColumn<Employee, Integer> salary = new TableColumn<Employee, Integer>("Salary");
+		salary.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("salary"));
+		salary.setMinWidth(50);
 
-    tableColumns.add(fname);
-    tableColumns.add(lname);
-    tableColumns.add(adress);
+		TableColumn<Employee, Date> hireDate = new TableColumn<Employee, Date>("Hire date");
+		hireDate.setCellValueFactory(new PropertyValueFactory<Employee, Date>("hire_date"));
+		hireDate.setMinWidth(50);
 
-    centerTable.getColumns().addAll(fname, lname, adress);
-  }
+		TableColumn<Employee, Integer> departmentId = new TableColumn<Employee, Integer>("Department ID");
+		departmentId.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("department_id"));
+		departmentId.setMinWidth(100);
 
-  public void setupMainPane() {
-    mainPane = new BorderPane();
-    mainPane.setCenter(centerTable);
-    mainPane.setTop(topPane);
-    mainPane.setLeft(leftPane);
-    mainPane.setRight(rightPane);
-    mainPane.setBottom(bottomPane);
-  }
+		tableColumns = new ArrayList<>();
 
-  public void setUpButtons() {
-    buttons = new ArrayList();
+		tableColumns.add(fname);
+		tableColumns.add(lname);
+		tableColumns.add(salary);
+		tableColumns.add(hireDate);
+		tableColumns.add(departmentId);
 
-    Button search = new Button("Search");
-    Button add = new Button("Add");
-    Button remove = new Button("Remove");
-    Button edit = new Button("Edit");
+		centerTable.getColumns().addAll(tableColumns);
+	}
 
-    search.setPrefSize(100, 20);
-    search.setOnAction(this);
+	public void setupMainPane() {
+		System.out.println("setup Mainpane");
+		mainPane = new BorderPane();
+		mainPane.setCenter(centerTable);
+		mainPane.setTop(topPane);
+		mainPane.setLeft(leftPane);
+		mainPane.setRight(rightPane);
+		mainPane.setBottom(bottomPane);
+	}
 
-    add.setPrefSize(100, 20);
-    add.setOnAction(this);
+	public void setUpButtons() {
+		System.out.println("setup buttons");
 
-    remove.setPrefSize(100, 20);
-    remove.setOnAction(this);
+		Button search = new Button("Search");
+		Button add = new Button("Add");
+		Button remove = new Button("Remove");
+		Button edit = new Button("Edit");
 
-    edit.setPrefSize(100, 20);
-    edit.setOnAction(this);
+		buttons = new ArrayList<>();
+		buttons.add(search);
+		buttons.add(add);
+		buttons.add(remove);
+		buttons.add(edit);
 
-    buttons.add(search);
-    buttons.add(add);
-    buttons.add(remove);
-    buttons.add(edit);
-  }
+		for (Button button : buttons) {
+			button.setPrefSize(100, 20);
+			button.setOnAction(eventHandler);
+		}
+	}
 
-  @Override
-  public void start(Stage primaryStage) throws Exception {
-    setUpButtons();
-    setupTopPane();
-    setupLeftPane();
-    setupCenterPane();
-    setupMainPane();
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		System.out.println("GUI start");
+		setupTopPane();
+		setUpButtons();
+		setupCenterPane();
+		setupLeftPane();
+		setupMainPane();
 
-    Scene scene = new Scene(mainPane,600,300);
+		Scene scene = new Scene(mainPane, 600, 300);
 
-    primaryStage.setScene(scene);
-    primaryStage.setTitle("Adress book");
-    primaryStage.show();
-  }
+		primaryStage.setScene(scene);
+		primaryStage.setTitle("The Firm");
+		primaryStage.show();
+	}
+	
 
-  @Override
-  public void handle(ActionEvent event) {
-    Button button = ((Button) event.getSource());
-
-    switch (button.getText()) {
-      case "Search":
-        Search();
-        break;
-      case "Add":
-        Add();
-        break;
-      case "Remove":
-        Remove();
-        break;
-      case "Edit":
-        Edit();
-        break;
-      default:
-        break;
-    }
-
-  }
-
-  private void Edit() {
-    System.out.println("Edit");
-  }
-
-  private void Remove() {
-    System.out.println("Remove");
-  }
-
-  private void Add() {
-    System.out.println("Add");
-  }
-
-  private void Search() {
-    System.out.println("Search");
-  }
 }
