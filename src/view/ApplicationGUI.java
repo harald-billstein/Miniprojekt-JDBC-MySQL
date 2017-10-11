@@ -7,6 +7,7 @@ import controller.TheFirmController;
 import databasemodel.Employee;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,7 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class ApplicationGUI extends Application {
+public class ApplicationGUI {
 
 	private BorderPane mainPane;
 	private HBox topPane;
@@ -29,7 +30,8 @@ public class ApplicationGUI extends Application {
 	private VBox rightPane;
 	private HBox bottomPane;
 	private ArrayList<Button> buttons;
-	private EventHandler<ActionEvent> eventHandler;
+	private EventHandler<ActionEvent> event;
+	private Stage primaryStage;
 
 	public ArrayList<Button> getButtons() {
 		return buttons;
@@ -39,13 +41,9 @@ public class ApplicationGUI extends Application {
 	private MenuBar menuBar;
 	private ArrayList<Menu> menus;
 
-	public void kickstartGUIRecources(EventHandler<ActionEvent> eventHandler) {
-		System.out.println("GUI kickstartGUIRecources");
-		this.eventHandler = eventHandler;
-		launch(null);
-	}
 
 	public void setupTopPane() {
+		System.out.println("setupTopPane");
 		Menu menuFile = new Menu("File");
 		Menu menuEdit = new Menu("Edit");
 		Menu menuView = new Menu("About");
@@ -86,6 +84,7 @@ public class ApplicationGUI extends Application {
 		salary.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("salary"));
 		salary.setMinWidth(50);
 
+
 		TableColumn<Employee, Date> hireDate = new TableColumn<Employee, Date>("Hire date");
 		hireDate.setCellValueFactory(new PropertyValueFactory<Employee, Date>("hire_date"));
 		hireDate.setMinWidth(50);
@@ -103,6 +102,10 @@ public class ApplicationGUI extends Application {
 		tableColumns.add(departmentId);
 
 		centerTable.getColumns().addAll(tableColumns);
+	}
+
+	public TableView<Employee> getCenterTable() {
+		return centerTable;
 	}
 
 	public void setupMainPane() {
@@ -128,28 +131,34 @@ public class ApplicationGUI extends Application {
 		buttons.add(add);
 		buttons.add(remove);
 		buttons.add(edit);
-
+		
 		for (Button button : buttons) {
-			button.setPrefSize(100, 20);
-			button.setOnAction(eventHandler);
+			button.setMinWidth(100);
+			button.setOnAction(event);
 		}
 	}
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+
+	public void start() {
 		System.out.println("GUI start");
 		setupTopPane();
-		setUpButtons();
 		setupCenterPane();
+		setUpButtons();
 		setupLeftPane();
 		setupMainPane();
-
+		
 		Scene scene = new Scene(mainPane, 600, 300);
 
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("The Firm");
 		primaryStage.show();
 	}
-	
 
+	public void setPrimaryStage(Stage primaryStage) {
+		this.primaryStage = primaryStage;
+	}
+
+	public void setObserver(EventHandler<ActionEvent> event) {
+		this.event = event;
+	}
 }
