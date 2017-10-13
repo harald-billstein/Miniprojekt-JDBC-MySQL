@@ -1,4 +1,4 @@
-package databasemodel;
+package model;
 
 import java.util.Set;
 
@@ -25,6 +25,12 @@ public class Department {
 	
 	public Department() {
 		
+	}
+
+	public Department(String name, int rent, String phone_number) {
+		this.name = name;
+		this.rent = rent;
+		this.phone_number = phone_number;
 	}
 
 	public int getDepartment_id() {
