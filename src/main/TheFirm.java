@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Scanner;
 
 import controller.CompanyCarIO;
+import controller.DatabaseInfoIO;
 import controller.DepartmentIO;
 import controller.EmployeeIO;
 import controller.HibernateSessionManager;
+import javassist.expr.NewArray;
 import model.*;
 import view.ConsoleView;
 
@@ -20,6 +22,7 @@ class TheFirm extends ConsoleView {
 	private EmployeeIO employeeIO;
 	private CompanyCarIO companyCarIO;
 	private DepartmentIO departmentIO;
+	private DatabaseInfoIO databaseInfoIO;
 
 	void start() {
 		kickstartresources();
@@ -48,13 +51,14 @@ class TheFirm extends ConsoleView {
 		employeeIO = new EmployeeIO(hibernateSessionManager);
 		companyCarIO = new CompanyCarIO(hibernateSessionManager);
 		departmentIO = new DepartmentIO(hibernateSessionManager);
+		databaseInfoIO = new DatabaseInfoIO(hibernateSessionManager);
 	}
 
 	private void showMenu() {
 		runApplication = true;
 
 		while (runApplication) {
-			System.out.println(employeeIO.getDatabaseInfo());
+			System.out.println(databaseInfoIO.getUptime());
 			printMenMenu();
 			String answer = scanner.nextLine();
 
