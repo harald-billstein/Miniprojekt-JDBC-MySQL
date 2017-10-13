@@ -3,19 +3,15 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import databasecontroller.CompanyCarIO;
-import databasecontroller.DepartmentIO;
-import databasecontroller.EmployeeIO;
-import databasecontroller.HibernateSessionManager;
-import databasemodel.CompanyCar;
-import databasemodel.Department;
-import databasemodel.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import model.CompanyCar;
+import model.Department;
+import model.Employee;
 import view.ApplicationGUI;
 
 public class TheFirmController implements EventHandler<ActionEvent> {
@@ -59,7 +55,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
 			
 			if (button.getText().equals("Search")) {
 				System.out.println(button.getText());
-				List<Employee> employees = employeeIO.seachEmployeeName("harald");
+				List<Employee> employees = employeeIO.seachEmployeeName("we");
 				applicationGUI.getCenterTable().setItems(getSeachedEmployees(employees));
 				
 				

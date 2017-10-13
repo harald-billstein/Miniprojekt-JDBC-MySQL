@@ -1,6 +1,6 @@
-package databasecontroller;
+package controller;
 
-import databasemodel.Department;
+import model.Department;
 
 public class DepartmentIO extends DatabaseIO<Department> {
 

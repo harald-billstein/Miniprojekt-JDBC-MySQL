@@ -1,4 +1,4 @@
-package databasemodel;
+package model;
 
 import java.util.Set;
 

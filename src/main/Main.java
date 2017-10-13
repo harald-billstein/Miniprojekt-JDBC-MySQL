@@ -1,10 +1,10 @@
 package main;
 
 import controller.TheFirmController;
-import databasemodel.Employee;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
+import model.Employee;
 import view.ApplicationGUI;
 
 public class Main extends Application {
@@ -15,7 +15,7 @@ public class Main extends Application {
 		// TheFirm theFirm = new TheFirm();
 		// theFirm.start();
 
-		launch(args);
+		new Main().launch(args);
 
 	}
 

@@ -1,4 +1,4 @@
-package databasecontroller;
+package controller;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.spi.ServiceException;

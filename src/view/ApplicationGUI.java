@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import controller.TheFirmController;
-import databasemodel.Employee;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -20,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.Employee;
 
 public class ApplicationGUI {
 

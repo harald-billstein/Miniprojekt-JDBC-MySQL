@@ -4,12 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import databasemodel.*;
+
+import controller.CompanyCarIO;
+import controller.DepartmentIO;
+import controller.EmployeeIO;
+import controller.HibernateSessionManager;
+import model.*;
 import view.ConsoleView;
-import databasecontroller.CompanyCarIO;
-import databasecontroller.DepartmentIO;
-import databasecontroller.EmployeeIO;
-import databasecontroller.HibernateSessionManager;
 
 class TheFirm extends ConsoleView {
 

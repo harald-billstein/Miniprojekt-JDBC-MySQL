@@ -1,6 +1,6 @@
-package databasecontroller;
+package controller;
 
-import databasemodel.CompanyCar;
+import model.CompanyCar;
 
 public class CompanyCarIO extends DatabaseIO<CompanyCar> {
 

@@ -3,9 +3,9 @@ package view;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import databasemodel.CompanyCar;
-import databasemodel.Department;
-import databasemodel.Employee;
+import model.CompanyCar;
+import model.Department;
+import model.Employee;
 
 public class ConsoleView {
 

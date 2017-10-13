@@ -1,9 +1,10 @@
-package databasecontroller;
+package controller;
 
 import java.util.List;
 
 import org.hibernate.Session;
-import databasemodel.Employee;
+
+import model.Employee;
 
 public class EmployeeIO extends DatabaseIO<Employee> {
 
