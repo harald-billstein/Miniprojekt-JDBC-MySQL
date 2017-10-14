@@ -3,9 +3,11 @@ package model;
 import java.sql.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity(name = "company_car")
 	public class CompanyCar {
@@ -19,6 +21,20 @@ import javax.persistence.Id;
 		private Date purchase_date;
 		private Integer employee_id;
 		
+		
+		// TRY TO MAPP
+//		@OneToOne (mappedBy = "employee", fetch = FetchType.EAGER)
+//		private Employee employee;
+//
+//		public Employee getEmployee() {
+//			return employee;
+//		}
+//
+//		public void setEmployee(Employee employee) {
+//			this.employee = employee;
+//		}
+		// TRY TO MAPP	
+
 		public CompanyCar() {
 
 		}

@@ -89,9 +89,11 @@ public class ApplicationGUI {
 		hireDate.setCellValueFactory(new PropertyValueFactory<Employee, Date>("hire_date"));
 		hireDate.setMinWidth(50);
 
-		TableColumn<Employee, Integer> departmentId = new TableColumn<Employee, Integer>("Department ID");
-		departmentId.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("department_id"));
-		departmentId.setMinWidth(100);
+		TableColumn<Employee, Integer> departmentName = new TableColumn<Employee, Integer>("Department ID");
+		departmentName.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("department_id"));
+		departmentName.setMinWidth(100);
+		
+		
 
 		tableColumns = new ArrayList<>();
 
@@ -99,7 +101,7 @@ public class ApplicationGUI {
 		tableColumns.add(lname);
 		tableColumns.add(salary);
 		tableColumns.add(hireDate);
-		tableColumns.add(departmentId);
+		tableColumns.add(departmentName);
 
 		centerTable.getColumns().addAll(tableColumns);
 	}

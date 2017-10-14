@@ -77,6 +77,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
 		List<Employee> employees = employeeIO.read();
 		
 		for (Employee employee : employees ) {
+			//System.out.println(employee.getCompanyCar().getReg_nr());
 			data.add(employee);
 		}
 		return data;

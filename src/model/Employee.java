@@ -3,11 +3,16 @@ package model;
 import java.sql.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity(name = "employee")
 public class Employee {
@@ -33,10 +38,37 @@ public class Employee {
 	@ManyToOne(optional = false)
 	private Department department;
 	
+	
+	
+	
+	
+	//TRY TO MAPP
+//	@OneToOne(fetch=FetchType.EAGER, orphanRemoval = true)
+//	@Fetch(FetchMode.JOIN)
+//	@JoinColumn(name = "employee_id", insertable = false, updatable = false, 	unique = true, nullable = false)
+//	private CompanyCar companyCar;
+//	
+//	public CompanyCar getCompanyCar() {
+//		return companyCar;
+//	}
+//
+//	public void setCompanyCar(CompanyCar companyCar) {
+//		this.companyCar = companyCar;
+//	}
+	//TRY TO MAPP
+	
+	
+	
+	
+	
+	
+	
 	public Employee() {
 		
 	}
 	
+
+
 	public Employee(String fname, String lname, Integer salary, Date hire_date, Integer department_id) {
 		this.fname = fname;
 		this.lname = lname;
