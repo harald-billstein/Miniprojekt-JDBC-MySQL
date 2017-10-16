@@ -62,30 +62,9 @@ public class TheFirmController implements EventHandler<ActionEvent> {
         break;
       case "MainMenuEditButton":
         break;
-      case "SearchPopupConfirmButton": List<Employee> employees =
-          employeeIO.seachEmployeeName(popupSearchEmployee.getEmployeeNameInput());
-          applicationGUI.getCenterTable().setItems(getSeachedEmployees(employees));
+      case "SearchPopupConfirmButton": doEmployeeSearch();
         break;
     }
-
-//    if (button.getText().equals("Search")) {
-//
-//      createSearchEmployeePopup();
-//
-//				System.out.println(button.getText());
-//				List<Employee> employees = employeeIO.seachEmployeeName("we");
-//				applicationGUI.getCenterTable().setItems(getSeachedEmployees(employees));
-//
-//    } else if (button.getText().equals("Add")) {
-//      System.out.println(button.getText());
-//    } else if (button.getText().equals("Remove")) {
-//      System.out.println(button.getText());
-//    } else if (button.getText().equals("Edit")) {
-//      System.out.println(button.getText());
-//    }
-//    else if (button.getId().equals("PopupSearchButton")) {
-//      System.out.println("PopupSearchButton pressed");
-//    }
   }
 
   public void setGui(ApplicationGUI applicationGUI) {
@@ -111,10 +90,21 @@ public class TheFirmController implements EventHandler<ActionEvent> {
     return data;
   }
 
-  public void createSearchEmployeePopup() {
+  private void createSearchEmployeePopup() {
     popupSearchEmployee = new PopupSearchEmployee(applicationGUI.getPrimaryStage());
     popupSearchEmployee.setObserver(this);
     popupSearchEmployee.createPopupSearchEmployeeWindow();
+  }
+
+  private void doEmployeeSearch() {
+    if(popupSearchEmployee.getEmployeeNameInput().length() > 0) {
+      List<Employee> employees =
+          employeeIO.seachEmployeeName(popupSearchEmployee.getEmployeeNameInput());
+      applicationGUI.getCenterTable().setItems(getSeachedEmployees(employees));
+      popupSearchEmployee.closePopup();
+    }
+    else
+      popupSearchEmployee.toggleErrorLabelText();
   }
 
 }

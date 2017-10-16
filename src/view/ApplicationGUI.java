@@ -32,6 +32,8 @@ public class ApplicationGUI {
   private ArrayList<Button> buttons;
   private EventHandler<ActionEvent> event;
   private Stage primaryStage;
+  private final static int applicationWindowWidth = 1000;
+  private final static int applicationWwindowHeight = 300;
 
   public ArrayList<Button> getButtons() {
     return buttons;
@@ -150,7 +152,7 @@ public class ApplicationGUI {
     setupLeftPane();
     setupMainPane();
 
-    Scene scene = new Scene(mainPane, 600, 300);
+    Scene scene = new Scene(mainPane, applicationWindowWidth, applicationWwindowHeight);
 
     primaryStage.setScene(scene);
     primaryStage.setTitle("The Firm");

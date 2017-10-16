@@ -17,31 +17,30 @@ public class PopupSearchEmployee extends VBox implements PopupInterface {
 
   private Stage popupStage;
   private Scene scene;
-  private Button searchButton;
-  private Button cancelButton;
-  private Label employeeNameLabel;
+  private Button searchButton, cancelButton;
+  private Label employeeNameLabel, errorLabel;
   private TextField employeeNameInput;
-  private HBox topBox;
-  private HBox bottomBox;
-  private final static int buttonWidth = 100;
-  private final static int buttonHeight = 50;
-  private final static String buttonFontSize = "-fx-font-size: 20";
+  private HBox topBox, middleBox, bottomBox;
   private EventHandler<ActionEvent> eventHandler;
+  private final static int buttonWidth = 100;
+  private final static int popupWidth = 600;
+  private final static int popupHeight = 200;
 
-  public PopupSearchEmployee(Stage window) {
+  public PopupSearchEmployee(Stage primaryStage) {
     popupStage = new Stage();
-    popupStage.initOwner(window);
+    popupStage.initOwner(primaryStage);
   }
 
   public void createPopupSearchEmployeeWindow() {
     createPopupResources();
-    createAbortButton();
+    createCancelButton();
     createConfirmButton();
     setupPopupLayout();
     setButtonLook();
     setupTopBox();
+    setupMiddleBox();
     setupBottomBox();
-    setPrefSize(600, 400);
+    setPrefSize(popupWidth, popupHeight);
     popupStage.setScene(scene);
     popupStage.initModality(Modality.APPLICATION_MODAL);
     popupStage.show();
@@ -50,20 +49,28 @@ public class PopupSearchEmployee extends VBox implements PopupInterface {
   private void createPopupResources() {
     scene = new Scene(this);
     employeeNameLabel = new Label("Search for employee");
+    errorLabel = new Label();
     employeeNameInput = new TextField("Name");
     topBox = new HBox();
+    middleBox = new HBox();
     bottomBox = new HBox();
   }
 
   //TODO: Change method name
   private void setupPopupLayout() {
-    getChildren().addAll(topBox, bottomBox);
+    getChildren().addAll(topBox, middleBox, bottomBox);
   }
 
   private void setupTopBox() {
     topBox.getChildren().addAll(employeeNameLabel, employeeNameInput);
-    topBox.setPadding(new Insets(25, 0, 25, 0));
+    topBox.setPadding(new Insets(20, 0, 20, 0));
     topBox.setAlignment(Pos.CENTER);
+  }
+
+  private void setupMiddleBox() {
+    middleBox.getChildren().add(errorLabel);
+    middleBox.setPadding(new Insets(0, 0, 20, 0));
+    middleBox.setAlignment(Pos.CENTER);
   }
 
   private void setupBottomBox() {
@@ -72,16 +79,9 @@ public class PopupSearchEmployee extends VBox implements PopupInterface {
   }
 
   private void setButtonLook() {
-    searchButton.setPrefSize(buttonWidth, buttonHeight);
-    cancelButton.setPrefSize(buttonWidth, buttonHeight);
-    searchButton.setStyle(buttonFontSize);
-    cancelButton.setStyle(buttonFontSize);
+    searchButton.setMinWidth(buttonWidth);
+    cancelButton.setMinWidth(buttonWidth);
   }
-
-//  private void setTextFieldsLook() {
-//    employeeNameLabel.setPrefSize();
-//    employeeNameInput.setStyle("-fx-font-size: 16");
-//  }
 
   public void setObserver(EventHandler<ActionEvent> eventHandler) {
     this.eventHandler = eventHandler;
@@ -93,10 +93,10 @@ public class PopupSearchEmployee extends VBox implements PopupInterface {
     searchButton.setOnAction(eventHandler);
   }
 
-  public void createAbortButton() {
+  public void createCancelButton() {
     cancelButton = new Button("Cancel");
     cancelButton.setId("SearchPopupCancelButton");
-    cancelButton.setOnAction((event -> closePopup()));
+    cancelButton.setOnAction((event -> popupStage.close()));
   }
 
   public void closePopup() {
@@ -105,5 +105,9 @@ public class PopupSearchEmployee extends VBox implements PopupInterface {
 
   public String getEmployeeNameInput() {
     return employeeNameInput.getText();
+  }
+
+  public void toggleErrorLabelText() {
+    errorLabel.setText("Error. Empty input");
   }
 }

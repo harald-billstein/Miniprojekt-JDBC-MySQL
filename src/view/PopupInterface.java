@@ -5,7 +5,7 @@ import javafx.event.EventHandler;
 
 public interface PopupInterface {
   void createConfirmButton();
-  void createAbortButton();
+  void createCancelButton();
   void setObserver(EventHandler<ActionEvent> eventHandler);
   void closePopup();
 }
