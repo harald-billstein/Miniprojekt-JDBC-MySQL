@@ -28,7 +28,5 @@ public class Main extends Application {
 		applicationGUI.setPrimaryStage(primaryStage);
 		applicationGUI.start();
 		applicationGUI.getCenterTable().setItems(theFirmController.getEmployees());
-//		PopupSearchEmployee popupSearchEmployee = new PopupSearchEmployee(primaryStage);
-//		popupSearchEmployee.createPopupSearchEmployeeWindow();
 	}
 }

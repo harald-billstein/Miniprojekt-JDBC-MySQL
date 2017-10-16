@@ -32,7 +32,6 @@ public class ApplicationGUI {
   private ArrayList<Button> buttons;
   private EventHandler<ActionEvent> event;
   private Stage primaryStage;
-  private PopupSearchEmployee popupSearchEmployee;
 
   public ArrayList<Button> getButtons() {
     return buttons;
@@ -123,9 +122,13 @@ public class ApplicationGUI {
     System.out.println("setup buttons");
 
     Button search = new Button("Search");
+    search.setId("MainMenuSearchButton");
     Button add = new Button("Add");
+    add.setId("MainMenuAddButton");
     Button remove = new Button("Remove");
+    remove.setId("MainMenuRemoveButton");
     Button edit = new Button("Edit");
+    edit.setId("MainMenuEditButton");
 
     buttons = new ArrayList<>();
     buttons.add(search);
@@ -158,12 +161,12 @@ public class ApplicationGUI {
     this.primaryStage = primaryStage;
   }
 
+  public Stage getPrimaryStage() {
+    return this.primaryStage;
+  }
+
   public void setObserver(EventHandler<ActionEvent> event) {
     this.event = event;
   }
 
-  public void createSearchEmployeePopup() {
-    popupSearchEmployee = new PopupSearchEmployee(primaryStage);
-    popupSearchEmployee.createPopupSearchEmployeeWindow();
-  }
 }

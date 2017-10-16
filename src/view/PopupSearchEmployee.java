@@ -1,5 +1,7 @@
 package view;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,10 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-/**
- * Created by CRL on 2017-10-13.
- */
-public class PopupSearchEmployee extends VBox {
+public class PopupSearchEmployee extends VBox implements PopupInterface {
 
   private Stage popupStage;
   private Scene scene;
@@ -27,6 +26,7 @@ public class PopupSearchEmployee extends VBox {
   private final static int buttonWidth = 100;
   private final static int buttonHeight = 50;
   private final static String buttonFontSize = "-fx-font-size: 20";
+  private EventHandler<ActionEvent> eventHandler;
 
   public PopupSearchEmployee(Stage window) {
     popupStage = new Stage();
@@ -35,6 +35,8 @@ public class PopupSearchEmployee extends VBox {
 
   public void createPopupSearchEmployeeWindow() {
     createPopupResources();
+    createAbortButton();
+    createConfirmButton();
     setupPopupLayout();
     setButtonLook();
     setupTopBox();
@@ -47,8 +49,6 @@ public class PopupSearchEmployee extends VBox {
 
   private void createPopupResources() {
     scene = new Scene(this);
-    searchButton = new Button("Search");
-    cancelButton = new Button("Cancel");
     employeeNameLabel = new Label("Search for employee");
     employeeNameInput = new TextField("Name");
     topBox = new HBox();
@@ -78,13 +78,32 @@ public class PopupSearchEmployee extends VBox {
     cancelButton.setStyle(buttonFontSize);
   }
 
-  private void setTextFieldsLook() {
+//  private void setTextFieldsLook() {
 //    employeeNameLabel.setPrefSize();
-    employeeNameInput.setStyle("-fx-font-size: 16");
+//    employeeNameInput.setStyle("-fx-font-size: 16");
+//  }
+
+  public void setObserver(EventHandler<ActionEvent> eventHandler) {
+    this.eventHandler = eventHandler;
   }
 
-  public void closeSearchEmployeePopup() {
+  public void createConfirmButton() {
+    searchButton = new Button("Search");
+    searchButton.setId("SearchPopupConfirmButton");
+    searchButton.setOnAction(eventHandler);
+  }
+
+  public void createAbortButton() {
+    cancelButton = new Button("Cancel");
+    cancelButton.setId("SearchPopupCancelButton");
+    cancelButton.setOnAction((event -> closePopup()));
+  }
+
+  public void closePopup() {
     popupStage.close();
   }
 
+  public String getEmployeeNameInput() {
+    return employeeNameInput.getText();
+  }
 }

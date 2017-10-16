@@ -6,7 +6,6 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import model.CompanyCar;
@@ -23,6 +22,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
   private CompanyCarIO companyCarIO;
   private DepartmentIO departmentIO;
   private final ObservableList<Employee> data = FXCollections.observableArrayList();
+  private PopupSearchEmployee popupSearchEmployee;
 
   public TheFirmController() {
   }
@@ -53,21 +53,39 @@ public class TheFirmController implements EventHandler<ActionEvent> {
   public void handle(ActionEvent event) {
     Button button = (Button) event.getSource();
 
-    if (button.getText().equals("Search")) {
+    switch (button.getId()) {
+      case "MainMenuSearchButton": createSearchEmployeePopup();
+        break;
+      case "MainMenuAddButton":
+        break;
+      case "MainMenuRemoveButton":
+        break;
+      case "MainMenuEditButton":
+        break;
+      case "SearchPopupConfirmButton": List<Employee> employees =
+          employeeIO.seachEmployeeName(popupSearchEmployee.getEmployeeNameInput());
+          applicationGUI.getCenterTable().setItems(getSeachedEmployees(employees));
+        break;
+    }
 
-      applicationGUI.createSearchEmployeePopup();
-
+//    if (button.getText().equals("Search")) {
+//
+//      createSearchEmployeePopup();
+//
 //				System.out.println(button.getText());
 //				List<Employee> employees = employeeIO.seachEmployeeName("we");
 //				applicationGUI.getCenterTable().setItems(getSeachedEmployees(employees));
-
-    } else if (button.getText().equals("Add")) {
-      System.out.println(button.getText());
-    } else if (button.getText().equals("Remove")) {
-      System.out.println(button.getText());
-    } else if (button.getText().equals("Edit")) {
-      System.out.println(button.getText());
-    }
+//
+//    } else if (button.getText().equals("Add")) {
+//      System.out.println(button.getText());
+//    } else if (button.getText().equals("Remove")) {
+//      System.out.println(button.getText());
+//    } else if (button.getText().equals("Edit")) {
+//      System.out.println(button.getText());
+//    }
+//    else if (button.getId().equals("PopupSearchButton")) {
+//      System.out.println("PopupSearchButton pressed");
+//    }
   }
 
   public void setGui(ApplicationGUI applicationGUI) {
@@ -92,5 +110,12 @@ public class TheFirmController implements EventHandler<ActionEvent> {
     }
     return data;
   }
+
+  public void createSearchEmployeePopup() {
+    popupSearchEmployee = new PopupSearchEmployee(applicationGUI.getPrimaryStage());
+    popupSearchEmployee.setObserver(this);
+    popupSearchEmployee.createPopupSearchEmployeeWindow();
+  }
+
 }
  
