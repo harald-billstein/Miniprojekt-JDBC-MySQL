@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity(name = "company_car")
@@ -23,16 +24,17 @@ import javax.persistence.OneToOne;
 		
 		
 		// TRY TO MAPP
-//		@OneToOne (mappedBy = "employee", fetch = FetchType.EAGER)
-//		private Employee employee;
-//
-//		public Employee getEmployee() {
-//			return employee;
-//		}
-//
-//		public void setEmployee(Employee employee) {
-//			this.employee = employee;
-//		}
+		@OneToOne()
+		@JoinColumn(name = "employee_id", insertable = false, updatable = false)
+		private Employee employee;
+
+		public Employee getEmployee() {
+			return employee;
+		}
+
+		public void setEmployee(Employee employee) {
+			this.employee = employee;
+		}
 		// TRY TO MAPP	
 
 		public CompanyCar() {

@@ -11,9 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 @Entity(name = "employee")
 public class Employee {
 	
@@ -43,18 +40,16 @@ public class Employee {
 	
 	
 	//TRY TO MAPP
-//	@OneToOne(fetch=FetchType.EAGER, orphanRemoval = true)
-//	@Fetch(FetchMode.JOIN)
-//	@JoinColumn(name = "employee_id", insertable = false, updatable = false, 	unique = true, nullable = false)
-//	private CompanyCar companyCar;
-//	
-//	public CompanyCar getCompanyCar() {
-//		return companyCar;
-//	}
-//
-//	public void setCompanyCar(CompanyCar companyCar) {
-//		this.companyCar = companyCar;
-//	}
+	@OneToOne(mappedBy = "employee")
+	private CompanyCar companyCar;
+	
+	public CompanyCar getCompanyCar() {
+		return companyCar;
+	}
+
+	public void setCompanyCar(CompanyCar companyCar) {
+		this.companyCar = companyCar;
+	}
 	//TRY TO MAPP
 	
 	
