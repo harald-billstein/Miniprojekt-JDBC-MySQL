@@ -65,6 +65,4 @@ public class Department {
 		this.phone_number = phone_number;
 	}
 	
-	
-
 }

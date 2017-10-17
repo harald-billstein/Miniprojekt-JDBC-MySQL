@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import model.CompanyCar;
 import model.Department;
 import model.Employee;
+import model.EmployeeObservable;
+import model.ToObservableList;
 import view.ApplicationGUI;
 
 public class TheFirmController implements EventHandler<ActionEvent> {
@@ -21,7 +23,8 @@ public class TheFirmController implements EventHandler<ActionEvent> {
 	private EmployeeIO employeeIO;
 	private CompanyCarIO companyCarIO;
 	private DepartmentIO departmentIO;
-	private final ObservableList<Employee> data = FXCollections.observableArrayList();
+	private ToObservableList toObservableList;
+	private ObservableList<EmployeeObservable> data = FXCollections.observableArrayList();
 
 	public TheFirmController() {
 	}
@@ -45,6 +48,9 @@ public class TheFirmController implements EventHandler<ActionEvent> {
 		employeeIO = new EmployeeIO(hibernateSessionManager);
 		companyCarIO = new CompanyCarIO(hibernateSessionManager);
 		departmentIO = new DepartmentIO(hibernateSessionManager);
+		
+		toObservableList = new ToObservableList();
+		
 	}
 	
 	
@@ -72,22 +78,15 @@ public class TheFirmController implements EventHandler<ActionEvent> {
 		this.applicationGUI = applicationGUI;
 	}
 
-	public ObservableList<Employee> getEmployees() {
+	public ObservableList<EmployeeObservable> getEmployees() {
 		data.clear();
-		List<Employee> employees = employeeIO.read();
-		
-		for (Employee employee : employees ) {
-			data.add(employee);
-		}
+		data = toObservableList.convertList(employeeIO.read());
 		return data;
 	}
 	
-	public ObservableList<Employee> getSeachedEmployees(List<Employee> employees) {
+	public ObservableList<EmployeeObservable> getSeachedEmployees(List<Employee> employees) {
 		data.clear();
-		
-		for (Employee employee : employees ) {
-			data.add(employee);
-		}
+		data = toObservableList.convertList(employees);
 		return data;
 	}
 }

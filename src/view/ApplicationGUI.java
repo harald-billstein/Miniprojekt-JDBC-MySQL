@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import controller.TheFirmController;
 import javafx.application.Application;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -13,20 +14,24 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import model.Department;
 import model.Employee;
+import model.EmployeeObservable;
 
 public class ApplicationGUI {
 
 	private BorderPane mainPane;
 	private HBox topPane;
 	private VBox leftPane;
-	private TableView<Employee> centerTable;
+	private TableView<EmployeeObservable> centerTable;
 	private VBox rightPane;
 	private HBox bottomPane;
 	private ArrayList<Button> buttons;
@@ -40,7 +45,6 @@ public class ApplicationGUI {
 	private ArrayList tableColumns;
 	private MenuBar menuBar;
 	private ArrayList<Menu> menus;
-
 
 	public void setupTopPane() {
 		System.out.println("setupTopPane");
@@ -69,42 +73,79 @@ public class ApplicationGUI {
 
 	public void setupCenterPane() {
 		System.out.println("setupCenterPane");
-		centerTable = new TableView<Employee>();
+		centerTable = new TableView<EmployeeObservable>();
 		centerTable.setEditable(true);
 
-		TableColumn<Employee, String> fname = new TableColumn<Employee, String>("First name");
-		fname.setCellValueFactory(new PropertyValueFactory<Employee, String>("fname"));
+		TableColumn<EmployeeObservable, String> fname = new TableColumn<>("First name");
+		fname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
 		fname.setMinWidth(50);
 
-		TableColumn<Employee, String> lname = new TableColumn<Employee, String>("Last name");
-		lname.setCellValueFactory(new PropertyValueFactory<Employee, String>("lname"));
+		TableColumn<EmployeeObservable, String> lname = new TableColumn<>("Last name");
+		lname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 		lname.setMinWidth(50);
 
-		TableColumn<Employee, Integer> salary = new TableColumn<Employee, Integer>("Salary");
-		salary.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("salary"));
+		TableColumn<EmployeeObservable, Integer> salary = new TableColumn<>("Salary");
+		salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
 		salary.setMinWidth(50);
 
 
-		TableColumn<Employee, Date> hireDate = new TableColumn<Employee, Date>("Hire date");
-		hireDate.setCellValueFactory(new PropertyValueFactory<Employee, Date>("hire_date"));
+		TableColumn<EmployeeObservable, Date> hireDate = new TableColumn<>("Hire date");
+		hireDate.setCellValueFactory(new PropertyValueFactory<>("hireDate"));
 		hireDate.setMinWidth(50);
-
-		TableColumn<Employee, Integer> departmentId = new TableColumn<Employee, Integer>("Department ID");
-		departmentId.setCellValueFactory(new PropertyValueFactory<Employee, Integer>("department_id"));
-		departmentId.setMinWidth(100);
-
+		
+		TableColumn<EmployeeObservable, String> departmentName = new TableColumn<>("Department name");
+		departmentName.setCellValueFactory(new PropertyValueFactory<>("departmentName"));
+		departmentName.setMinWidth(50);
+		
+		TableColumn<EmployeeObservable, Integer> departmentRent = new TableColumn<>("Department rent");
+		departmentRent.setCellValueFactory(new PropertyValueFactory<>("departmentRent"));
+		departmentRent.setMinWidth(100);
+		
+		TableColumn<EmployeeObservable, String> departmentPhonenumber = new TableColumn<>("Department phonenumber");
+		departmentPhonenumber.setCellValueFactory(new PropertyValueFactory<>("departmentPhoneNumber"));
+		departmentPhonenumber.setMinWidth(50);
+		
+		TableColumn<EmployeeObservable, String> companyCarRegNr = new TableColumn<>("Car regnr.");
+		companyCarRegNr.setCellValueFactory(new PropertyValueFactory<>("companyCarRegNr"));
+		companyCarRegNr.setMinWidth(50);
+		
+		TableColumn<EmployeeObservable, String> companyCarBrand = new TableColumn<>("car brand");
+		companyCarBrand.setCellValueFactory(new PropertyValueFactory<>("companyCarBrand"));
+		companyCarBrand.setMinWidth(50);
+		
+		TableColumn<EmployeeObservable, String> companyCarModel = new TableColumn<>("car model");
+		companyCarModel.setCellValueFactory(new PropertyValueFactory<>("companyCarModel"));
+		companyCarModel.setMinWidth(50);
+		
+		TableColumn<EmployeeObservable, Integer> companyCarPurchasePrice = new TableColumn<>("Purchase price");
+		companyCarPurchasePrice.setCellValueFactory(new PropertyValueFactory<>("companyCarPurchasePrise"));
+		companyCarPurchasePrice.setMinWidth(50);
+		
+		TableColumn<EmployeeObservable, Date> companyCarPurchaseDate = new TableColumn<>("Purchase date");
+		companyCarPurchaseDate.setCellValueFactory(new PropertyValueFactory<>("companyCarPurchaseDate"));
+		companyCarPurchaseDate.setMinWidth(50);
+		
 		tableColumns = new ArrayList<>();
 
 		tableColumns.add(fname);
 		tableColumns.add(lname);
-		tableColumns.add(salary);
+		tableColumns.add(salary); 
 		tableColumns.add(hireDate);
-		tableColumns.add(departmentId);
+
+		tableColumns.add(departmentName);
+		tableColumns.add(departmentRent);
+		tableColumns.add(departmentPhonenumber);
+		
+		tableColumns.add(companyCarRegNr);
+		tableColumns.add(companyCarBrand);
+		tableColumns.add(companyCarModel);
+		tableColumns.add(companyCarPurchasePrice);
+		tableColumns.add(companyCarPurchaseDate);
 
 		centerTable.getColumns().addAll(tableColumns);
 	}
 
-	public TableView<Employee> getCenterTable() {
+	public TableView<EmployeeObservable> getCenterTable() {
 		return centerTable;
 	}
 
@@ -131,13 +172,12 @@ public class ApplicationGUI {
 		buttons.add(add);
 		buttons.add(remove);
 		buttons.add(edit);
-		
+
 		for (Button button : buttons) {
 			button.setMinWidth(100);
 			button.setOnAction(event);
 		}
 	}
-
 
 	public void start() {
 		System.out.println("GUI start");
@@ -146,7 +186,7 @@ public class ApplicationGUI {
 		setUpButtons();
 		setupLeftPane();
 		setupMainPane();
-		
+
 		Scene scene = new Scene(mainPane, 600, 300);
 
 		primaryStage.setScene(scene);
