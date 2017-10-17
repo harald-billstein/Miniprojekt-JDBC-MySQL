@@ -2,35 +2,26 @@ package model;
 
 public class DepartmentBuilder {
 
-	public String getName() {
-		return name;
-	}
+  private String departmentName;
+  private Integer departmentRent;
+  private String departmentPhoneNumber;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public DepartmentBuilder setDepartmentName(String departmentName) {
+    this.departmentName = departmentName;
+    return this;
+  }
 
-	public int getRent() {
-		return rent;
-	}
+  public DepartmentBuilder setDepartmentRent(Integer departmentRent) {
+    this.departmentRent = departmentRent;
+    return this;
+  }
 
-	public void setRent(int rent) {
-		this.rent = rent;
-	}
+  public DepartmentBuilder setDepartmentPhoneNumber(String departmentPhoneNumber) {
+    this.departmentPhoneNumber = departmentPhoneNumber;
+    return this;
+  }
 
-	public String getPhone_number() {
-		return phone_number;
-	}
-
-	public void setPhone_number(String phone_number) {
-		this.phone_number = phone_number;
-	}
-
-	private String name;
-	private int rent;
-	private String phone_number;
-	
-	public Department Build() {
-		return new Department(this.name, this.rent, this.phone_number);
-	}
+  public Department Build() {
+    return new Department(this.departmentName, this.departmentRent, this.departmentPhoneNumber);
+  }
 }

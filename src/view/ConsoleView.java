@@ -30,7 +30,7 @@ public class ConsoleView {
 			System.out.println("Empty result!");
 		} else {
 			for (Employee employee : employees) {
-				System.out.println(employee.getEmployee_id() + " " + employee.getFname() + " " + employee.getLname()
+				System.out.println(employee.getEmployeeId() + " " + employee.getFirstName() + " " + employee.getLastName()
 						+ " Salary: " + employee.getSalary());
 				try {
 					TimeUnit.MILLISECONDS.sleep(100);
@@ -51,7 +51,7 @@ public class ConsoleView {
 		} else {
 			for (Employee employee : employees) {
 				System.out.println(
-						employee.getFname() + " " + employee.getLname() + " " + employee.getDepartment().getName());
+						employee.getFirstName() + " " + employee.getLastName() + " " + employee.getDepartment().getDepartmentName());
 				try {
 					TimeUnit.MILLISECONDS.sleep(100);
 				} catch (InterruptedException e) {
@@ -69,7 +69,7 @@ public class ConsoleView {
 			System.out.println("Empty result!");
 		} else {
 			for (Department department : departments) {
-				System.out.println(department.getDepartment_id() + ". " + department.getName());
+				System.out.println(department.getDepartmentId() + ". " + department.getDepartmentName());
 				try {
 					TimeUnit.MILLISECONDS.sleep(100);
 				} catch (InterruptedException e) {
@@ -86,9 +86,9 @@ public class ConsoleView {
 			System.out.println("Empty result!");
 		} else {
 			for (CompanyCar companyCar : companyCars) {
-				System.out.printf("%-20s %-14s %-15s %-15s %n", "Employee_id: " + companyCar.getEmployee_id(),
-						" Reg: " + companyCar.getReg_nr().toUpperCase(), "Brand: " + companyCar.getBrand(),
-						" Model: " + companyCar.getModel());
+				System.out.printf("%-20s %-14s %-15s %-15s %n", "Employee_id: " + companyCar.getEmployeeId(),
+						" Reg: " + companyCar.getCarRegNr().toUpperCase(), "Brand: " + companyCar.getCarBrand(),
+						" Model: " + companyCar.getCarModel());
 				try {
 					TimeUnit.MILLISECONDS.sleep(100);
 				} catch (InterruptedException e) {
