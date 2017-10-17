@@ -5,7 +5,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -13,33 +12,28 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class PopupSearchEmployee extends AbstractPopup implements PopupInterface {
+public class SearchEmployeePopup extends AbstractPopup {
 
   private Stage popupStage;
   private Scene scene;
-  private Button searchButton;
   private Label employeeNameLabel, errorLabel;
   private TextField employeeNameInput;
   private HBox topBox, middleBox, bottomBox;
-  private EventHandler<ActionEvent> eventHandler;
   private VBox vBox;
-  private final static int buttonWidth = 100;
   private final static int popupWidth = 600;
   private final static int popupHeight = 200;
 
-  public PopupSearchEmployee(Stage primaryStage) {
-    super("Cancel", "PopupSearchEmployeeCancel");
+  public SearchEmployeePopup(Stage primaryStage, EventHandler<ActionEvent> eventHandler) {
+    super("PopupSearchEmployeeCancel", "Search",
+        "PopupSearchEmployeeConfirmButton", eventHandler);
     popupStage = new Stage();
     popupStage.initOwner(primaryStage);
   }
 
   public void createPopupSearchEmployeeWindow() {
     createPopupResources();
-    //createCancelButton();
     getCancelButton().setOnAction((event -> popupStage.close()));
-    createConfirmButton();
     setupPopupLayout();
-    setButtonLook();
     setupTopBox();
     setupMiddleBox();
     setupBottomBox();
@@ -78,24 +72,15 @@ public class PopupSearchEmployee extends AbstractPopup implements PopupInterface
   }
 
   private void setupBottomBox() {
-    bottomBox.getChildren().addAll(searchButton, getCancelButton());
+    bottomBox.getChildren().addAll(getConfirmButton(), getCancelButton());
     bottomBox.setAlignment(Pos.CENTER);
   }
 
-  private void setButtonLook() {
-    searchButton.setMinWidth(buttonWidth);
-    getCancelButton().setMinWidth(buttonWidth);
-  }
-
-  public void setObserver(EventHandler<ActionEvent> eventHandler) {
-    this.eventHandler = eventHandler;
-  }
-
-  public void createConfirmButton() {
-    searchButton = new Button("Search");
-    searchButton.setId("SearchPopupConfirmButton");
-    searchButton.setOnAction(eventHandler);
-  }
+//  public void createConfirmButton() {
+//    searchButton = new Button("Search");
+//    searchButton.setId("SearchPopupConfirmButton");
+//    searchButton.setOnAction(eventHandler);
+//  }
 
 /*  public void createCancelButton() {
     cancelButton = new Button("Cancel");

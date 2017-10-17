@@ -1,6 +1,7 @@
 package view;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,7 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class AddEmployeePopup extends VBox implements  PopupInterface {
+public class AddEmployeePopup extends AbstractPopup {
 
   private Stage popupStage;
   private Scene scene;
@@ -20,12 +21,12 @@ public class AddEmployeePopup extends VBox implements  PopupInterface {
   private TextField firstNameInput, lastNameInput, salaryInput, departmentIdInput;
   private VBox topBox;
   private HBox bottomBox;
-  private EventHandler<ActionEvent> eventHandler;
-  private final static int buttonWidth = 100;
   private final static int popupWidth = 600;
   private final static int popupHeight = 200;
 
-  public AddEmployeePopup(Stage primaryStage) {
+  public AddEmployeePopup(Stage primaryStage, EventHandler<ActionEvent> eventHandler) {
+    super("AddEmployeeCancelButton", "Add Employee",
+        "AddEmployeeConfirmButton", eventHandler);
     popupStage = new Stage();
     popupStage.initOwner(primaryStage);
   }
@@ -47,11 +48,6 @@ public class AddEmployeePopup extends VBox implements  PopupInterface {
 
   @Override
   public void createConfirmButton() {
-
-  }
-
-  @Override
-  public void createCancelButton() {
 
   }
 

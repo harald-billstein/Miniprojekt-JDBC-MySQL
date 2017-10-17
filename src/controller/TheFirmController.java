@@ -14,7 +14,7 @@ import model.Employee;
 import model.EmployeeObservable;
 import model.ToObservableList;
 import view.ApplicationGUI;
-import view.PopupSearchEmployee;
+import view.SearchEmployeePopup;
 
 public class TheFirmController implements EventHandler<ActionEvent> {
 
@@ -25,7 +25,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
   private DepartmentIO departmentIO;
   private ToObservableList toObservableList;
   private ObservableList<EmployeeObservable> data = FXCollections.observableArrayList();
-  private PopupSearchEmployee popupSearchEmployee;
+  private SearchEmployeePopup searchEmployeePopup;
 
   public TheFirmController() {
   }
@@ -69,7 +69,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
         break;
       case "MainMenuEditButton":
         break;
-      case "SearchPopupConfirmButton": doEmployeeSearch();
+      case "PopupSearchEmployeeConfirmButton": doEmployeeSearch();
         break;
     }
   }
@@ -91,20 +91,19 @@ public class TheFirmController implements EventHandler<ActionEvent> {
 	}
 
   private void createSearchEmployeePopup() {
-    popupSearchEmployee = new PopupSearchEmployee(applicationGUI.getPrimaryStage());
-    popupSearchEmployee.setObserver(this);
-    popupSearchEmployee.createPopupSearchEmployeeWindow();
+    searchEmployeePopup = new SearchEmployeePopup(applicationGUI.getPrimaryStage(), this);
+    searchEmployeePopup.createPopupSearchEmployeeWindow();
   }
 
   private void doEmployeeSearch() {
-    if(popupSearchEmployee.getEmployeeNameInput().length() > 0) {
+    if(searchEmployeePopup.getEmployeeNameInput().length() > 0) {
       List<Employee> employees =
-          employeeIO.seachEmployeeName(popupSearchEmployee.getEmployeeNameInput());
+          employeeIO.seachEmployeeName(searchEmployeePopup.getEmployeeNameInput());
       applicationGUI.getCenterTable().setItems(getSeachedEmployees(employees));
-      popupSearchEmployee.closePopup();
+      searchEmployeePopup.closePopup();
     }
     else
-      popupSearchEmployee.toggleErrorLabelText();
+      searchEmployeePopup.toggleErrorLabelText();
   }
 }
  
