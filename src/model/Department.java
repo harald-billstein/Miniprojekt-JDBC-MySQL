@@ -1,7 +1,7 @@
 package model;
 
 import java.util.Set;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,57 +12,71 @@ import javax.persistence.OneToMany;
 @Entity(name = "department")
 public class Department {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int department_id;
-	private String name;
-	private int rent;
-	private String phone_number;
-	
-	
-	@OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
-	private Set<Employee> employees;
-	
-	public Department() {
-		
-	}
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "department_id")
+  private Integer departmentId;
 
-	public Department(String name, int rent, String phone_number) {
-		this.name = name;
-		this.rent = rent;
-		this.phone_number = phone_number;
-	}
+  @Column(name = "name")
+  private String departmentName;
 
-	public int getDepartment_id() {
-		return department_id;
-	}
+  @Column(name = "rent")
+  private Integer departmentRent;
 
-	public void setDepartment_id(int department_id) {
-		this.department_id = department_id;
-	}
+  @Column(name = "phone_number")
+  private String departmentPhoneNumber;
 
-	public String getName() {
-		return name;
-	}
+  @OneToMany(mappedBy = "department", fetch = FetchType.EAGER)
+  private Set<Employee> employees;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public Department() {
 
-	public int getRent() {
-		return rent;
-	}
+  }
 
-	public void setRent(int rent) {
-		this.rent = rent;
-	}
+  public Department(String departmentName, Integer departmentRent, String departmentPhoneNumber) {
+    this.departmentName = departmentName;
+    this.departmentRent = departmentRent;
+    this.departmentPhoneNumber = departmentPhoneNumber;
+  }
 
-	public String getPhone_number() {
-		return phone_number;
-	}
+  public Integer getDepartmentId() {
+    return departmentId;
+  }
 
-	public void setPhone_number(String phone_number) {
-		this.phone_number = phone_number;
-	}
-	
+  public void setDepartmentId(Integer departmentId) {
+    this.departmentId = departmentId;
+  }
+
+  public String getDepartmentName() {
+    return departmentName;
+  }
+
+  public void setDepartmentName(String departmentName) {
+    this.departmentName = departmentName;
+  }
+
+  public Integer getDepartmentRent() {
+    return departmentRent;
+  }
+
+  public void setDepartmentRent(Integer departmentRent) {
+    this.departmentRent = departmentRent;
+  }
+
+  public String getDepartmentPhoneNumber() {
+    return departmentPhoneNumber;
+  }
+
+  public void setDepartmentPhoneNumber(String departmentPhoneNumber) {
+    this.departmentPhoneNumber = departmentPhoneNumber;
+  }
+
+  public Set<Employee> getEmployees() {
+    return employees;
+  }
+
+  public void setEmployees(Set<Employee> employees) {
+    this.employees = employees;
+  }
+
 }

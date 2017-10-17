@@ -3,38 +3,40 @@ package model;
 import java.sql.Date;
 
 public class EmployeeBuilder {
-	private String fname;
-	private String lname;
-	private Integer salary;
-	private Date hire_date;
-	private Integer department_id;
+  private String firstName;
+  private String lastName;
+  private Integer salary;
+  private Date hireDate;
+  private Integer departmentId;
 
-	public EmployeeBuilder setFname(String fname) {
-		this.fname = fname;
-		return this;
-	}
+  public EmployeeBuilder setFirstName(String firstName) {
+    this.firstName = firstName;
+    return this;
+  }
 
-	public EmployeeBuilder setLname(String lname) {
-		this.lname = lname;
-		return this;
-	}
+  public EmployeeBuilder setLastName(String lastName) {
+    this.lastName = lastName;
+    return this;
+  }
 
-	public EmployeeBuilder setSalary(Integer salary) {
-		this.salary = salary;
-		return this;
-	}
+  public EmployeeBuilder setSalary(Integer salary) {
+    this.salary = salary;
+    return this;
+  }
 
-	public EmployeeBuilder setHireDate(Date hire_date) {
-		this.hire_date = hire_date;
-		return this;
-	}
+  public EmployeeBuilder setHireDate(Date hireDate) {
+    this.hireDate = hireDate;
+    return this;
+  }
 
-	public EmployeeBuilder setDepartmentId(Integer department_id) {
-		this.department_id = department_id;
-		return this;
-	}
+  public EmployeeBuilder setDepartmentId(Integer departmentId) {
+    this.departmentId = departmentId;
+    return this;
+  }
 
-	public Employee build() {
-		return new Employee(this.fname, this.lname, this.salary, this.hire_date, this.department_id);
-	}
+  public Employee build() {
+    return new Employee(this.firstName, this.lastName, this.salary, this.hireDate,
+        this.departmentId);
+  }
+  
 }

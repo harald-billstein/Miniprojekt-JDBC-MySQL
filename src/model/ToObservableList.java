@@ -14,30 +14,30 @@ public class ToObservableList {
     ObservableList<EmployeeObservable> employeeObservableList = FXCollections.observableArrayList();
 
     for (Employee employee : employess) {
-      EmployeeObservable employeeObservable = new EmployeeObservable();
-      employeeObservable.setFirstName(employee.getFname());
-      employeeObservable.setLastName(employee.getLname());
-      employeeObservable.setSalary(employee.getSalary());
-      employeeObservable.setHireDate(employee.getHire_date());
-      employeeObservable.setDepartmentName(employee.getDepartment().getName());
-      employeeObservable.setDepartmentRent(employee.getDepartment().getRent());
-      employeeObservable.setDepartmentPhoneNumber(employee.getDepartment().getPhone_number());
-      
+      EmployeeObservable employeeObs = new EmployeeObservable();
+      employeeObs.setFirstName(employee.getFirstName());
+      employeeObs.setLastName(employee.getLastName());
+      employeeObs.setSalary(employee.getSalary());
+      employeeObs.setHireDate(employee.getHireDate());
+      employeeObs.setDepartmentName(employee.getDepartment().getDepartmentName());
+      employeeObs.setDepartmentRent(employee.getDepartment().getDepartmentRent());
+      employeeObs.setDepartmentPhoneNumber(employee.getDepartment().getDepartmentPhoneNumber());
+
       if (employee.getCompanyCar() != null) {
-        employeeObservable.setCompanyCarRegNr(employee.getCompanyCar().getReg_nr());
-        employeeObservable.setCompanyCarBrand(employee.getCompanyCar().getBrand());
-        employeeObservable.setCompanyCarModel(employee.getCompanyCar().getModel());
-        employeeObservable.setCompanyCarPurchasePrise(employee.getCompanyCar().getPurchase_price());
-        employeeObservable.setCompanyCarPurchaseDate(employee.getCompanyCar().getPurchase_date());
+        employeeObs.setCompanyCarRegNr(employee.getCompanyCar().getCarRegNr());
+        employeeObs.setCompanyCarBrand(employee.getCompanyCar().getCarBrand());
+        employeeObs.setCompanyCarModel(employee.getCompanyCar().getCarModel());
+        employeeObs.setCompanyCarPurchasePrise(employee.getCompanyCar().getCarPurchasePrice());
+        employeeObs.setCompanyCarPurchaseDate(employee.getCompanyCar().getCarPurchaseDate());
       } else {
-        employeeObservable.setCompanyCarRegNr(null);
-        employeeObservable.setCompanyCarBrand(null);
-        employeeObservable.setCompanyCarModel(null);
-        employeeObservable.setCompanyCarPurchasePrise(null);
-        employeeObservable.setCompanyCarPurchaseDate(null);
+        employeeObs.setCompanyCarRegNr(null);
+        employeeObs.setCompanyCarBrand(null);
+        employeeObs.setCompanyCarModel(null);
+        employeeObs.setCompanyCarPurchasePrise(null);
+        employeeObs.setCompanyCarPurchaseDate(null);
       }
-      
-      employeeObservableList.add(employeeObservable);
+
+      employeeObservableList.add(employeeObs);
     }
     return employeeObservableList;
   }
