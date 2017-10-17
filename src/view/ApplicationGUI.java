@@ -31,7 +31,7 @@ public class ApplicationGUI {
   private BorderPane mainPane;
   private HBox topPane;
   private VBox leftPane;
-  private TableView<EmployeeObservable> centerTable;
+  private TableView<Employee> centerTable;
   private VBox rightPane;
   private HBox bottomPane;
   private ArrayList<Button> buttons;
