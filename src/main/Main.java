@@ -33,20 +33,20 @@ public class Main extends Application {
 //		theFirmController.start();
 //		ApplicationGUI applicationGUI = new ApplicationGUI();
 //		theFirmController.setGui(applicationGUI);
-//		
+//
 //		applicationGUI.setObserver(theFirmController);
 //		applicationGUI.setPrimaryStage(primaryStage);
 //		applicationGUI.start();
 //		applicationGUI.getCenterTable().setItems(theFirmController.getEmployees());
-		
 
-		
-		
-		
-		
-		
+
+
+
+
+
+
 		HibernateSessionManager hibernateSessionManager = null;
-		
+
 		List<Class<?>> clazzes = new ArrayList<Class<?>>();
 		clazzes.add(Employee.class);
 		clazzes.add(Department.class);
@@ -60,31 +60,31 @@ public class Main extends Application {
 		EmployeeIO employeeIO = new EmployeeIO(hibernateSessionManager);
 		CompanyCarIO companyCarIO = new CompanyCarIO(hibernateSessionManager);
 		DepartmentIO departmentIO = new DepartmentIO(hibernateSessionManager);
-		
-		List<Employee> employees = employeeIO.read(); 
+
+		List<Employee> employees = employeeIO.read();
 		List<CompanyCar> companyCar = companyCarIO.read();
 		List<Department> department = departmentIO.read();
-		
+
 		for (Employee employee: employees) {
 			System.out.print(employee.getFname() + " ");
 			System.out.print(employee.getDepartment().getName());
 			//System.out.println(employee.getCompanycar().brand());
 			System.out.println();
 		}
-		
-		
+
+
 		for (CompanyCar companyCars: companyCar) {
 			System.out.print(companyCars.getBrand() + " ");
 			System.out.print(companyCars.getModel());
 			System.out.println();
 		}
-		
 
-		
-		
-		
 
-		
-		
+
+
+
+
+
+
 	}
 }
