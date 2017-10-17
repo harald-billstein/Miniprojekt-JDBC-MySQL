@@ -24,62 +24,62 @@ public class Employee {
 	private Date hire_date;
 	private Integer department_id;
 	
-	@Transient
-	private String departmentName;
-	@Transient
-	private Integer departmentRent;
-	@Transient
-	private String departmentPhoneNumber;
-	@Transient
-	private String reg_nr;
-	@Transient
-	private String brand;
-	@Transient
-	private String model;
-	@Transient
-	private Integer purchase_price;
-	@Transient
-	private Date purchase_date;
+//	@Transient
+//	private String departmentName;
+//	@Transient
+//	private Integer departmentRent;
+//	@Transient
+//	private String departmentPhoneNumber;
+//	@Transient
+//	private String reg_nr;
+//	@Transient
+//	private String brand;
+//	@Transient
+//	private String model;
+//	@Transient
+//	private Integer purchase_price;
+//	@Transient
+//	private Date purchase_date;
 
-	public String getReg_nr() {
-		return reg_nr;
-	}
-
-	public void setReg_nr(String reg_nr) {
-		this.reg_nr = reg_nr;
-	}
-
-	public String getBrand() {
-		return brand;
-	}
-
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
-
-	public String getModel() {
-		return model;
-	}
-
-	public void setModel(String model) {
-		this.model = model;
-	}
-
-	public Integer getPurchase_price() {
-		return purchase_price;
-	}
-
-	public void setPurchase_price(Integer purchase_price) {
-		this.purchase_price = purchase_price;
-	}
-
-	public Date getPurchase_date() {
-		return purchase_date;
-	}
-
-	public void setPurchase_date(Date purchase_date) {
-		this.purchase_date = purchase_date;
-	}
+//	public String getReg_nr() {
+//		return reg_nr;
+//	}
+//
+//	public void setReg_nr(String reg_nr) {
+//		this.reg_nr = reg_nr;
+//	}
+//
+//	public String getBrand() {
+//		return brand;
+//	}
+//
+//	public void setBrand(String brand) {
+//		this.brand = brand;
+//	}
+//
+//	public String getModel() {
+//		return model;
+//	}
+//
+//	public void setModel(String model) {
+//		this.model = model;
+//	}
+//
+//	public Integer getPurchase_price() {
+//		return purchase_price;
+//	}
+//
+//	public void setPurchase_price(Integer purchase_price) {
+//		this.purchase_price = purchase_price;
+//	}
+//
+//	public Date getPurchase_date() {
+//		return purchase_date;
+//	}
+//
+//	public void setPurchase_date(Date purchase_date) {
+//		this.purchase_date = purchase_date;
+//	}
 
 	@JoinColumn(name = "department_id", insertable = false, updatable = false)
 	@ManyToOne(optional = false)
@@ -164,38 +164,38 @@ public class Employee {
 		this.department_id = department_id;
 	}
 	
-	public String getDepartmentName() {
-		return departmentName;
-	}
-
-	public Integer getDepartmentRent() {
-		return departmentRent;
-	}
-
-	public void setDepartmentRent(Integer departmentRent) {
-		this.departmentRent = departmentRent;
-	}
-
-	public String getDepartmentPhoneNumber() {
-		return departmentPhoneNumber;
-	}
-
-	public void setDepartmentPhoneNumber(String departmentPhoneNumber) {
-		this.departmentPhoneNumber = departmentPhoneNumber;
-	}
-
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
-	
-	public void setLocalVaraiblesFromSubclass() {
-		departmentName = department.getName();
-		departmentRent = department.getRent();
-		departmentPhoneNumber = department.getPhone_number();
-		reg_nr = companyCar.getReg_nr();
-		brand = companyCar.getBrand();
-		model = companyCar.getModel();
-		purchase_price = companyCar.getPurchase_price();
-		purchase_date = companyCar.getPurchase_date();
-	}
+//	public String getDepartmentName() {
+//		return departmentName;
+//	}
+//
+//	public Integer getDepartmentRent() {
+//		return departmentRent;
+//	}
+//
+//	public void setDepartmentRent(Integer departmentRent) {
+//		this.departmentRent = departmentRent;
+//	}
+//
+//	public String getDepartmentPhoneNumber() {
+//		return departmentPhoneNumber;
+//	}
+//
+//	public void setDepartmentPhoneNumber(String departmentPhoneNumber) {
+//		this.departmentPhoneNumber = departmentPhoneNumber;
+//	}
+//
+//	public void setDepartmentName(String departmentName) {
+//		this.departmentName = departmentName;
+//	}
+//	
+//	public void setLocalVaraiblesFromSubclass() {
+//		departmentName = department.getName();
+//		departmentRent = department.getRent();
+//		departmentPhoneNumber = department.getPhone_number();
+//		reg_nr = companyCar.getReg_nr();
+//		brand = companyCar.getBrand();
+//		model = companyCar.getModel();
+//		purchase_price = companyCar.getPurchase_price();
+//		purchase_date = companyCar.getPurchase_date();
+//	}
 }

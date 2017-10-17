@@ -24,13 +24,14 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.Department;
 import model.Employee;
+import model.EmployeeObservable;
 
 public class ApplicationGUI {
 
 	private BorderPane mainPane;
 	private HBox topPane;
 	private VBox leftPane;
-	private TableView<Employee> centerTable;
+	private TableView<EmployeeObservable> centerTable;
 	private VBox rightPane;
 	private HBox bottomPane;
 	private ArrayList<Button> buttons;
@@ -72,61 +73,56 @@ public class ApplicationGUI {
 
 	public void setupCenterPane() {
 		System.out.println("setupCenterPane");
-		centerTable = new TableView<Employee>();
+		centerTable = new TableView<EmployeeObservable>();
 		centerTable.setEditable(true);
 
-		TableColumn<Employee, String> fname = new TableColumn<>("First name");
-		fname.setCellValueFactory(new PropertyValueFactory<>("fname"));
+		TableColumn<EmployeeObservable, String> fname = new TableColumn<>("First name");
+		fname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
 		fname.setMinWidth(50);
 
-		TableColumn<Employee, String> lname = new TableColumn<>("Last name");
-		lname.setCellValueFactory(new PropertyValueFactory<>("lname"));
+		TableColumn<EmployeeObservable, String> lname = new TableColumn<>("Last name");
+		lname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 		lname.setMinWidth(50);
 
-		TableColumn<Employee, Integer> salary = new TableColumn<>("Salary");
+		TableColumn<EmployeeObservable, Integer> salary = new TableColumn<>("Salary");
 		salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
 		salary.setMinWidth(50);
 
 
-		TableColumn<Employee, Date> hireDate = new TableColumn<>("Hire date");
-		hireDate.setCellValueFactory(new PropertyValueFactory<>("hire_date"));
+		TableColumn<EmployeeObservable, Date> hireDate = new TableColumn<>("Hire date");
+		hireDate.setCellValueFactory(new PropertyValueFactory<>("hireDate"));
 		hireDate.setMinWidth(50);
 		
-		TableColumn<Employee, String> departmentName = new TableColumn<>("Department Name");
+		TableColumn<EmployeeObservable, String> departmentName = new TableColumn<>("Department name");
 		departmentName.setCellValueFactory(new PropertyValueFactory<>("departmentName"));
 		departmentName.setMinWidth(50);
 		
-		TableColumn<Employee, Integer> departmentRent = new TableColumn<>("Dep. Rent");
+		TableColumn<EmployeeObservable, Integer> departmentRent = new TableColumn<>("Department rent");
 		departmentRent.setCellValueFactory(new PropertyValueFactory<>("departmentRent"));
 		departmentRent.setMinWidth(100);
 		
-		TableColumn<Employee, String> departmentPhonenumber = new TableColumn<>("Dep. Phonenumber");
+		TableColumn<EmployeeObservable, String> departmentPhonenumber = new TableColumn<>("Department phonenumber");
 		departmentPhonenumber.setCellValueFactory(new PropertyValueFactory<>("departmentPhoneNumber"));
 		departmentPhonenumber.setMinWidth(50);
 		
-		
-		
-		
-		
-		TableColumn<Employee, String> companyCarRegNr = new TableColumn<>("Car regnr.");
-		companyCarRegNr.setCellValueFactory(new PropertyValueFactory<>("reg_nr"));
+		TableColumn<EmployeeObservable, String> companyCarRegNr = new TableColumn<>("Car regnr.");
+		companyCarRegNr.setCellValueFactory(new PropertyValueFactory<>("companyCarRegNr"));
 		companyCarRegNr.setMinWidth(50);
 		
-		
-		TableColumn<Employee, String> companyCarBrand = new TableColumn<>("car brand");
-		companyCarBrand.setCellValueFactory(new PropertyValueFactory<>("brand"));
+		TableColumn<EmployeeObservable, String> companyCarBrand = new TableColumn<>("car brand");
+		companyCarBrand.setCellValueFactory(new PropertyValueFactory<>("companyCarBrand"));
 		companyCarBrand.setMinWidth(50);
 		
-		TableColumn<Employee, String> companyCarModel = new TableColumn<>("car model");
-		companyCarModel.setCellValueFactory(new PropertyValueFactory<>("model"));
+		TableColumn<EmployeeObservable, String> companyCarModel = new TableColumn<>("car model");
+		companyCarModel.setCellValueFactory(new PropertyValueFactory<>("companyCarModel"));
 		companyCarModel.setMinWidth(50);
 		
-		TableColumn<Employee, Integer> companyCarPurchasePrice = new TableColumn<>("Purchase price");
-		companyCarPurchasePrice.setCellValueFactory(new PropertyValueFactory<>("purchase_price"));
+		TableColumn<EmployeeObservable, Integer> companyCarPurchasePrice = new TableColumn<>("Purchase price");
+		companyCarPurchasePrice.setCellValueFactory(new PropertyValueFactory<>("companyCarPurchasePrise"));
 		companyCarPurchasePrice.setMinWidth(50);
 		
-		TableColumn<Employee, Date> companyCarPurchaseDate = new TableColumn<>("Purchase date");
-		companyCarPurchaseDate.setCellValueFactory(new PropertyValueFactory<>("purchase_date"));
+		TableColumn<EmployeeObservable, Date> companyCarPurchaseDate = new TableColumn<>("Purchase date");
+		companyCarPurchaseDate.setCellValueFactory(new PropertyValueFactory<>("companyCarPurchaseDate"));
 		companyCarPurchaseDate.setMinWidth(50);
 		
 		tableColumns = new ArrayList<>();
@@ -149,7 +145,7 @@ public class ApplicationGUI {
 		centerTable.getColumns().addAll(tableColumns);
 	}
 
-	public TableView<Employee> getCenterTable() {
+	public TableView<EmployeeObservable> getCenterTable() {
 		return centerTable;
 	}
 
