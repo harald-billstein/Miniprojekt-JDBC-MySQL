@@ -11,6 +11,8 @@ import javafx.scene.control.Button;
 import model.CompanyCar;
 import model.Department;
 import model.Employee;
+import model.EmployeeObservable;
+import model.ToObservableList;
 import view.ApplicationGUI;
 import view.PopupSearchEmployee;
 
@@ -21,7 +23,8 @@ public class TheFirmController implements EventHandler<ActionEvent> {
   private EmployeeIO employeeIO;
   private CompanyCarIO companyCarIO;
   private DepartmentIO departmentIO;
-  private final ObservableList<Employee> data = FXCollections.observableArrayList();
+  private ToObservableList toObservableList;
+  private ObservableList<EmployeeObservable> data = FXCollections.observableArrayList();
   private PopupSearchEmployee popupSearchEmployee;
 
   public TheFirmController() {
@@ -42,12 +45,16 @@ public class TheFirmController implements EventHandler<ActionEvent> {
       hibernateSessionManager = new HibernateSessionManager(clazzes);
     } catch (Exception e) {
 
-    }
-    employeeIO = new EmployeeIO(hibernateSessionManager);
-    companyCarIO = new CompanyCarIO(hibernateSessionManager);
-    departmentIO = new DepartmentIO(hibernateSessionManager);
-  }
+		}
+		employeeIO = new EmployeeIO(hibernateSessionManager);
+		companyCarIO = new CompanyCarIO(hibernateSessionManager);
+		departmentIO = new DepartmentIO(hibernateSessionManager);
 
+		toObservableList = new ToObservableList();
+
+	}
+	
+	
 
   @Override
   public void handle(ActionEvent event) {
@@ -71,24 +78,17 @@ public class TheFirmController implements EventHandler<ActionEvent> {
     this.applicationGUI = applicationGUI;
   }
 
-  public ObservableList<Employee> getEmployees() {
-    data.clear();
-    List<Employee> employees = employeeIO.read();
+	public ObservableList<EmployeeObservable> getEmployees() {
+		data.clear();
+		data = toObservableList.convertList(employeeIO.read());
+		return data;
+	}
 
-    for (Employee employee : employees) {
-      data.add(employee);
-    }
-    return data;
-  }
-
-  public ObservableList<Employee> getSeachedEmployees(List<Employee> employees) {
-    data.clear();
-
-    for (Employee employee : employees) {
-      data.add(employee);
-    }
-    return data;
-  }
+	public ObservableList<EmployeeObservable> getSeachedEmployees(List<Employee> employees) {
+		data.clear();
+		data = toObservableList.convertList(employees);
+		return data;
+	}
 
   private void createSearchEmployeePopup() {
     popupSearchEmployee = new PopupSearchEmployee(applicationGUI.getPrimaryStage());
@@ -106,6 +106,5 @@ public class TheFirmController implements EventHandler<ActionEvent> {
     else
       popupSearchEmployee.toggleErrorLabelText();
   }
-
 }
  
