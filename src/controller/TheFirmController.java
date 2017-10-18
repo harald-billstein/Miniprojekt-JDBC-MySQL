@@ -100,6 +100,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
     if(popupSearchEmployee.getEmployeeNameInput().length() > 0) {
       List<Employee> employees =
           employeeIO.seachEmployeeName(popupSearchEmployee.getEmployeeNameInput());
+
       applicationGUI.getCenterTable().setItems(getSeachedEmployees(employees));
       popupSearchEmployee.closePopup();
     }

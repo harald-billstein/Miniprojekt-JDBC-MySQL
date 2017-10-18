@@ -30,12 +30,12 @@ public class EmployeeIO extends DatabaseIO<Employee> {
     Session session = getSession();
     session.beginTransaction();
 
-    String hql = "from employee e where e.fname LIKE :fname OR e.lname LIKE :lname";
+    String hql = "from employee e where e.firstName LIKE :firstName OR e.lastName LIKE :lastName";
     List<Employee> employee;
 
     try {
-      employee = session.createQuery(hql, Employee.class).setParameter("fname", "%" + name + "%")
-          .setParameter("lname", "%" + name + "%").list();
+      employee = session.createQuery(hql, Employee.class).setParameter("firstName", "%" + name + "%")
+          .setParameter("lastName", "%" + name + "%").list();
     } finally {
       session.close();
     }
