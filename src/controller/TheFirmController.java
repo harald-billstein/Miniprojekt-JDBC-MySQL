@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -11,10 +12,13 @@ import javafx.scene.control.Button;
 import model.CompanyCar;
 import model.Department;
 import model.Employee;
+import model.EmployeeBuilder;
 import model.EmployeeObservable;
+import model.Pair;
 import model.ToObservableList;
+import view.AddEmployeePopup;
 import view.ApplicationGUI;
-import view.PopupSearchEmployee;
+import view.SearchEmployeePopup;
 
 public class TheFirmController implements EventHandler<ActionEvent> {
 
@@ -25,7 +29,8 @@ public class TheFirmController implements EventHandler<ActionEvent> {
   private DepartmentIO departmentIO;
   private ToObservableList toObservableList;
   private ObservableList<EmployeeObservable> data = FXCollections.observableArrayList();
-  private PopupSearchEmployee popupSearchEmployee;
+  private SearchEmployeePopup searchEmployeePopup;
+  private AddEmployeePopup addEmployeePopup;
 
   public TheFirmController() {
   }
@@ -63,13 +68,15 @@ public class TheFirmController implements EventHandler<ActionEvent> {
     switch (button.getId()) {
       case "MainMenuSearchButton": createSearchEmployeePopup();
         break;
-      case "MainMenuAddButton":
+      case "MainMenuAddButton": createAddEmployeePopup();
         break;
       case "MainMenuRemoveButton":
         break;
       case "MainMenuEditButton":
         break;
-      case "SearchPopupConfirmButton": doEmployeeSearch();
+      case "PopupSearchEmployeeConfirmButton": doEmployeeSearch();
+        break;
+      case "AddEmployeeConfirmButton": addNewEmployee();
         break;
     }
   }
@@ -91,21 +98,38 @@ public class TheFirmController implements EventHandler<ActionEvent> {
 	}
 
   private void createSearchEmployeePopup() {
-    popupSearchEmployee = new PopupSearchEmployee(applicationGUI.getPrimaryStage());
-    popupSearchEmployee.setObserver(this);
-    popupSearchEmployee.createPopupSearchEmployeeWindow();
+    searchEmployeePopup = new SearchEmployeePopup(applicationGUI.getPrimaryStage(), this);
+    searchEmployeePopup.createSearchEmployeePopupWindow();
+  }
+
+  private void createAddEmployeePopup() {
+    addEmployeePopup = new AddEmployeePopup(applicationGUI.getPrimaryStage(), this);
+    addEmployeePopup.createAddEmployeePopup();
   }
 
   private void doEmployeeSearch() {
-    if(popupSearchEmployee.getEmployeeNameInput().length() > 0) {
+    if(searchEmployeePopup.getEmployeeNameInput().length() > 0) {
       List<Employee> employees =
-          employeeIO.seachEmployeeName(popupSearchEmployee.getEmployeeNameInput());
-
+          employeeIO.seachEmployeeName(searchEmployeePopup.getEmployeeNameInput());
       applicationGUI.getCenterTable().setItems(getSeachedEmployees(employees));
-      popupSearchEmployee.closePopup();
+      searchEmployeePopup.closePopup();
     }
     else
-      popupSearchEmployee.toggleErrorLabelText();
+      searchEmployeePopup.toggleErrorLabelText();
+  }
+
+  private void addNewEmployee() {
+    LinkedList<Pair> employeeData = addEmployeePopup.getEmployeeData();
+
+    Employee employee = new EmployeeBuilder()
+        .setFirstName(employeeData.pop().getValue())
+        .setLastName(employeeData.pop().getValue())
+        .setSalary(Integer.parseInt(employeeData.pop().getValue()))
+        .setDepartmentId(Integer.parseInt(employeeData.pop().getValue()))
+        .build();
+
+    employeeIO.create(employee);
+    addEmployeePopup.closePopup();
   }
 }
  
