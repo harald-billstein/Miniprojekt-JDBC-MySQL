@@ -4,12 +4,24 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Class converting a List of Employee to a list of EmployeeObservable. Making the list of employees
+ * compatible with the JavaFx TableView.
+ * 
+ * @author Harald & Cristoffer
+ *
+ */
 public class ToObservableList {
 
   public ToObservableList() {
 
   }
 
+  /**
+   * Converts a List of Employees to a list of employeeObservable.
+   * @param List of employees
+   * @return Observable list of observable employees
+   */
   public ObservableList<EmployeeObservable> convertList(List<Employee> employess) {
     ObservableList<EmployeeObservable> employeeObservableList = FXCollections.observableArrayList();
 
