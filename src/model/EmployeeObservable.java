@@ -2,6 +2,12 @@ package model;
 
 import java.sql.Date;
 
+/**
+ * Class designed to hold all variables presented in javaFx tableView.
+ * 
+ * @author Harald & Cristoffer
+ *
+ */
 public class EmployeeObservable {
 
   private String firstName;

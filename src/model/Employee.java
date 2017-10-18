@@ -10,13 +10,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+/**
+ * Class file used by Hibernete to fetch all info from database entity employee.
+ * 
+ * @author Harald & Christoffer
+ */
 @Entity(name = "employee")
 public class Employee {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "employee_id")
-  private int employeeId;
+  private Integer employeeId;
 
   @Column(name = "fname")
   private String firstName;
@@ -44,6 +49,9 @@ public class Employee {
 
   }
 
+  /**
+   * Constructor used by the EmployeeBuilder to create a employee object.
+   */
   public Employee(String firstName, String lastName, Integer salary, Date hireDate,
       Integer departmentId) {
     this.firstName = firstName;
@@ -57,7 +65,7 @@ public class Employee {
     return employeeId;
   }
 
-  public void setEmployeeId(int employeeId) {
+  public void setEmployeeId(Integer employeeId) {
     this.employeeId = employeeId;
   }
 
@@ -116,5 +124,5 @@ public class Employee {
   public void setCompanyCar(CompanyCar companyCar) {
     this.companyCar = companyCar;
   }
-  
+
 }

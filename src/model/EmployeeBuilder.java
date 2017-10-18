@@ -2,6 +2,11 @@ package model;
 
 import java.sql.Date;
 
+/**
+ * A builder class building employee objects.
+ * 
+ * @author Harald & Cristoffer
+ */
 public class EmployeeBuilder {
   private String firstName;
   private String lastName;
@@ -34,9 +39,14 @@ public class EmployeeBuilder {
     return this;
   }
 
+  /**
+   * Method takes all parameters from this class and sets them on the employee object.
+   * 
+   * @return a complete employee object.
+   */
   public Employee build() {
     return new Employee(this.firstName, this.lastName, this.salary, this.hireDate,
         this.departmentId);
   }
-  
+
 }

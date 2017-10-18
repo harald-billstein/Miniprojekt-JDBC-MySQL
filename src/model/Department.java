@@ -9,6 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+/**
+ * Class file used by Hibernete to fetch all info from database entity department.
+ * 
+ * @author Harald & Christoffer
+ */
 @Entity(name = "department")
 public class Department {
 
@@ -33,6 +38,9 @@ public class Department {
 
   }
 
+  /**
+   * Constructor used by the DepartmentBuilder to create a department object.
+   */
   public Department(String departmentName, Integer departmentRent, String departmentPhoneNumber) {
     this.departmentName = departmentName;
     this.departmentRent = departmentRent;

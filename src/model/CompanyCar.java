@@ -9,6 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+/**
+ * Class file used by Hibernete to fetch all info from database entity company_car.
+ * 
+ * @author Harald & Christoffer
+ */
 @Entity(name = "company_car")
 public class CompanyCar {
 
@@ -40,6 +45,9 @@ public class CompanyCar {
 
   }
 
+  /**
+   * Constructor used by the CompanyCarBuilder to create a companyCar object.
+   */
   public CompanyCar(String reg_nr, String brand, String model, Integer purchase_price,
       Date purchase_date, Integer employee_id) {
     super();
@@ -106,5 +114,5 @@ public class CompanyCar {
   public void setEmployee(Employee employee) {
     this.employee = employee;
   }
-  
+
 }
