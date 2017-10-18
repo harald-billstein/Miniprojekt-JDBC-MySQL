@@ -10,7 +10,6 @@ import controller.DatabaseInfoIO;
 import controller.DepartmentIO;
 import controller.EmployeeIO;
 import controller.HibernateSessionManager;
-import javassist.expr.NewArray;
 import model.*;
 import view.ConsoleView;
 
@@ -173,7 +172,7 @@ class TheFirm extends ConsoleView {
 
 		Employee employee = new Employee();
 		try {
-			employee.setEmployee_id(Integer.parseInt(employeeId));
+			employee.setEmployeeId(Integer.parseInt(employeeId));
 			employee.setSalary(Integer.parseInt(salary));
 			employeeIO.updateEmployee(employee);
 			System.out.println("Success!");
@@ -205,11 +204,12 @@ class TheFirm extends ConsoleView {
 		} while (!isParsable(departmentId));
 
 		Employee employee = new EmployeeBuilder()
-				.setFname(firstName)
-				.setLname(lastName)
-				.setSalary(Integer.parseInt(salary))
-				.setDepartmentId(Integer.parseInt(departmentId))
-				.build();
+		        .setFirstName(firstName)
+		        .setLastName(lastName)
+		        .setSalary(Integer.parseInt(salary))
+		        .setDepartmentId(Integer.parseInt(departmentId))
+		        .build();
+		    
 		try {
 			employeeIO.create(employee);
 
