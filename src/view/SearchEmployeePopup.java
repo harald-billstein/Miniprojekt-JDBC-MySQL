@@ -19,7 +19,7 @@ public class SearchEmployeePopup extends AbstractPopup {
   private Label employeeNameLabel, errorLabel;
   private TextField employeeNameInput;
   private HBox topBox, middleBox, bottomBox;
-  private VBox vBox;
+  private VBox mainBox;
   private final static int popupWidth = 600;
   private final static int popupHeight = 200;
 
@@ -30,63 +30,40 @@ public class SearchEmployeePopup extends AbstractPopup {
     popupStage.initOwner(primaryStage);
   }
 
-  public void createPopupSearchEmployeeWindow() {
+  public void createSearchEmployeePopupWindow() {
     createPopupResources();
     getCancelButton().setOnAction((event -> popupStage.close()));
     setupPopupLayout();
-    setupTopBox();
-    setupMiddleBox();
-    setupBottomBox();
-    vBox.setPrefSize(popupWidth, popupHeight);
+    setupAlignments();
+    mainBox.setPrefSize(popupWidth, popupHeight);
     popupStage.setScene(scene);
     popupStage.initModality(Modality.APPLICATION_MODAL);
     popupStage.show();
   }
 
   private void createPopupResources() {
-    vBox = new VBox();
-    scene = new Scene(vBox);
+    mainBox = new VBox();
+    scene = new Scene(mainBox);
     employeeNameLabel = new Label("Search for employee");
     errorLabel = new Label();
     employeeNameInput = new TextField("Name");
-    topBox = new HBox();
-    middleBox = new HBox();
-    bottomBox = new HBox();
+    topBox = new HBox(employeeNameLabel, employeeNameInput);
+    middleBox = new HBox(errorLabel);
+    bottomBox = new HBox(getConfirmButton(), getCancelButton());
   }
 
   //TODO: Change method name
   private void setupPopupLayout() {
-    vBox.getChildren().addAll(topBox, middleBox, bottomBox);
+    mainBox.getChildren().addAll(topBox, middleBox, bottomBox);
   }
 
-  private void setupTopBox() {
-    topBox.getChildren().addAll(employeeNameLabel, employeeNameInput);
+  private void setupAlignments() {
     topBox.setPadding(new Insets(20, 0, 20, 0));
     topBox.setAlignment(Pos.CENTER);
-  }
-
-  private void setupMiddleBox() {
-    middleBox.getChildren().add(errorLabel);
     middleBox.setPadding(new Insets(0, 0, 20, 0));
     middleBox.setAlignment(Pos.CENTER);
-  }
-
-  private void setupBottomBox() {
-    bottomBox.getChildren().addAll(getConfirmButton(), getCancelButton());
     bottomBox.setAlignment(Pos.CENTER);
   }
-
-//  public void createConfirmButton() {
-//    searchButton = new Button("Search");
-//    searchButton.setId("SearchPopupConfirmButton");
-//    searchButton.setOnAction(eventHandler);
-//  }
-
-/*  public void createCancelButton() {
-    cancelButton = new Button("Cancel");
-    cancelButton.setId("SearchPopupCancelButton");
-    cancelButton.setOnAction((event -> popupStage.close()));
-  }*/
 
   public void closePopup() {
     popupStage.close();

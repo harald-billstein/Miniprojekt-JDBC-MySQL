@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javafx.collections.FXCollections;
@@ -11,8 +12,11 @@ import javafx.scene.control.Button;
 import model.CompanyCar;
 import model.Department;
 import model.Employee;
+import model.EmployeeBuilder;
 import model.EmployeeObservable;
+import model.Pair;
 import model.ToObservableList;
+import view.AddEmployeePopup;
 import view.ApplicationGUI;
 import view.SearchEmployeePopup;
 
@@ -26,6 +30,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
   private ToObservableList toObservableList;
   private ObservableList<EmployeeObservable> data = FXCollections.observableArrayList();
   private SearchEmployeePopup searchEmployeePopup;
+  private AddEmployeePopup addEmployeePopup;
 
   public TheFirmController() {
   }
@@ -63,13 +68,15 @@ public class TheFirmController implements EventHandler<ActionEvent> {
     switch (button.getId()) {
       case "MainMenuSearchButton": createSearchEmployeePopup();
         break;
-      case "MainMenuAddButton":
+      case "MainMenuAddButton": createAddEmployeePopup();
         break;
       case "MainMenuRemoveButton":
         break;
       case "MainMenuEditButton":
         break;
       case "PopupSearchEmployeeConfirmButton": doEmployeeSearch();
+        break;
+      case "AddEmployeeConfirmButton": addNewEmployee();
         break;
     }
   }
@@ -92,7 +99,12 @@ public class TheFirmController implements EventHandler<ActionEvent> {
 
   private void createSearchEmployeePopup() {
     searchEmployeePopup = new SearchEmployeePopup(applicationGUI.getPrimaryStage(), this);
-    searchEmployeePopup.createPopupSearchEmployeeWindow();
+    searchEmployeePopup.createSearchEmployeePopupWindow();
+  }
+
+  private void createAddEmployeePopup() {
+    addEmployeePopup = new AddEmployeePopup(applicationGUI.getPrimaryStage(), this);
+    addEmployeePopup.createAddEmployeePopup();
   }
 
   private void doEmployeeSearch() {
@@ -104,6 +116,20 @@ public class TheFirmController implements EventHandler<ActionEvent> {
     }
     else
       searchEmployeePopup.toggleErrorLabelText();
+  }
+
+  private void addNewEmployee() {
+    LinkedList<Pair> employeeData = addEmployeePopup.getEmployeeData();
+
+    Employee employee = new EmployeeBuilder()
+        .setFirstName(employeeData.pop().getValue())
+        .setLastName(employeeData.pop().getValue())
+        .setSalary(Integer.parseInt(employeeData.pop().getValue()))
+        .setDepartmentId(Integer.parseInt(employeeData.pop().getValue()))
+        .build();
+
+    employeeIO.create(employee);
+    addEmployeePopup.closePopup();
   }
 }
  
