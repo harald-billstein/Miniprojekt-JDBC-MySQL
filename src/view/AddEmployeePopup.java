@@ -1,5 +1,6 @@
 package view;
 
+import java.lang.reflect.Array;
 import java.util.LinkedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -66,6 +67,14 @@ public class AddEmployeePopup extends AbstractPopup {
     inputBoxes[3].setPadding(new Insets(0, 0, 20, 0));
     mainBox.getChildren().addAll(errorLabel, buttonBox);
     buttonBox.setAlignment(Pos.CENTER);
+  }
+
+  public TextField[] getEmployeeDataArray() {
+    return employeeDataFields;
+  }
+
+  public Label getErrorLabel() {
+    return errorLabel;
   }
 
   public LinkedList<Pair> getEmployeeData() {

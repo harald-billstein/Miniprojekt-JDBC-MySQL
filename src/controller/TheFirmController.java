@@ -12,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import model.CompanyCar;
 import model.Department;
@@ -148,21 +147,32 @@ public class TheFirmController implements EventHandler<ActionEvent> {
           employeeIO.seachEmployeeName(searchEmployeePopup.getEmployeeNameInput());
       applicationGUI.getCenterTable().setItems(getSeachedEmployees(employees));
       searchEmployeePopup.closePopup();
-    } else
+    } else {
       searchEmployeePopup.getErrorLabel().setText("Error. Empty search string");
+    }
   }
 
   private void addNewEmployee() {
-    LinkedList<Pair> employeeData = addEmployeePopup.getEmployeeData();
 
-    Employee employee = new EmployeeBuilder().setFirstName(employeeData.pop().getValue())
-        .setLastName(employeeData.pop().getValue())
-        .setSalary(Integer.parseInt(employeeData.pop().getValue()))
-        .setDepartmentId(Integer.parseInt(employeeData.pop().getValue())).build();
+    //TODO: CHECK IF SALARY AND DEPARTMENT INPUT ARE INTEGERS
+    boolean addEmployee = true;
+    for (int i = 0; i < addEmployeePopup.getEmployeeDataArray().length; i++) {
+      if (addEmployeePopup.getEmployeeDataArray()[i].getText().isEmpty()) {
+        addEmployeePopup.getErrorLabel().setText("Error. One or more inputs are empty.");
+        addEmployee = false;
+      }
+    }
+    if (addEmployee) {
+      LinkedList<Pair> employeeData = addEmployeePopup.getEmployeeData();
+      Employee employee = new EmployeeBuilder().setFirstName(employeeData.pop().getValue())
+          .setLastName(employeeData.pop().getValue())
+          .setSalary(Integer.parseInt(employeeData.pop().getValue()))
+          .setDepartmentId(Integer.parseInt(employeeData.pop().getValue())).build();
 
-    employeeIO.create(employee);
-    addEmployeePopup.closePopup();
-    applicationGUI.getCenterTable().setItems(getEmployees());
+      employeeIO.create(employee);
+      addEmployeePopup.closePopup();
+      applicationGUI.getCenterTable().setItems(getEmployees());
+    }
   }
 
   public class Observers {
