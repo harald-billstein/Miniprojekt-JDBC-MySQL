@@ -27,6 +27,7 @@ public class ToObservableList {
 
     for (Employee employee : employess) {
       EmployeeObservable employeeObs = new EmployeeObservable();
+      employeeObs.setEmployeeId(employee.getEmployeeId());
       employeeObs.setFirstName(employee.getFirstName());
       employeeObs.setLastName(employee.getLastName());
       employeeObs.setSalary(employee.getSalary());
