@@ -178,8 +178,6 @@ public class TheFirmController implements EventHandler<ActionEvent> {
 
         TableView<EmployeeObservable> tableView = (TableView<EmployeeObservable>) object;
         selectedEmployee = tableView.getSelectionModel().getSelectedItem();
-
-
       }
     };
 
