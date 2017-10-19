@@ -164,6 +164,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
 
     employeeIO.create(employee);
     addEmployeePopup.closePopup();
+    applicationGUI.getCenterTable().setItems(getEmployees());
   }
   
   public class Observers {
