@@ -3,7 +3,9 @@ package view;
 import java.sql.Date;
 import java.util.ArrayList;
 import controller.TheFirmController;
+import controller.TheFirmController.Observers;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -38,7 +40,10 @@ public class ApplicationGUI {
   private HBox bottomPane;
   private ArrayList<Button> buttons;
   private EventHandler<ActionEvent> event;
-  private EventHandler<MouseEvent> mouseEvent;
+  //private EventHandler<MouseEvent> mouseEvent;
+  
+  private Observers observers;
+  
 
   private Stage primaryStage;
   private ArrayList tableColumns;
@@ -71,7 +76,7 @@ public class ApplicationGUI {
     System.out.println("setupCenterPane");
     centerTable = new TableView<EmployeeObservable>();
     centerTable.setEditable(true);
-    centerTable.setOnMouseClicked(mouseEvent);
+    centerTable.setOnMouseClicked(observers.getMouseEvent());
 
     TableColumn<EmployeeObservable, String> fname = new TableColumn<>("First name");
     fname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -197,6 +202,7 @@ public class ApplicationGUI {
     Scene scene = new Scene(mainPane, applicationWindowWidth, applicationWwindowHeight);
 
     primaryStage.setScene(scene);
+    primaryStage.setOnCloseRequest(observers.getWindowEvent());
     primaryStage.setTitle("The Firm");
     primaryStage.show();
   }
@@ -213,12 +219,17 @@ public class ApplicationGUI {
     return buttons;
   }
 
-  public void setObserver(EventHandler<ActionEvent> event) {
+  public void setEvent(EventHandler<ActionEvent> event) {
     this.event = event;
   }
-  
-  public void setMouseEvent(EventHandler<MouseEvent> mouseEvent) {
-    this.mouseEvent = mouseEvent;
+
+  public void setObservers(Observers observers) {
+    this.observers = observers;
+    
   }
+  
+
+  
+  
 
 }
