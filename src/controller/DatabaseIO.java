@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.swing.text.StyledEditorKit.BoldAction;
 import org.hibernate.Session;
 
 public abstract class DatabaseIO<T> {
@@ -44,7 +45,8 @@ public abstract class DatabaseIO<T> {
 		return objects;
 	}
 
-	public void delete(int id) {
+	public boolean delete(int id) {
+	    boolean success = false;
 		Session session = hibernateSessionManager.getSession();
 		session.beginTransaction();
 		
@@ -52,9 +54,11 @@ public abstract class DatabaseIO<T> {
 			T object = session.get(clazz, id);
 			session.delete(object);
 			session.getTransaction().commit();
+			success = true;
 		} finally {
 			session.close();
 		}
+		return success;
 	}
 
 	public void update(T object) {

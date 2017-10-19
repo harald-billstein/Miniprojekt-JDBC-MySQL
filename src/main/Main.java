@@ -35,6 +35,7 @@ public class Main extends Application {
 		theFirmController.setGui(applicationGUI);
 
 		applicationGUI.setObserver(theFirmController);
+		applicationGUI.setMouseEvent(theFirmController.getObservers().getMouseEvent());
 		applicationGUI.setPrimaryStage(primaryStage);
 		applicationGUI.start();
 		applicationGUI.getCenterTable().setItems(theFirmController.getEmployees());
