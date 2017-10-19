@@ -20,8 +20,8 @@ public class SearchEmployeePopup extends AbstractPopup {
   private TextField employeeNameInput;
   private HBox topBox, middleBox, bottomBox;
   private VBox mainBox;
-  private final static int popupWidth = 600;
-  private final static int popupHeight = 200;
+  private final static int PREFERRED_POPUP_WIDTH = 600;
+  private final static int PREFERRED_POPUP_HEIGHT = 200;
 
   public SearchEmployeePopup(Stage primaryStage, EventHandler<ActionEvent> eventHandler) {
     super("PopupSearchEmployeeCancel", "Search",
@@ -35,7 +35,7 @@ public class SearchEmployeePopup extends AbstractPopup {
     getCancelButton().setOnAction((event -> popupStage.close()));
     setupPopupLayout();
     setupAlignments();
-    mainBox.setPrefSize(popupWidth, popupHeight);
+    mainBox.setPrefSize(PREFERRED_POPUP_WIDTH, PREFERRED_POPUP_HEIGHT);
     popupStage.setScene(scene);
     popupStage.initModality(Modality.APPLICATION_MODAL);
     popupStage.show();
@@ -73,7 +73,7 @@ public class SearchEmployeePopup extends AbstractPopup {
     return employeeNameInput.getText();
   }
 
-  public void toggleErrorLabelText() {
-    errorLabel.setText("Error. Empty input");
+  public Label getErrorLabel() {
+    return errorLabel;
   }
 }

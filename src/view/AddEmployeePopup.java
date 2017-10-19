@@ -1,6 +1,5 @@
 package view;
 
-import java.lang.reflect.Array;
 import java.util.LinkedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,15 +18,15 @@ public class AddEmployeePopup extends AbstractPopup {
 
   private Stage popupStage;
   private Scene scene;
-  private Label firstNameLabel, lastNameLabel, salaryLabel, departmentIdLabel, errorLabel;
-//  private TextField firstNameInput, lastNameInput, salaryInput, departmentIdInput;
+  private Label errorLabel;
   private TextField[] employeeDataFields = new TextField[4];
   private String[] labelStrings = {"First name:", "Last name:", "Salary:", "Department ID:"};
   private Label[] labels = new Label[4];
+  private HBox[] inputBoxes = new HBox[4];
   private VBox mainBox;
-  private HBox firstNameBox, lastNameBox, salaryBox, departmentIdBox, buttonBox;
-  private final static int popupWidth = 600;
-  private final static int popupHeight = 200;
+  private HBox buttonBox;
+  private final static int PREFERRED_POPUP_WIDTH = 600;
+  private final static int PREFERRED_POPUP_HEIGHT = 200;
 
   public AddEmployeePopup(Stage primaryStage, EventHandler<ActionEvent> eventHandler) {
     super("AddEmployeeCancelButton", "Add Employee",
@@ -40,7 +39,7 @@ public class AddEmployeePopup extends AbstractPopup {
     createPopupResources();
     getCancelButton().setOnAction((event -> popupStage.close()));
     setupPopupLayout();
-    mainBox.setPrefSize(popupWidth, popupHeight);
+    mainBox.setPrefSize(PREFERRED_POPUP_WIDTH, PREFERRED_POPUP_HEIGHT);
     popupStage.setScene(scene);
     popupStage.initModality(Modality.APPLICATION_MODAL);
     popupStage.show();
@@ -52,33 +51,20 @@ public class AddEmployeePopup extends AbstractPopup {
     for (int i = 0; i < 4; i++) {
       labels[i] = new Label(labelStrings[i]);
       employeeDataFields[i] = new TextField(labelStrings[i]);
+      inputBoxes[i] = new HBox(labels[i], employeeDataFields[i]);
     }
-/*
-    firstNameLabel = new Label("First name:");
-    lastNameLabel = new Label("Last name:");
-    salaryLabel = new Label("Salary:");
-    departmentIdLabel = new Label("Department ID:");
-    firstNameInput = new TextField("Name");
-    lastNameInput = new TextField("Last name");
-    salaryInput = new TextField("Salary");
-    departmentIdInput = new TextField("Department ID");
-*/
-    firstNameBox = new HBox(labels[0], employeeDataFields[0]);
-    lastNameBox = new HBox(labels[1], employeeDataFields[1]);
-    salaryBox = new HBox(labels[2], employeeDataFields[2]);
-    departmentIdBox = new HBox(labels[3], employeeDataFields[3]);
     buttonBox = new HBox(getConfirmButton(), getCancelButton());
     errorLabel = new Label();
   }
 
   private void setupPopupLayout() {
-    mainBox.getChildren().addAll(firstNameBox, lastNameBox, salaryBox,
-        departmentIdBox, errorLabel, buttonBox);
-    departmentIdBox.setPadding(new Insets(0, 0, 20, 0));
-    firstNameBox.setAlignment(Pos.CENTER);
-    lastNameBox.setAlignment(Pos.CENTER);
-    salaryBox.setAlignment(Pos.CENTER);
-    departmentIdBox.setAlignment(Pos.CENTER);
+    for (HBox box : inputBoxes) {
+      box.setAlignment(Pos.CENTER);
+      mainBox.getChildren().add(box);
+    }
+    //Sets padding for department Id box
+    inputBoxes[3].setPadding(new Insets(0, 0, 20, 0));
+    mainBox.getChildren().addAll(errorLabel, buttonBox);
     buttonBox.setAlignment(Pos.CENTER);
   }
 

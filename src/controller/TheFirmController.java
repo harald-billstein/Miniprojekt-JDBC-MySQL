@@ -149,7 +149,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
       applicationGUI.getCenterTable().setItems(getSeachedEmployees(employees));
       searchEmployeePopup.closePopup();
     } else
-      searchEmployeePopup.toggleErrorLabelText();
+      searchEmployeePopup.getErrorLabel().setText("Error. Empty search string");
   }
 
   private void addNewEmployee() {
