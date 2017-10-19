@@ -1,14 +1,12 @@
 package view;
 
+import java.lang.reflect.Array;
 import java.util.LinkedList;
-import java.util.List;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -22,7 +20,10 @@ public class AddEmployeePopup extends AbstractPopup {
   private Stage popupStage;
   private Scene scene;
   private Label firstNameLabel, lastNameLabel, salaryLabel, departmentIdLabel, errorLabel;
-  private TextField firstNameInput, lastNameInput, salaryInput, departmentIdInput;
+//  private TextField firstNameInput, lastNameInput, salaryInput, departmentIdInput;
+  private TextField[] employeeDataFields = new TextField[4];
+  private String[] labelStrings = {"First name:", "Last name:", "Salary:", "Department ID:"};
+  private Label[] labels = new Label[4];
   private VBox mainBox;
   private HBox firstNameBox, lastNameBox, salaryBox, departmentIdBox, buttonBox;
   private final static int popupWidth = 600;
@@ -48,6 +49,11 @@ public class AddEmployeePopup extends AbstractPopup {
   private void createPopupResources() {
     mainBox = new VBox();
     scene = new Scene(mainBox);
+    for (int i = 0; i < 4; i++) {
+      labels[i] = new Label(labelStrings[i]);
+      employeeDataFields[i] = new TextField(labelStrings[i]);
+    }
+/*
     firstNameLabel = new Label("First name:");
     lastNameLabel = new Label("Last name:");
     salaryLabel = new Label("Salary:");
@@ -56,10 +62,11 @@ public class AddEmployeePopup extends AbstractPopup {
     lastNameInput = new TextField("Last name");
     salaryInput = new TextField("Salary");
     departmentIdInput = new TextField("Department ID");
-    firstNameBox = new HBox(firstNameLabel, firstNameInput);
-    lastNameBox = new HBox(lastNameLabel, lastNameInput);
-    salaryBox = new HBox(salaryLabel, salaryInput);
-    departmentIdBox = new HBox(departmentIdLabel, departmentIdInput);
+*/
+    firstNameBox = new HBox(labels[0], employeeDataFields[0]);
+    lastNameBox = new HBox(labels[1], employeeDataFields[1]);
+    salaryBox = new HBox(labels[2], employeeDataFields[2]);
+    departmentIdBox = new HBox(labels[3], employeeDataFields[3]);
     buttonBox = new HBox(getConfirmButton(), getCancelButton());
     errorLabel = new Label();
   }
@@ -76,10 +83,12 @@ public class AddEmployeePopup extends AbstractPopup {
   }
 
   public LinkedList<Pair> getEmployeeData() {
-    Pair firstPair = new Pair("First Name", firstNameInput.getText());
-    Pair secondPair = new Pair("Last Name", lastNameInput.getText());
-    Pair thirdPair = new Pair("Salary", salaryInput.getText());
-    Pair fourthPair = new Pair("Department ID", departmentIdInput.getText());
+
+    //TODO: CHANGE TO EMPLOYEE MODEL IN CONTROLLER
+    Pair firstPair = new Pair("First Name", employeeDataFields[0].getText());
+    Pair secondPair = new Pair("Last Name", employeeDataFields[1].getText());
+    Pair thirdPair = new Pair("Salary", employeeDataFields[2].getText());
+    Pair fourthPair = new Pair("Department ID", employeeDataFields[3].getText());
 
     LinkedList<Pair> employeeData = new LinkedList<>();
     employeeData.add(firstPair);
