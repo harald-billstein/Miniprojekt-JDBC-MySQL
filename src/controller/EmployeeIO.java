@@ -4,8 +4,18 @@ import java.util.List;
 import org.hibernate.Session;
 import model.Employee;
 
+/**
+ * Class handling input and output from database.
+ * 
+ * @author Harald & Cristoffer
+ */
 public class EmployeeIO extends DatabaseIO<Employee> {
 
+  /**
+   * Constructor setting an Object handling the connection to the database
+   * 
+   * @param hibernateSessionManager
+   */
   public EmployeeIO(HibernateSessionManager hibernateSessionManager) {
     super(hibernateSessionManager, Employee.class);
   }
@@ -34,15 +44,17 @@ public class EmployeeIO extends DatabaseIO<Employee> {
     List<Employee> employee;
 
     try {
-      employee = session.createQuery(hql, Employee.class).setParameter("firstName", "%" + name + "%")
-          .setParameter("lastName", "%" + name + "%").list();
+      employee =
+          session.createQuery(hql, Employee.class).setParameter("firstName", "%" + name + "%")
+              .setParameter("lastName", "%" + name + "%").list();
     } finally {
       session.close();
     }
     return employee;
   }
 
-  public void updateEmployee(Employee updatedEmployee) {
+  public boolean updateEmployee(Employee updatedEmployee) {
+    boolean success = false;
     Session session = getSession();
     session.beginTransaction();
 
@@ -65,9 +77,11 @@ public class EmployeeIO extends DatabaseIO<Employee> {
         employee.setSalary(updatedEmployee.getSalary());
       }
       session.getTransaction().commit();
+      success = true;
     } finally {
       session.close();
     }
+    return success;
   }
-  
+
 }
