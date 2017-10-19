@@ -10,6 +10,7 @@ import java.sql.Date;
  */
 public class EmployeeObservable {
 
+  private Integer employeeId;
   private String firstName;
   private String lastName;
   private Integer salary;
@@ -22,6 +23,14 @@ public class EmployeeObservable {
   private String companyCarModel;
   private Integer companyCarPurchasePrise;
   private Date companyCarPurchaseDate;
+
+  public Integer getEmployeeId() {
+    return employeeId;
+  }
+
+  public void setEmployeeId(Integer employeeId) {
+    this.employeeId = employeeId;
+  }
 
   public String getFirstName() {
     return firstName;

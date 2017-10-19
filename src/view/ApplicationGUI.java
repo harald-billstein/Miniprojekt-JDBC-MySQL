@@ -18,6 +18,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -37,6 +38,8 @@ public class ApplicationGUI {
   private HBox bottomPane;
   private ArrayList<Button> buttons;
   private EventHandler<ActionEvent> event;
+  private EventHandler<MouseEvent> mouseEvent;
+
   private Stage primaryStage;
   private ArrayList tableColumns;
   private final static int applicationWindowWidth = 1000;
@@ -68,10 +71,12 @@ public class ApplicationGUI {
     System.out.println("setupCenterPane");
     centerTable = new TableView<EmployeeObservable>();
     centerTable.setEditable(true);
+    centerTable.setOnMouseClicked(mouseEvent);
 
     TableColumn<EmployeeObservable, String> fname = new TableColumn<>("First name");
     fname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
     fname.setMinWidth(50);
+
 
     TableColumn<EmployeeObservable, String> lname = new TableColumn<>("Last name");
     lname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
@@ -210,6 +215,10 @@ public class ApplicationGUI {
 
   public void setObserver(EventHandler<ActionEvent> event) {
     this.event = event;
+  }
+  
+  public void setMouseEvent(EventHandler<MouseEvent> mouseEvent) {
+    this.mouseEvent = mouseEvent;
   }
 
 }
