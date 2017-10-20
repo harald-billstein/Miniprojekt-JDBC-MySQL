@@ -30,6 +30,7 @@ abstract class AbstractPopup implements PopupInterface {
   public void createCancelButton() {
     cancelButton = new Button("Cancel");
     cancelButton.setMinWidth(PREFERRED_BUTTON_WIDTH);
+    //TODO: REMOVE? MAYBE NOT USED
     cancelButton.setId(cancelButtonId);
   }
 

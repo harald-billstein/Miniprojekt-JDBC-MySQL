@@ -23,6 +23,7 @@ import model.EmployeeObservable;
 import model.ToObservableList;
 import view.AddEmployeePopup;
 import view.ApplicationGUI;
+import view.EditEmployeePopup;
 import view.SearchEmployeePopup;
 import view.WebPagePresenter;
 
@@ -37,6 +38,7 @@ public class TheFirmController {
   private ObservableList<EmployeeObservable> data;
   private SearchEmployeePopup searchEmployeePopup;
   private AddEmployeePopup addEmployeePopup;
+  private EditEmployeePopup editEmployeePopup;
   private Observers observers;
   private EmployeeObservable selectedEmployee;
   private Queue<Employee> employeeQueue;
@@ -112,6 +114,16 @@ public class TheFirmController {
     addEmployeePopup.createAddEmployeePopup();
   }
 
+  private void createEditEmployeePopup() {
+    editEmployeePopup = new EditEmployeePopup(applicationGUI.getPrimaryStage(), observers);
+    if (selectedEmployee != null) {
+      editEmployeePopup.createEditEmployeePopup();
+      editEmployeePopup.getEmployeeDataArray()[0].setText(selectedEmployee.getFirstName());
+      editEmployeePopup.getEmployeeDataArray()[1].setText(selectedEmployee.getLastName());
+      editEmployeePopup.getEmployeeDataArray()[2].setText("" + selectedEmployee.getSalary());
+    }
+  }
+
   private void doEmployeeSearch() {
     if (searchEmployeePopup.getEmployeeNameInput().length() > 0) {
       List<Employee> employees =
@@ -161,7 +173,6 @@ public class TheFirmController {
     }
 
     if (addEmployee) {
-//      LinkedList<Pair> employeeData = addEmployeePopup.getEmployeeData();
       TextField[] employeeData = addEmployeePopup.getEmployeeDataArray();
 
       Employee employee = new EmployeeBuilder()
@@ -178,6 +189,18 @@ public class TheFirmController {
       addEmployeePopup.closePopup();
       applicationGUI.getCenterTable().setItems(getEmployees());
     }
+  }
+
+  private void updateEmployee() {
+    Employee employee = new Employee();
+    employee.setEmployeeId(selectedEmployee.getEmployeeId());
+    employee.setFirstName(editEmployeePopup.getEmployeeDataArray()[0].getText());
+    employee.setLastName(editEmployeePopup.getEmployeeDataArray()[1].getText());
+    employee.setSalary(Integer.parseInt(editEmployeePopup.getEmployeeDataArray()[2].getText()));
+    employeeIO.updateEmployee(employee);
+    applicationGUI.getCenterTable().setItems(getEmployees());
+    selectedEmployee = null;
+    editEmployeePopup.closePopup();
   }
 
   public class Observers {
@@ -224,6 +247,7 @@ public class TheFirmController {
               removeEmployee();
               break;
             case "MainMenuEditButton":
+              createEditEmployeePopup();
               break;
             case "MainMenuResetButton":
               applicationGUI.getCenterTable().setItems(getEmployees());
@@ -231,8 +255,11 @@ public class TheFirmController {
             case "PopupSearchEmployeeConfirmButton":
               doEmployeeSearch();
               break;
-            case "AddEmployeeConfirmButton":
+            case "PopupAddEmployeeConfirmButton":
               addNewEmployee();
+              break;
+            case "PopupEditEmployeeConfirmButton":
+              updateEmployee();
               break;
           }
         } else if (object instanceof MenuItem) {
