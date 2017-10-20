@@ -159,12 +159,15 @@ public class ApplicationGUI {
     remove.setId("MainMenuRemoveButton");
     Button edit = new Button("Edit");
     edit.setId("MainMenuEditButton");
+    Button resetTableView = new Button("Reset table view");
+    resetTableView.setId("MainMenuResetButton");
 
     buttons = new ArrayList<>();
     buttons.add(search);
     buttons.add(add);
     buttons.add(remove);
     buttons.add(edit);
+    buttons.add(resetTableView);
 
     for (Button button : buttons) {
       button.setMinWidth(100);

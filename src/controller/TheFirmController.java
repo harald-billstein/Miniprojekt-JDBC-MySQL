@@ -76,13 +76,13 @@ public class TheFirmController {
 
   private void removeEmployee() {
 
-    Boolean success = employeeIO.delete(selectedEmployee.getEmployeeId());
+    if (selectedEmployee != null) {
+      Boolean success = employeeIO.delete(selectedEmployee.getEmployeeId());
 
-    if (success) {
-      System.out.println("successs!");
-      applicationGUI.getCenterTable().setItems(getEmployees());
+      if (success) {
+        applicationGUI.getCenterTable().setItems(getEmployees());
+      }
     }
-
     // TODO Error message in a label in main GUI?
   }
 
@@ -224,6 +224,9 @@ public class TheFirmController {
               removeEmployee();
               break;
             case "MainMenuEditButton":
+              break;
+            case "MainMenuResetButton":
+              applicationGUI.getCenterTable().setItems(getEmployees());
               break;
             case "PopupSearchEmployeeConfirmButton":
               doEmployeeSearch();
