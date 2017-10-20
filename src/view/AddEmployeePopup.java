@@ -53,6 +53,7 @@ public class AddEmployeePopup extends AbstractPopup {
       labels[i] = new Label(labelStrings[i]);
       employeeDataFields[i] = new TextField(labelStrings[i]);
       inputBoxes[i] = new HBox(labels[i], employeeDataFields[i]);
+      employeeDataFields[i].setId("Field" + i);
     }
     buttonBox = new HBox(getConfirmButton(), getCancelButton());
     errorLabel = new Label();
@@ -75,22 +76,6 @@ public class AddEmployeePopup extends AbstractPopup {
 
   public Label getErrorLabel() {
     return errorLabel;
-  }
-
-  public LinkedList<Pair> getEmployeeData() {
-
-    //TODO: CHANGE TO EMPLOYEE MODEL IN CONTROLLER
-    Pair firstPair = new Pair("First Name", employeeDataFields[0].getText());
-    Pair secondPair = new Pair("Last Name", employeeDataFields[1].getText());
-    Pair thirdPair = new Pair("Salary", employeeDataFields[2].getText());
-    Pair fourthPair = new Pair("Department ID", employeeDataFields[3].getText());
-
-    LinkedList<Pair> employeeData = new LinkedList<>();
-    employeeData.add(firstPair);
-    employeeData.add(secondPair);
-    employeeData.add(thirdPair);
-    employeeData.add(fourthPair);
-    return employeeData;
   }
 
   public void closePopup() {
