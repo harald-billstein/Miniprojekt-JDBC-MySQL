@@ -1,10 +1,6 @@
 package view;
 
 import controller.TheFirmController.Observers;
-import java.lang.reflect.Array;
-import java.util.LinkedList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,7 +10,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Pair;
 
 public class AddEmployeePopup extends AbstractPopup {
 
@@ -32,7 +27,7 @@ public class AddEmployeePopup extends AbstractPopup {
 
   public AddEmployeePopup(Stage primaryStage, Observers observers) {
     super("AddEmployeeCancelButton", "Add Employee",
-        "AddEmployeeConfirmButton", observers);
+        "PopupAddEmployeeConfirmButton", observers);
     popupStage = new Stage();
     popupStage.initOwner(primaryStage);
   }
@@ -50,7 +45,7 @@ public class AddEmployeePopup extends AbstractPopup {
   private void createPopupResources() {
     mainBox = new VBox();
     scene = new Scene(mainBox);
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < labels.length; i++) {
       labels[i] = new Label(labelStrings[i]);
       employeeDataFields[i] = new TextField(labelStrings[i]);
       inputBoxes[i] = new HBox(labels[i], employeeDataFields[i]);
