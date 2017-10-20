@@ -3,6 +3,7 @@ package controller;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,15 +12,14 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import model.CompanyCar;
 import model.Department;
 import model.Employee;
 import model.EmployeeBuilder;
 import model.EmployeeObservable;
-import model.Pair;
 import model.ToObservableList;
 import view.AddEmployeePopup;
 import view.ApplicationGUI;
@@ -39,6 +39,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
   private AddEmployeePopup addEmployeePopup;
   private Observers observers;
   private EmployeeObservable selectedEmployee;
+  private Queue<Employee> employeeQueue;
 
   public Observers getObservers() {
     return observers;
@@ -69,6 +70,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
     data = FXCollections.observableArrayList();
     toObservableList = new ToObservableList();
     observers = new Observers();
+    employeeQueue = new LinkedList<>();
   }
 
   @Override
@@ -148,21 +150,68 @@ public class TheFirmController implements EventHandler<ActionEvent> {
           employeeIO.seachEmployeeName(searchEmployeePopup.getEmployeeNameInput());
       applicationGUI.getCenterTable().setItems(getSeachedEmployees(employees));
       searchEmployeePopup.closePopup();
-    } else
-      searchEmployeePopup.toggleErrorLabelText();
+    } else {
+      searchEmployeePopup.getErrorLabel().setText("Error. Empty search string");
+    }
   }
 
   private void addNewEmployee() {
-    LinkedList<Pair> employeeData = addEmployeePopup.getEmployeeData();
 
-    Employee employee = new EmployeeBuilder().setFirstName(employeeData.pop().getValue())
-        .setLastName(employeeData.pop().getValue())
-        .setSalary(Integer.parseInt(employeeData.pop().getValue()))
-        .setDepartmentId(Integer.parseInt(employeeData.pop().getValue())).build();
 
-    employeeIO.create(employee);
-    addEmployeePopup.closePopup();
-    applicationGUI.getCenterTable().setItems(getEmployees());
+//TODO: Bryt ut all kod.
+    boolean addEmployee = true;
+    for (int i = 0; i < addEmployeePopup.getEmployeeDataArray().length; i++) {
+      String employeeInput = addEmployeePopup.getEmployeeDataArray()[i].getText().trim();
+      if (employeeInput.isEmpty()) {
+        addEmployeePopup.getErrorLabel().setText("Error. One or more inputs are empty.");
+        addEmployee = false;
+      }
+      if (addEmployeePopup.getEmployeeDataArray()[i].getId().equals("Field2") && addEmployee) {
+        try {
+          int parsedInput = Integer.parseInt(employeeInput);
+          if (parsedInput <= 0) {
+            addEmployeePopup.getErrorLabel().setText("Error. Salary must be larger than 0");
+            addEmployee = false;
+          }
+        } catch (Exception e) {
+          addEmployee = false;
+          addEmployeePopup.getErrorLabel().setText("Error. Salary must be a number");
+        }
+      }
+      if (addEmployeePopup.getEmployeeDataArray()[i].getId().equals("Field3") && addEmployee) {
+        try {
+          int parsedInput = Integer.parseInt(employeeInput);
+          List<Department> numberOfDepartments = departmentIO.read();
+          if (!(parsedInput > 0 && parsedInput <= numberOfDepartments.size())) {
+            addEmployeePopup.getErrorLabel().setText("Invalid input for Department ID");
+            addEmployee = false;
+          }
+        }
+        catch(Exception e) {
+          addEmployee = false;
+          addEmployeePopup.getErrorLabel().setText("Department ID must be a number");
+        }
+      }
+    }
+
+    if (addEmployee) {
+//      LinkedList<Pair> employeeData = addEmployeePopup.getEmployeeData();
+      TextField[] employeeData = addEmployeePopup.getEmployeeDataArray();
+
+      Employee employee = new EmployeeBuilder()
+          .setFirstName(employeeData[0].getText())
+          .setLastName(employeeData[1].getText())
+          .setSalary(Integer.parseInt(employeeData[2].getText()))
+          .setDepartmentId(Integer.parseInt(employeeData[3].getText()))
+          .build();
+      employeeQueue.add(employee);
+
+      while(!employeeQueue.isEmpty()) {
+        employeeIO.create(employeeQueue.poll());
+      }
+      addEmployeePopup.closePopup();
+      applicationGUI.getCenterTable().setItems(getEmployees());
+    }
   }
 
   public class Observers {
