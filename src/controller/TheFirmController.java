@@ -26,7 +26,7 @@ import view.ApplicationGUI;
 import view.SearchEmployeePopup;
 import view.WebPagePresenter;
 
-public class TheFirmController implements EventHandler<ActionEvent> {
+public class TheFirmController {
 
   private HibernateSessionManager hibernateSessionManager;
   private ApplicationGUI applicationGUI;
@@ -45,7 +45,8 @@ public class TheFirmController implements EventHandler<ActionEvent> {
     return observers;
   }
 
-  public TheFirmController() {}
+  public TheFirmController() {
+  }
 
   public void start() {
     kickstartControllerresources();
@@ -53,7 +54,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
 
   private void kickstartControllerresources() {
 
-    List<Class<?>> clazzes = new ArrayList<Class<?>>();
+    List<Class<?>> clazzes = new ArrayList<>();
     clazzes.add(Employee.class);
     clazzes.add(Department.class);
     clazzes.add(CompanyCar.class);
@@ -73,48 +74,15 @@ public class TheFirmController implements EventHandler<ActionEvent> {
     employeeQueue = new LinkedList<>();
   }
 
-  @Override
-  public void handle(ActionEvent event) {
-
-    Object object = event.getSource();
-
-    if (object instanceof Button) {
-      Button button = (Button) object;
-
-      switch (button.getId()) {
-        case "MainMenuSearchButton":
-          createSearchEmployeePopup();
-          break;
-        case "MainMenuAddButton":
-          createAddEmployeePopup();
-          break;
-        case "MainMenuRemoveButton":
-          removeEmployee();
-          break;
-        case "MainMenuEditButton":
-          break;
-        case "PopupSearchEmployeeConfirmButton":
-          doEmployeeSearch();
-          break;
-        case "AddEmployeeConfirmButton":
-          addNewEmployee();
-          break;
-      }
-    } else if (object instanceof MenuItem) {
-      WebPagePresenter webPagePresenter = new WebPagePresenter(applicationGUI.getPrimaryStage());
-      webPagePresenter.showGitPage();
-    }
-  }
-
   private void removeEmployee() {
 
-    Boolean success = employeeIO.delete(selectedEmployee.getEmployeeId());
+    if (selectedEmployee != null) {
+      Boolean success = employeeIO.delete(selectedEmployee.getEmployeeId());
 
-    if (success) {
-      System.out.println("successs!");
-      applicationGUI.getCenterTable().setItems(getEmployees());
+      if (success) {
+        applicationGUI.getCenterTable().setItems(getEmployees());
+      }
     }
-
     // TODO Error message in a label in main GUI?
   }
 
@@ -135,12 +103,12 @@ public class TheFirmController implements EventHandler<ActionEvent> {
   }
 
   private void createSearchEmployeePopup() {
-    searchEmployeePopup = new SearchEmployeePopup(applicationGUI.getPrimaryStage(), this);
+    searchEmployeePopup = new SearchEmployeePopup(applicationGUI.getPrimaryStage(), observers);
     searchEmployeePopup.createSearchEmployeePopupWindow();
   }
 
   private void createAddEmployeePopup() {
-    addEmployeePopup = new AddEmployeePopup(applicationGUI.getPrimaryStage(), this);
+    addEmployeePopup = new AddEmployeePopup(applicationGUI.getPrimaryStage(), observers);
     addEmployeePopup.createAddEmployeePopup();
   }
 
@@ -156,7 +124,6 @@ public class TheFirmController implements EventHandler<ActionEvent> {
   }
 
   private void addNewEmployee() {
-
 
 //TODO: Bryt ut all kod.
     boolean addEmployee = true;
@@ -186,8 +153,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
             addEmployeePopup.getErrorLabel().setText("Invalid input for Department ID");
             addEmployee = false;
           }
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
           addEmployee = false;
           addEmployeePopup.getErrorLabel().setText("Department ID must be a number");
         }
@@ -206,7 +172,7 @@ public class TheFirmController implements EventHandler<ActionEvent> {
           .build();
       employeeQueue.add(employee);
 
-      while(!employeeQueue.isEmpty()) {
+      while (!employeeQueue.isEmpty()) {
         employeeIO.create(employeeQueue.poll());
       }
       addEmployeePopup.closePopup();
@@ -215,9 +181,6 @@ public class TheFirmController implements EventHandler<ActionEvent> {
   }
 
   public class Observers {
-
-    // TODO Move ActionEvent to this inner class and make it part of class Observers
-    // as what i have done with MouseEvent and WindowEvent
 
     private EventHandler<MouseEvent> mouseEvent = new EventHandler<MouseEvent>() {
 
@@ -241,12 +204,55 @@ public class TheFirmController implements EventHandler<ActionEvent> {
       }
     };
 
+    private EventHandler<ActionEvent> actionEvent = new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+
+        Object object = event.getSource();
+
+        if (object instanceof Button) {
+          Button button = (Button) object;
+
+          switch (button.getId()) {
+            case "MainMenuSearchButton":
+              createSearchEmployeePopup();
+              break;
+            case "MainMenuAddButton":
+              createAddEmployeePopup();
+              break;
+            case "MainMenuRemoveButton":
+              removeEmployee();
+              break;
+            case "MainMenuEditButton":
+              break;
+            case "MainMenuResetButton":
+              applicationGUI.getCenterTable().setItems(getEmployees());
+              break;
+            case "PopupSearchEmployeeConfirmButton":
+              doEmployeeSearch();
+              break;
+            case "AddEmployeeConfirmButton":
+              addNewEmployee();
+              break;
+          }
+        } else if (object instanceof MenuItem) {
+          WebPagePresenter webPagePresenter = new WebPagePresenter(
+              applicationGUI.getPrimaryStage());
+          webPagePresenter.showGitPage();
+        }
+      }
+    };
+
     public EventHandler<MouseEvent> getMouseEvent() {
       return mouseEvent;
     }
 
     public EventHandler<WindowEvent> getWindowEvent() {
       return windowEvent;
+    }
+
+    public EventHandler<ActionEvent> getActionEvent() {
+      return actionEvent;
     }
   }
 }

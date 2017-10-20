@@ -1,22 +1,21 @@
 package view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import controller.TheFirmController.Observers;
 import javafx.scene.control.Button;
 
 abstract class AbstractPopup implements PopupInterface {
 
   private Button cancelButton, confirmButton;
   private String confirmButtonText, cancelButtonId, confirmButtonId;
-  private EventHandler<ActionEvent> eventHandler;
+  private Observers observers;
   private final static int PREFERRED_BUTTON_WIDTH = 100;
 
   AbstractPopup(String cancelButtonId, String confirmButtonText,
-      String confirmButtonId, EventHandler<ActionEvent> eventHandler) {
+      String confirmButtonId, Observers observers) {
     this.confirmButtonText = confirmButtonText;
     this.cancelButtonId = cancelButtonId;
     this.confirmButtonId = confirmButtonId;
-    this.eventHandler = eventHandler;
+    this.observers = observers;
     createCancelButton();
     createConfirmButton();
   }
@@ -25,7 +24,7 @@ abstract class AbstractPopup implements PopupInterface {
     confirmButton = new Button(confirmButtonText);
     confirmButton.setMinWidth(PREFERRED_BUTTON_WIDTH);
     confirmButton.setId(confirmButtonId);
-    confirmButton.setOnAction(eventHandler);
+    confirmButton.setOnAction(observers.getActionEvent());
   }
 
   public void createCancelButton() {
@@ -42,7 +41,7 @@ abstract class AbstractPopup implements PopupInterface {
     return confirmButton;
   }
 
-  public void setObserver(EventHandler<ActionEvent> eventHandler) {
-    this.eventHandler = eventHandler;
+  public void setObserver(Observers observers) {
+    this.observers = observers;
   }
 }

@@ -1,5 +1,6 @@
 package view;
 
+import controller.TheFirmController.Observers;
 import java.lang.reflect.Array;
 import java.util.LinkedList;
 import javafx.event.ActionEvent;
@@ -29,9 +30,9 @@ public class AddEmployeePopup extends AbstractPopup {
   private final static int PREFERRED_POPUP_WIDTH = 600;
   private final static int PREFERRED_POPUP_HEIGHT = 200;
 
-  public AddEmployeePopup(Stage primaryStage, EventHandler<ActionEvent> eventHandler) {
+  public AddEmployeePopup(Stage primaryStage, Observers observers) {
     super("AddEmployeeCancelButton", "Add Employee",
-        "AddEmployeeConfirmButton", eventHandler);
+        "AddEmployeeConfirmButton", observers);
     popupStage = new Stage();
     popupStage.initOwner(primaryStage);
   }

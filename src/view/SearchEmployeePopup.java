@@ -1,5 +1,6 @@
 package view;
 
+import controller.TheFirmController.Observers;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,9 +24,9 @@ public class SearchEmployeePopup extends AbstractPopup {
   private final static int PREFERRED_POPUP_WIDTH = 600;
   private final static int PREFERRED_POPUP_HEIGHT = 200;
 
-  public SearchEmployeePopup(Stage primaryStage, EventHandler<ActionEvent> eventHandler) {
+  public SearchEmployeePopup(Stage primaryStage, Observers observers) {
     super("PopupSearchEmployeeCancel", "Search",
-        "PopupSearchEmployeeConfirmButton", eventHandler);
+        "PopupSearchEmployeeConfirmButton", observers);
     popupStage = new Stage();
     popupStage.initOwner(primaryStage);
   }

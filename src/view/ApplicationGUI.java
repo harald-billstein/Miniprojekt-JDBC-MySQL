@@ -1,15 +1,8 @@
 package view;
 
+import controller.TheFirmController.Observers;
 import java.sql.Date;
 import java.util.ArrayList;
-import controller.TheFirmController;
-import controller.TheFirmController.Observers;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,17 +10,12 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import model.Department;
-import model.Employee;
 import model.EmployeeObservable;
 
 public class ApplicationGUI {
@@ -39,22 +27,17 @@ public class ApplicationGUI {
   private VBox rightPane;
   private HBox bottomPane;
   private ArrayList<Button> buttons;
-  private EventHandler<ActionEvent> event;
-  //private EventHandler<MouseEvent> mouseEvent;
-  
   private Observers observers;
-  
-
   private Stage primaryStage;
   private ArrayList tableColumns;
-  private final static int applicationWindowWidth = 1000;
-  private final static int applicationWwindowHeight = 300;
+  private final static int APPLICATION_WINDOW_WIDTH = 1000;
+  private final static int APPLICATION_WINDOW_HEIGHT = 300;
 
   public void setupTopPane() {
     System.out.println("setupTopPane");
     Menu menuFile = new Menu("About");
     MenuItem menuItem = new MenuItem("Git");
-    menuItem.setOnAction(event);
+    menuItem.setOnAction(observers.getActionEvent());
     menuFile.getItems().add(menuItem);
 
     MenuBar menuBar = new MenuBar();
@@ -82,7 +65,6 @@ public class ApplicationGUI {
     fname.setCellValueFactory(new PropertyValueFactory<>("firstName"));
     fname.setMinWidth(50);
 
-
     TableColumn<EmployeeObservable, String> lname = new TableColumn<>("Last name");
     lname.setCellValueFactory(new PropertyValueFactory<>("lastName"));
     lname.setMinWidth(50);
@@ -90,7 +72,6 @@ public class ApplicationGUI {
     TableColumn<EmployeeObservable, Integer> salary = new TableColumn<>("Salary");
     salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
     salary.setMinWidth(50);
-
 
     TableColumn<EmployeeObservable, Date> hireDate = new TableColumn<>("Hire date");
     hireDate.setCellValueFactory(new PropertyValueFactory<>("hireDate"));
@@ -178,16 +159,19 @@ public class ApplicationGUI {
     remove.setId("MainMenuRemoveButton");
     Button edit = new Button("Edit");
     edit.setId("MainMenuEditButton");
+    Button resetTableView = new Button("Reset table view");
+    resetTableView.setId("MainMenuResetButton");
 
     buttons = new ArrayList<>();
     buttons.add(search);
     buttons.add(add);
     buttons.add(remove);
     buttons.add(edit);
+    buttons.add(resetTableView);
 
     for (Button button : buttons) {
       button.setMinWidth(100);
-      button.setOnAction(event);
+      button.setOnAction(observers.getActionEvent());
     }
   }
 
@@ -199,7 +183,7 @@ public class ApplicationGUI {
     setupLeftPane();
     setupMainPane();
 
-    Scene scene = new Scene(mainPane, applicationWindowWidth, applicationWwindowHeight);
+    Scene scene = new Scene(mainPane, APPLICATION_WINDOW_WIDTH, APPLICATION_WINDOW_HEIGHT);
 
     primaryStage.setScene(scene);
     primaryStage.setOnCloseRequest(observers.getWindowEvent());
@@ -219,17 +203,10 @@ public class ApplicationGUI {
     return buttons;
   }
 
-  public void setEvent(EventHandler<ActionEvent> event) {
-    this.event = event;
-  }
-
   public void setObservers(Observers observers) {
     this.observers = observers;
-    
-  }
-  
 
-  
-  
+  }
+
 
 }

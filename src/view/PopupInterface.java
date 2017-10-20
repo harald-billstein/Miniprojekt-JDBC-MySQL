@@ -1,11 +1,10 @@
 package view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import controller.TheFirmController.Observers;
 
 public interface PopupInterface {
   void createConfirmButton();
   void createCancelButton();
-  void setObserver(EventHandler<ActionEvent> eventHandler);
+  void setObserver(Observers observers);
   void closePopup();
 }
