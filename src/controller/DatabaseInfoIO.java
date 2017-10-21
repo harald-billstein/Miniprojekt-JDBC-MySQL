@@ -9,9 +9,9 @@ import org.hibernate.Session;
  *
  */
 public class DatabaseInfoIO {
-  
+
   private HibernateSessionManager hibernateSessionManager;
-  
+
   /**
    * Constructor setting an Object handling the connection to the database
    * 
