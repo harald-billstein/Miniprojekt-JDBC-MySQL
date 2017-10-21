@@ -3,7 +3,7 @@ package controller;
 import org.hibernate.Session;
 
 /**
- * Class handeling information output from database.
+ * Class handling information output from database.
  * 
  * @author Harald & Cristoffer
  *
