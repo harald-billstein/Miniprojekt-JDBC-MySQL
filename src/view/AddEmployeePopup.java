@@ -16,12 +16,14 @@ public class AddEmployeePopup extends AbstractPopup {
   private Stage popupStage;
   private Scene scene;
   private Label errorLabel;
-  private TextField[] employeeDataFields = new TextField[4];
-  private String[] labelStrings = {"First name:", "Last name:", "Salary:", "Department ID:"};
-  private Label[] labels = new Label[4];
-  private HBox[] inputBoxes = new HBox[4];
+  private TextField[] employeeDataFields;
   private VBox mainBox;
   private HBox buttonBox;
+  private TextField firstNameField;
+  private TextField lastNameField;
+  private TextField salaryField;
+  private TextField departmentField;
+  private final static int NUMBER_OF_INPUT_FIELDS = 4;
   private final static int PREFERRED_POPUP_WIDTH = 600;
   private final static int PREFERRED_POPUP_HEIGHT = 200;
 
@@ -43,25 +45,58 @@ public class AddEmployeePopup extends AbstractPopup {
   }
 
   private void createPopupResources() {
+    employeeDataFields = new TextField[NUMBER_OF_INPUT_FIELDS];
+    
     mainBox = new VBox();
     scene = new Scene(mainBox);
-    for (int i = 0; i < labels.length; i++) {
-      labels[i] = new Label(labelStrings[i]);
-      employeeDataFields[i] = new TextField(labelStrings[i]);
-      inputBoxes[i] = new HBox(labels[i], employeeDataFields[i]);
-      employeeDataFields[i].setId("Field" + i);
-    }
+    
+    createFirstNameBox();
+    createLastNameBox();
+    createSalaryBox();
+    createDepartmentBox();
+    
     buttonBox = new HBox(getConfirmButton(), getCancelButton());
     errorLabel = new Label();
   }
+  
+  
+
+  private void createLastNameBox() {
+    lastNameField = new TextField();
+    lastNameField.setId("Lastname");
+    HBox lastNameBox = new HBox(new Label("Last name: "), lastNameField);
+    lastNameBox.setAlignment(Pos.CENTER);
+    mainBox.getChildren().add(lastNameBox);
+    
+  }
+
+  private void createDepartmentBox() {
+    departmentField = new TextField();
+    departmentField.setId("DepartmentID");
+    HBox departmentBox = new HBox(new Label("Department ID: "), departmentField);
+    departmentBox.setAlignment(Pos.CENTER);
+    mainBox.getChildren().add(departmentBox);
+    
+  }
+
+  private void createSalaryBox() {
+    salaryField = new TextField();
+    salaryField.setId("Salary");
+    HBox salaryFieldBox = new HBox(new Label("Salary: "), salaryField);
+    salaryFieldBox.setAlignment(Pos.CENTER);
+    mainBox.getChildren().add(salaryFieldBox);
+    
+  }
+
+  private void createFirstNameBox() {
+    firstNameField = new TextField();
+    firstNameField.setId("Firstname");
+    HBox firstNameBox = new HBox(new Label("First name: "), firstNameField);
+    firstNameBox.setAlignment(Pos.CENTER);
+    mainBox.getChildren().add(firstNameBox);
+  }
 
   private void setupPopupLayout() {
-    for (HBox box : inputBoxes) {
-      box.setAlignment(Pos.CENTER);
-      mainBox.getChildren().add(box);
-    }
-    //Sets padding for department Id box
-    inputBoxes[3].setPadding(new Insets(0, 0, 20, 0));
     mainBox.getChildren().addAll(errorLabel, buttonBox);
     buttonBox.setAlignment(Pos.CENTER);
   }
@@ -69,11 +104,29 @@ public class AddEmployeePopup extends AbstractPopup {
   public TextField[] getEmployeeDataArray() {
     return employeeDataFields;
   }
+  
+  
 
-  public Label getErrorLabel() {
-    return errorLabel;
+  public String getFirstName() {
+    return firstNameField.getText();
   }
 
+  public String getLastName() {
+    return lastNameField.getText();
+  }
+
+  public String getSalary() {
+    return salaryField.getText();
+  }
+
+  public String getDepartment() {
+    return departmentField.getText();
+  }
+
+  public void setErrorLabelText(String errorText) {
+    errorLabel.setText(errorText);
+  }
+  
   public void closePopup() {
     popupStage.close();
   }
