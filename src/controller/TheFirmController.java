@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import javax.persistence.metamodel.ListAttribute;
+import javax.swing.text.StyledEditorKit.BoldAction;
+import org.hibernate.procedure.internal.Util.ResultClassesResolutionContext;
+import antlr.collections.Stack;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,7 +36,6 @@ public class TheFirmController {
   private HibernateSessionManager hibernateSessionManager;
   private ApplicationGUI applicationGUI;
   private EmployeeIO employeeIO;
-  private CompanyCarIO companyCarIO;
   private DepartmentIO departmentIO;
   private ToObservableList toObservableList;
   private ObservableList<EmployeeObservable> data;
@@ -42,13 +45,13 @@ public class TheFirmController {
   private Observers observers;
   private EmployeeObservable selectedEmployee;
   private Queue<Employee> employeeQueue;
+  private final int MINIMUM_SALARY = 19000;
 
   public Observers getObservers() {
     return observers;
   }
 
-  public TheFirmController() {
-  }
+  public TheFirmController() {}
 
   public void start() {
     kickstartControllerresources();
@@ -64,10 +67,9 @@ public class TheFirmController {
     try {
       hibernateSessionManager = new HibernateSessionManager(clazzes);
     } catch (Exception e) {
-
+      // TODO DB is down! handle?
     }
     employeeIO = new EmployeeIO(hibernateSessionManager);
-    companyCarIO = new CompanyCarIO(hibernateSessionManager);
     departmentIO = new DepartmentIO(hibernateSessionManager);
 
     data = FXCollections.observableArrayList();
@@ -85,19 +87,21 @@ public class TheFirmController {
         applicationGUI.getCenterTable().setItems(getEmployees());
       }
     }
-    // TODO Error message in a label in main GUI?
+    // TODO If no user was selected, do nothing or print out error in GUI?
   }
 
   public void setGui(ApplicationGUI applicationGUI) {
     this.applicationGUI = applicationGUI;
   }
 
+  // TODO similar to getSeachedEmployees
   public ObservableList<EmployeeObservable> getEmployees() {
     data.clear();
     data = toObservableList.convertList(employeeIO.read());
     return data;
   }
 
+  // TODO similar to getEmployess
   public ObservableList<EmployeeObservable> getSeachedEmployees(List<Employee> employees) {
     data.clear();
     data = toObservableList.convertList(employees);
@@ -114,13 +118,15 @@ public class TheFirmController {
     addEmployeePopup.createAddEmployeePopup();
   }
 
+  // TODO magic numbers 0,1,2
   private void createEditEmployeePopup() {
     editEmployeePopup = new EditEmployeePopup(applicationGUI.getPrimaryStage(), observers);
     if (selectedEmployee != null) {
       editEmployeePopup.createEditEmployeePopup();
-      editEmployeePopup.getEmployeeDataArray()[0].setText(selectedEmployee.getFirstName());
-      editEmployeePopup.getEmployeeDataArray()[1].setText(selectedEmployee.getLastName());
-      editEmployeePopup.getEmployeeDataArray()[2].setText("" + selectedEmployee.getSalary());
+      editEmployeePopup.setFirstName(selectedEmployee.getFirstName());
+      editEmployeePopup.setLastName(selectedEmployee.getLastName());
+      editEmployeePopup.setSalary(selectedEmployee.getSalary());
+
     }
   }
 
@@ -135,72 +141,120 @@ public class TheFirmController {
     }
   }
 
-  private void addNewEmployee() {
+  private void buildEmployee() {
+    boolean inputValid = true;
 
-//TODO: Bryt ut all kod.
-    boolean addEmployee = true;
-    for (int i = 0; i < addEmployeePopup.getEmployeeDataArray().length; i++) {
-      String employeeInput = addEmployeePopup.getEmployeeDataArray()[i].getText().trim();
-      if (employeeInput.isEmpty()) {
-        addEmployeePopup.getErrorLabel().setText("Error. One or more inputs are empty.");
-        addEmployee = false;
-      }
-      if (addEmployeePopup.getEmployeeDataArray()[i].getId().equals("Field2") && addEmployee) {
-        try {
-          int parsedInput = Integer.parseInt(employeeInput);
-          if (parsedInput <= 0) {
-            addEmployeePopup.getErrorLabel().setText("Error. Salary must be larger than 0");
-            addEmployee = false;
-          }
-        } catch (Exception e) {
-          addEmployee = false;
-          addEmployeePopup.getErrorLabel().setText("Error. Salary must be a number");
-        }
-      }
-      if (addEmployeePopup.getEmployeeDataArray()[i].getId().equals("Field3") && addEmployee) {
-        try {
-          int parsedInput = Integer.parseInt(employeeInput);
-          List<Department> numberOfDepartments = departmentIO.read();
-          if (!(parsedInput > 0 && parsedInput <= numberOfDepartments.size())) {
-            addEmployeePopup.getErrorLabel().setText("Invalid input for Department ID");
-            addEmployee = false;
-          }
-        } catch (Exception e) {
-          addEmployee = false;
-          addEmployeePopup.getErrorLabel().setText("Department ID must be a number");
-        }
+    String firstName = addEmployeePopup.getFirstName().trim();
+    if (firstName.isEmpty()) {
+      addEmployeePopup.setErrorLabelText("First name can not be empty");
+      inputValid = false;
+    }
+
+    String lastName = addEmployeePopup.getLastName().trim();
+    if (lastName.isEmpty() && inputValid) {
+      addEmployeePopup.setErrorLabelText("Last name can not be empty");
+      inputValid = false;
+    }
+
+    String salary = addEmployeePopup.getSalary();
+    if (inputValid) {
+      if (!isParsable(salary)) {
+        addEmployeePopup.setErrorLabelText("Salary must be a number");
+        inputValid = false;
+      } else if (Integer.parseInt(salary) < MINIMUM_SALARY) {
+        addEmployeePopup.setErrorLabelText("Minimum salary is: " + MINIMUM_SALARY);
+        inputValid = false;
       }
     }
 
-    if (addEmployee) {
-      TextField[] employeeData = addEmployeePopup.getEmployeeDataArray();
+    String departmentId = addEmployeePopup.getDepartment();
+    if (inputValid) {
+      int departmentSize = departmentIO.read().size();
+      if (!isParsable(departmentId)) {
+        addEmployeePopup.setErrorLabelText("Department Id must be a number");
+        inputValid = false;
+      } else if (Integer.parseInt(departmentId) < 1
+          || Integer.parseInt(departmentId) > departmentSize) {
+        addEmployeePopup.setErrorLabelText("Department not found");
+        inputValid = false;
+      }
+    }
 
-      Employee employee = new EmployeeBuilder()
-          .setFirstName(employeeData[0].getText())
-          .setLastName(employeeData[1].getText())
-          .setSalary(Integer.parseInt(employeeData[2].getText()))
-          .setDepartmentId(Integer.parseInt(employeeData[3].getText()))
+    if (inputValid) {
+      Employee employee = new EmployeeBuilder().setFirstName(firstName).setLastName(lastName)
+          .setSalary(Integer.parseInt(salary)).setDepartmentId(Integer.parseInt(departmentId))
           .build();
-      employeeQueue.add(employee);
 
-      while (!employeeQueue.isEmpty()) {
-        employeeIO.create(employeeQueue.poll());
-      }
+      employeeQueue.add(employee);
+      writeEmployeeQueueToDatabase(employeeQueue);
+      updateEmployeeTable();
       addEmployeePopup.closePopup();
-      applicationGUI.getCenterTable().setItems(getEmployees());
     }
+
+  }
+
+  private void updateEmployeeTable() {
+    applicationGUI.getCenterTable().setItems(getEmployees());
+  }
+
+  private void writeEmployeeQueueToDatabase(Queue<Employee> employeeQueue) {
+    while (!employeeQueue.isEmpty()) {
+      employeeIO.create(employeeQueue.poll());
+    }
+
   }
 
   private void updateEmployee() {
-    Employee employee = new Employee();
-    employee.setEmployeeId(selectedEmployee.getEmployeeId());
-    employee.setFirstName(editEmployeePopup.getEmployeeDataArray()[0].getText());
-    employee.setLastName(editEmployeePopup.getEmployeeDataArray()[1].getText());
-    employee.setSalary(Integer.parseInt(editEmployeePopup.getEmployeeDataArray()[2].getText()));
-    employeeIO.updateEmployee(employee);
-    applicationGUI.getCenterTable().setItems(getEmployees());
-    selectedEmployee = null;
-    editEmployeePopup.closePopup();
+    boolean inputValid = true;
+
+    String firstName = editEmployeePopup.getFirstName().trim();
+    if (firstName.isEmpty()) {
+      editEmployeePopup.setErrorLabelText("First name can not be empty");
+      inputValid = false;
+    }
+
+    String lastName = editEmployeePopup.getLastName().trim();
+    if (lastName.isEmpty() && inputValid) {
+      editEmployeePopup.setErrorLabelText("Last name can not be empty");
+      inputValid = false;
+    }
+
+    String salary = editEmployeePopup.getSalary();
+    if (inputValid) {
+      if (!isParsable(salary)) {
+        editEmployeePopup.setErrorLabelText("Salary must be a number");
+        inputValid = false;
+      } else if (Integer.parseInt(salary) < MINIMUM_SALARY) {
+        editEmployeePopup.setErrorLabelText("Minimum salary is: " + MINIMUM_SALARY);
+        inputValid = false;
+      }
+    }
+
+    if (inputValid) {
+      Employee employee = new Employee();
+      employee.setEmployeeId(selectedEmployee.getEmployeeId());
+      employee.setFirstName(firstName);
+      employee.setLastName(lastName);
+      employee.setSalary(Integer.parseInt(salary));
+
+      employeeIO.updateEmployee(employee);
+      updateEmployeeTable();
+      editEmployeePopup.closePopup();
+      selectedEmployee = null;
+    }
+
+  }
+
+  private boolean isParsable(String s) {
+    boolean success;
+
+    try {
+      Integer.parseInt(s);
+      success = true;
+    } catch (NumberFormatException e) {
+      success = false;
+    }
+    return success;
   }
 
   public class Observers {
@@ -256,15 +310,15 @@ public class TheFirmController {
               doEmployeeSearch();
               break;
             case "PopupAddEmployeeConfirmButton":
-              addNewEmployee();
+              buildEmployee();
               break;
             case "PopupEditEmployeeConfirmButton":
               updateEmployee();
               break;
           }
         } else if (object instanceof MenuItem) {
-          WebPagePresenter webPagePresenter = new WebPagePresenter(
-              applicationGUI.getPrimaryStage());
+          WebPagePresenter webPagePresenter =
+              new WebPagePresenter(applicationGUI.getPrimaryStage());
           webPagePresenter.showGitPage();
         }
       }
