@@ -3,15 +3,15 @@ package controller;
 import org.hibernate.Session;
 
 /**
- * Class handeling information output from database.
+ * Class handling information output from database.
  * 
  * @author Harald & Cristoffer
  *
  */
 public class DatabaseInfoIO {
-  
+
   private HibernateSessionManager hibernateSessionManager;
-  
+
   /**
    * Constructor setting an Object handling the connection to the database
    * 

@@ -20,22 +20,12 @@ public class EmployeeIO extends DatabaseIO<Employee> {
     super(hibernateSessionManager, Employee.class);
   }
 
-  public List<Employee> getDepartmentEmployeeList(Integer departmentId) {
-    Session session = getSession();
-    session.beginTransaction();
-
-    String hql = "FROM employee WHERE department.department_id = :departmentId ";
-    List<Employee> employees;
-
-    try {
-      employees = session.createQuery(hql, Employee.class)
-          .setParameter("departmentId", departmentId).list();
-    } finally {
-      session.close();
-    }
-    return employees;
-  }
-
+  /**
+   * Search two columns (fname & lname) in the database for matches.
+   * 
+   * @param search string.
+   * @return a list of all matches.
+   */
   public List<Employee> seachEmployeeName(String name) {
     Session session = getSession();
     session.beginTransaction();
@@ -53,6 +43,12 @@ public class EmployeeIO extends DatabaseIO<Employee> {
     return employee;
   }
 
+  /**
+   * Updates columns (fname, lname, department_id and salary).
+   * 
+   * @param updatedEmployee.
+   * @return true if success.
+   */
   public boolean updateEmployee(Employee updatedEmployee) {
     boolean success = false;
     Session session = getSession();

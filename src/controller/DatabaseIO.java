@@ -5,6 +5,13 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import org.hibernate.Session;
 
+/**
+ * Takes a POJO and handles C.R.U.D.
+ * 
+ * @author Harald & Cristoffer
+ *
+ * @param <T> Class mirroring the database entity.
+ */
 public abstract class DatabaseIO<T> {
   private HibernateSessionManager hibernateSessionManager;
   private Class<T> clazz;
