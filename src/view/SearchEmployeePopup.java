@@ -74,7 +74,7 @@ public class SearchEmployeePopup extends AbstractPopup {
     return employeeNameInput.getText();
   }
 
-  public Label getErrorLabel() {
-    return errorLabel;
+  public void setErrorLabelText(String errorMessage) {
+    errorLabel.setText(errorMessage);
   }
 }

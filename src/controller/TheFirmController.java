@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import javax.persistence.metamodel.ListAttribute;
-import javax.swing.text.StyledEditorKit.BoldAction;
-import org.hibernate.procedure.internal.Util.ResultClassesResolutionContext;
-import antlr.collections.Stack;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +12,6 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.WindowEvent;
 import model.CompanyCar;
@@ -45,13 +40,8 @@ public class TheFirmController {
   private Observers observers;
   private EmployeeObservable selectedEmployee;
   private Queue<Employee> employeeQueue;
-  private final int MINIMUM_SALARY = 19000;
-
-  public Observers getObservers() {
-    return observers;
-  }
-
-  public TheFirmController() {}
+  private UserInputChecker userInputChecker;
+  private int MINIMUM_SALARY = 19000;
 
   public void start() {
     kickstartControllerresources();
@@ -67,7 +57,7 @@ public class TheFirmController {
     try {
       hibernateSessionManager = new HibernateSessionManager(clazzes);
     } catch (Exception e) {
-      // TODO DB is down! handle?
+      // TODO If database is down!
     }
     employeeIO = new EmployeeIO(hibernateSessionManager);
     departmentIO = new DepartmentIO(hibernateSessionManager);
@@ -76,6 +66,8 @@ public class TheFirmController {
     toObservableList = new ToObservableList();
     observers = new Observers();
     employeeQueue = new LinkedList<>();
+    userInputChecker = new UserInputChecker(MINIMUM_SALARY, departmentIO.read().size());
+
   }
 
   private void removeEmployee() {
@@ -87,25 +79,7 @@ public class TheFirmController {
         applicationGUI.getCenterTable().setItems(getEmployees());
       }
     }
-    // TODO If no user was selected, do nothing or print out error in GUI?
-  }
-
-  public void setGui(ApplicationGUI applicationGUI) {
-    this.applicationGUI = applicationGUI;
-  }
-
-  // TODO similar to getSeachedEmployees
-  public ObservableList<EmployeeObservable> getEmployees() {
-    data.clear();
-    data = toObservableList.convertList(employeeIO.read());
-    return data;
-  }
-
-  // TODO similar to getEmployess
-  public ObservableList<EmployeeObservable> getSeachedEmployees(List<Employee> employees) {
-    data.clear();
-    data = toObservableList.convertList(employees);
-    return data;
+    // TODO If no user was selected, print out error in GUI?
   }
 
   private void createSearchEmployeePopup() {
@@ -118,7 +92,6 @@ public class TheFirmController {
     addEmployeePopup.createAddEmployeePopup();
   }
 
-  // TODO magic numbers 0,1,2
   private void createEditEmployeePopup() {
     editEmployeePopup = new EditEmployeePopup(applicationGUI.getPrimaryStage(), observers);
     if (selectedEmployee != null) {
@@ -128,16 +101,18 @@ public class TheFirmController {
       editEmployeePopup.setSalary(selectedEmployee.getSalary());
 
     }
+    // TODO If no user was selected, print out error in GUI?
   }
 
   private void doEmployeeSearch() {
-    if (searchEmployeePopup.getEmployeeNameInput().length() > 0) {
+    boolean success = userInputChecker.isValidFirstName(searchEmployeePopup.getEmployeeNameInput());
+    if (success) {
       List<Employee> employees =
           employeeIO.seachEmployeeName(searchEmployeePopup.getEmployeeNameInput());
       applicationGUI.getCenterTable().setItems(getSeachedEmployees(employees));
       searchEmployeePopup.closePopup();
     } else {
-      searchEmployeePopup.getErrorLabel().setText("Error. Empty search string");
+      searchEmployeePopup.setErrorLabelText(userInputChecker.getUserInputErrorText().getErrors().get("search"));
     }
   }
 
@@ -145,39 +120,35 @@ public class TheFirmController {
     boolean inputValid = true;
 
     String firstName = addEmployeePopup.getFirstName().trim();
-    if (firstName.isEmpty()) {
-      addEmployeePopup.setErrorLabelText("First name can not be empty");
-      inputValid = false;
+    inputValid = userInputChecker.isValidFirstName(firstName);
+    if (!inputValid) {
+      addEmployeePopup
+          .setErrorLabelText(userInputChecker.getUserInputErrorText().getErrors().get("firstName"));
+      return;
     }
 
     String lastName = addEmployeePopup.getLastName().trim();
-    if (lastName.isEmpty() && inputValid) {
-      addEmployeePopup.setErrorLabelText("Last name can not be empty");
-      inputValid = false;
+    inputValid = userInputChecker.isValidLastName(lastName);
+    if (!inputValid) {
+      addEmployeePopup
+          .setErrorLabelText(userInputChecker.getUserInputErrorText().getErrors().get("lastName"));
+      return;
     }
 
     String salary = addEmployeePopup.getSalary();
-    if (inputValid) {
-      if (!isParsable(salary)) {
-        addEmployeePopup.setErrorLabelText("Salary must be a number");
-        inputValid = false;
-      } else if (Integer.parseInt(salary) < MINIMUM_SALARY) {
-        addEmployeePopup.setErrorLabelText("Minimum salary is: " + MINIMUM_SALARY);
-        inputValid = false;
-      }
+    inputValid = userInputChecker.isValidSalary(salary);
+    if (!inputValid) {
+      addEmployeePopup
+          .setErrorLabelText(userInputChecker.getUserInputErrorText().getErrors().get("salary"));
+      return;
     }
 
     String departmentId = addEmployeePopup.getDepartment();
-    if (inputValid) {
-      int departmentSize = departmentIO.read().size();
-      if (!isParsable(departmentId)) {
-        addEmployeePopup.setErrorLabelText("Department Id must be a number");
-        inputValid = false;
-      } else if (Integer.parseInt(departmentId) < 1
-          || Integer.parseInt(departmentId) > departmentSize) {
-        addEmployeePopup.setErrorLabelText("Department not found");
-        inputValid = false;
-      }
+    inputValid = userInputChecker.isValidDepartmentId(departmentId);
+    if (!inputValid) {
+      addEmployeePopup.setErrorLabelText(
+          userInputChecker.getUserInputErrorText().getErrors().get("department"));
+      return;
     }
 
     if (inputValid) {
@@ -208,26 +179,27 @@ public class TheFirmController {
     boolean inputValid = true;
 
     String firstName = editEmployeePopup.getFirstName().trim();
-    if (firstName.isEmpty()) {
-      editEmployeePopup.setErrorLabelText("First name can not be empty");
-      inputValid = false;
+    inputValid = userInputChecker.isValidFirstName(firstName);
+    if (!inputValid) {
+      editEmployeePopup
+          .setErrorLabelText(userInputChecker.getUserInputErrorText().getErrors().get("firstName"));
+      return;
     }
 
     String lastName = editEmployeePopup.getLastName().trim();
-    if (lastName.isEmpty() && inputValid) {
-      editEmployeePopup.setErrorLabelText("Last name can not be empty");
-      inputValid = false;
+    inputValid = userInputChecker.isValidLastName(lastName);
+    if (!inputValid) {
+      editEmployeePopup
+          .setErrorLabelText(userInputChecker.getUserInputErrorText().getErrors().get("lastName"));
+      return;
     }
 
     String salary = editEmployeePopup.getSalary();
-    if (inputValid) {
-      if (!isParsable(salary)) {
-        editEmployeePopup.setErrorLabelText("Salary must be a number");
-        inputValid = false;
-      } else if (Integer.parseInt(salary) < MINIMUM_SALARY) {
-        editEmployeePopup.setErrorLabelText("Minimum salary is: " + MINIMUM_SALARY);
-        inputValid = false;
-      }
+    inputValid = userInputChecker.isValidSalary(salary);
+    if (!inputValid) {
+      editEmployeePopup
+          .setErrorLabelText(userInputChecker.getUserInputErrorText().getErrors().get("salary"));
+      return;
     }
 
     if (inputValid) {
@@ -243,18 +215,30 @@ public class TheFirmController {
       selectedEmployee = null;
     }
 
+
+
   }
 
-  private boolean isParsable(String s) {
-    boolean success;
+  public void setGui(ApplicationGUI applicationGUI) {
+    this.applicationGUI = applicationGUI;
+  }
 
-    try {
-      Integer.parseInt(s);
-      success = true;
-    } catch (NumberFormatException e) {
-      success = false;
-    }
-    return success;
+  // TODO similar to getSeachedEmployees
+  public ObservableList<EmployeeObservable> getEmployees() {
+    data.clear();
+    data = toObservableList.convertList(employeeIO.read());
+    return data;
+  }
+
+  // TODO similar to getEmployess
+  public ObservableList<EmployeeObservable> getSeachedEmployees(List<Employee> employees) {
+    data.clear();
+    data = toObservableList.convertList(employees);
+    return data;
+  }
+
+  public Observers getObservers() {
+    return observers;
   }
 
   public class Observers {
