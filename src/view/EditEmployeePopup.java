@@ -27,8 +27,8 @@ public class EditEmployeePopup extends AbstractPopup {
   private final static int PREFERRED_POPUP_HEIGHT = 200;
 
   public EditEmployeePopup(Stage primaryStage, Observers observers) {
-    super("UpdateEmployeeCancelButton", "Update Employee",
-        "PopupEditEmployeeConfirmButton", observers);
+    super("UpdateEmployeeCancelButton", "Update Employee", "PopupEditEmployeeConfirmButton",
+        observers);
     popupStage = new Stage();
     popupStage.initOwner(primaryStage);
   }
@@ -46,27 +46,25 @@ public class EditEmployeePopup extends AbstractPopup {
   private void createPopupResources() {
     mainBox = new VBox();
     scene = new Scene(mainBox);
-    
-    
+
+
     createFirstNameBox();
     createLastNameBox();
     createSalaryBox();
 
-    
-    
-    
+
 
     buttonBox = new HBox(getConfirmButton(), getCancelButton());
     errorLabel = new Label();
   }
-  
+
   private void createLastNameBox() {
     lastNameField = new TextField();
     lastNameField.setId("Lastname");
     HBox lastNameBox = new HBox(new Label("Last name: "), lastNameField);
     lastNameBox.setAlignment(Pos.CENTER);
     mainBox.getChildren().add(lastNameBox);
-    
+
   }
 
 
@@ -77,7 +75,7 @@ public class EditEmployeePopup extends AbstractPopup {
     HBox salaryFieldBox = new HBox(new Label("Salary: "), salaryField);
     salaryFieldBox.setAlignment(Pos.CENTER);
     mainBox.getChildren().add(salaryFieldBox);
-    
+
   }
 
   private void createFirstNameBox() {
@@ -96,7 +94,7 @@ public class EditEmployeePopup extends AbstractPopup {
   public TextField[] getEmployeeDataArray() {
     return employeeDataFields;
   }
-  
+
   public String getFirstName() {
     return firstNameField.getText();
   }
@@ -108,7 +106,7 @@ public class EditEmployeePopup extends AbstractPopup {
   public String getSalary() {
     return salaryField.getText();
   }
-  
+
   public void setFirstName(String fname) {
     firstNameField.setText(fname);
   }
@@ -125,8 +123,8 @@ public class EditEmployeePopup extends AbstractPopup {
   public String getDepartment() {
     return departmentField.getText();
   }
-  
-  
+
+
 
   public void setErrorLabelText(String errorMessage) {
     errorLabel.setText(errorMessage);
