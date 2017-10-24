@@ -25,8 +25,7 @@ public class SearchEmployeePopup extends AbstractPopup {
   private final static int PREFERRED_POPUP_HEIGHT = 200;
 
   public SearchEmployeePopup(Stage primaryStage, Observers observers) {
-    super("PopupSearchEmployeeCancel", "Search",
-        "PopupSearchEmployeeConfirmButton", observers);
+    super("Search", "PopupSearchEmployeeConfirmButton", observers);
     popupStage = new Stage();
     popupStage.initOwner(primaryStage);
   }
