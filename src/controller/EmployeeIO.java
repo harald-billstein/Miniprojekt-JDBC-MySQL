@@ -23,7 +23,7 @@ public class EmployeeIO extends DatabaseIO<Employee> {
   /**
    * Search two columns (fname & lname) in the database for matches.
    * 
-   * @param name string.
+   * @param search string.
    * @return a list of all matches.
    */
   public List<Employee> seachEmployeeName(String name) {
@@ -46,7 +46,7 @@ public class EmployeeIO extends DatabaseIO<Employee> {
   /**
    * Updates columns (fname, lname, department_id and salary).
    * 
-   * @param updatedEmployee .
+   * @param updatedEmployee.
    * @return true if success.
    */
   public boolean updateEmployee(Employee updatedEmployee) {
