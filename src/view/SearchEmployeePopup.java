@@ -1,8 +1,6 @@
 package view;
 
 import controller.TheFirmController.Observers;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -24,12 +22,23 @@ public class SearchEmployeePopup extends AbstractPopup {
   private final static int PREFERRED_POPUP_WIDTH = 600;
   private final static int PREFERRED_POPUP_HEIGHT = 200;
 
+  /**
+   * Creates a popup which is used to search for an Employee
+   * @param primaryStage The primary stage which this popup belongs to
+   * @param observers Inner class observers in controller to use with this class
+   */
   public SearchEmployeePopup(Stage primaryStage, Observers observers) {
-    super("PopupSearchEmployeeCancel", "Search", "PopupSearchEmployeeConfirmButton", observers);
+    super("Search", "PopupSearchEmployeeConfirmButton", observers);
     popupStage = new Stage();
     popupStage.initOwner(primaryStage);
   }
 
+  /**
+   * Calls methods to create popup resources, set layout, set size of popup window.
+   * Sets modality of window.
+   * Shows the popup.
+   * Sets lambda expression for the cancel button.
+   */
   public void createSearchEmployeePopupWindow() {
     createPopupResources();
     getCancelButton().setOnAction((event -> popupStage.close()));
@@ -41,6 +50,9 @@ public class SearchEmployeePopup extends AbstractPopup {
     popupStage.show();
   }
 
+  /**
+   * Creates popup resources.
+   */
   private void createPopupResources() {
     mainBox = new VBox();
     scene = new Scene(mainBox);
@@ -52,7 +64,7 @@ public class SearchEmployeePopup extends AbstractPopup {
     bottomBox = new HBox(getConfirmButton(), getCancelButton());
   }
 
-  // TODO: Change method name
+
   private void setupPopupLayout() {
     mainBox.getChildren().addAll(topBox, middleBox, bottomBox);
   }
@@ -69,10 +81,18 @@ public class SearchEmployeePopup extends AbstractPopup {
     popupStage.close();
   }
 
+  /**
+   * Getter for Employee name TextField
+   * @return Employee to search for
+   */
   public String getEmployeeNameInput() {
     return employeeNameInput.getText();
   }
 
+  /**
+   * Sets the error text to be displayed if and input is invalid
+   * @param errorMessage Error text to be displayed in the popup
+   */
   public void setErrorLabelText(String errorMessage) {
     errorLabel.setText(errorMessage);
   }
