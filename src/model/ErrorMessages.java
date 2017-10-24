@@ -2,17 +2,23 @@ package model;
 
 import java.util.HashMap;
 
-public class UserInputErrorText {
+/**
+ * Container for all error messages
+ * 
+ * @author Harald & Cristoffer
+ */
+
+public class ErrorMessages {
 
   private final int MINIMUM_SALARY;
   private HashMap<String, String> errorMessages;
-  
-  public UserInputErrorText(int minimumSalary) {
+
+  public ErrorMessages(int minimumSalary) {
     this.MINIMUM_SALARY = minimumSalary;
     initObjects();
   }
-  
-  public void initObjects() {
+
+  private void initObjects() {
     errorMessages = new HashMap<>();
     errorMessages.put("firstName", "First name can not be empty");
     errorMessages.put("lastName", "Last name can not be empty");
@@ -20,9 +26,25 @@ public class UserInputErrorText {
     errorMessages.put("department", "Must be a number, department Id not found");
     errorMessages.put("search", "Error. Empty search string");
   }
-  
-  public HashMap<String, String> getErrors() {
-    return this.errorMessages;
+
+  public String getFirstNameError() {
+    return errorMessages.get("firstName");
+  }
+
+  public String getLastNameError() {
+    return errorMessages.get("lastName");
+  }
+
+  public String getSalaryError() {
+    return errorMessages.get("salary");
+  }
+
+  public String getDepartmentError() {
+    return errorMessages.get("department");
+  }
+
+  public String getSearchError() {
+    return errorMessages.get("search");
   }
 
 }

@@ -1,18 +1,18 @@
 package controller;
 
-import java.util.HashMap;
-import model.UserInputErrorText;
-
+/**
+ * Checks if user inputs are valid.
+ * 
+ * @author Harald & Cristoffer
+ */
 public class UserInputChecker {
 
   private int MINIMUM_SALARY;
   private int numberOfDepartments;
-  private UserInputErrorText userInputErrorText;
 
   public UserInputChecker(int minimumSalart, int numberOfDepartments) {
     this.MINIMUM_SALARY = minimumSalart;
     this.numberOfDepartments = numberOfDepartments;
-    userInputErrorText = new UserInputErrorText(MINIMUM_SALARY);
   }
 
   public boolean isValidFirstName(String firstName) {
@@ -72,9 +72,4 @@ public class UserInputChecker {
     return success;
   }
 
-  public UserInputErrorText getUserInputErrorText() {
-    return userInputErrorText;
-  }
-
-  
 }
