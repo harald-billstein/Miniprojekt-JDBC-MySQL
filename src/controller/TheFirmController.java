@@ -98,7 +98,7 @@ public class TheFirmController {
         applicationGUI.getCenterTable().setItems(getEmployees());
       }
     }
-    // TODO If no user was selected, print out error in GUI?
+    selectedEmployee = null;
   }
 
   private void createSearchEmployeePopup() {
