@@ -1,5 +1,6 @@
 package view;
 
+import java.security.PublicKey;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
@@ -8,17 +9,11 @@ import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-/**
- * This class is used to show our Github page
- */
 public class WebPagePresenter {
 
   private Stage webPagePresenter;
 
-  /**
-   * Creates a popup and sets the primary stage of this popup
-   * @param primaryStage The primary stage
-   */
+
   public WebPagePresenter(Stage primaryStage) {
     webPagePresenter = new Stage();
     webPagePresenter.initOwner(primaryStage);
@@ -33,7 +28,8 @@ public class WebPagePresenter {
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setContent(browser);
 
-    webEngine.load("https://github.com/harald-billstein/Miniprojekt-JDBC-MySQL/blob/master/README.md");
+    webEngine
+        .load("https://github.com/harald-billstein/Miniprojekt-JDBC-MySQL/blob/master/README.md");
 
     scene.setRoot(scrollPane);
 

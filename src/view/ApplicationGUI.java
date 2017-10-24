@@ -18,17 +18,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.EmployeeObservable;
 
-/**
- * Creates the main GUI window.
- * @author Cristoffer
- * @author Harald
- */
 public class ApplicationGUI {
 
   private BorderPane mainPane;
   private HBox topPane;
   private VBox leftPane;
   private TableView<EmployeeObservable> centerTable;
+  private VBox rightPane;
+  private HBox bottomPane;
   private ArrayList<Button> buttons;
   private Observers observers;
   private Stage primaryStage;
@@ -36,11 +33,8 @@ public class ApplicationGUI {
   private final static int APPLICATION_WINDOW_WIDTH = 1000;
   private final static int APPLICATION_WINDOW_HEIGHT = 300;
 
-  /**
-   * Creates Menu and menu item.
-   * Sets alignment for the elements in the menubar.
-   */
-  private void setupTopPane() {
+  public void setupTopPane() {
+    System.out.println("setupTopPane");
     Menu menuFile = new Menu("About");
     MenuItem menuItem = new MenuItem("Git");
     menuItem.setOnAction(observers.getActionEvent());
@@ -55,20 +49,15 @@ public class ApplicationGUI {
     topPane.getChildren().add(menuBar);
   }
 
-  /**
-   * Creates left pane and adds buttons.
-   */
-  private void setupLeftPane() {
+  public void setupLeftPane() {
+    System.out.println("setupleftpane");
     leftPane = new VBox();
     leftPane.getChildren().addAll(buttons);
   }
 
-  /**
-   * Creates center table and adds columns.
-   * Also sets EventHandler for the table.
-   */
-  private void setupCenterPane() {
-    centerTable = new TableView<>();
+  public void setupCenterPane() {
+    System.out.println("setupCenterPane");
+    centerTable = new TableView<EmployeeObservable>();
     centerTable.setEditable(true);
     centerTable.setOnMouseClicked(observers.getMouseEvent());
 
@@ -145,29 +134,23 @@ public class ApplicationGUI {
     centerTable.getColumns().addAll(tableColumns);
   }
 
-  /**
-   * Getter for the center table.
-   * @return The center table of this window
-   */
   public TableView<EmployeeObservable> getCenterTable() {
     return centerTable;
   }
 
-  /**
-   * Creates the main window and adds all the elements.
-   */
-  private void setupMainPane() {
+  public void setupMainPane() {
+    System.out.println("setup Mainpane");
     mainPane = new BorderPane();
     mainPane.setCenter(centerTable);
     mainPane.setTop(topPane);
     mainPane.setLeft(leftPane);
+    mainPane.setRight(rightPane);
+    mainPane.setBottom(bottomPane);
   }
 
-  /**
-   * Creates buttons for main gui, sets button text and button id.
-   * Sets EventHandler for buttons.
-   */
-  private void setUpButtons() {
+  public void setUpButtons() {
+    System.out.println("setup buttons");
+
     Button search = new Button("Search");
     search.setId("MainMenuSearchButton");
     Button add = new Button("Add");
@@ -192,11 +175,8 @@ public class ApplicationGUI {
     }
   }
 
-  /**
-   * Calls methods to create elements.
-   * Creates the scene and shows main gui.
-   */
   public void start() {
+    System.out.println("GUI start");
     setupTopPane();
     setupCenterPane();
     setUpButtons();
@@ -211,26 +191,18 @@ public class ApplicationGUI {
     primaryStage.show();
   }
 
-  /**
-   * Sets this window as the applications primary stage.
-   * @param primaryStage The primary stage from main method
-   */
   public void setPrimaryStage(Stage primaryStage) {
     this.primaryStage = primaryStage;
   }
 
-  /**
-   * Getter for the applications primary stage.
-   * @return The primary stage of the application
-   */
   public Stage getPrimaryStage() {
     return this.primaryStage;
   }
 
-  /**
-   * Sets the observers for this class.
-   * @param observers Inner class of observers in TheFirmController
-   */
+  public ArrayList<Button> getButtons() {
+    return buttons;
+  }
+
   public void setObservers(Observers observers) {
     this.observers = observers;
 
