@@ -71,13 +71,4 @@ abstract class AbstractPopup implements PopupInterface {
   Button getConfirmButton() {
     return confirmButton;
   }
-
-  /**
-   * Sets the observers for this class.
-   *
-   * @param observers Sets the observers
-   */
-  public void setObserver(Observers observers) {
-    this.observers = observers;
-  }
 }
