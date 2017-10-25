@@ -4,7 +4,8 @@ import controller.TheFirmController.Observers;
 import javafx.scene.control.Button;
 
 /**
- * This abstract class creates a confirmbutton, a cancelbutton and sets observers.
+ * This abstract class creates a confirm button, a cancel button and sets observers.
+ *
  * @author Cristoffer
  * @author Harald
  */
@@ -17,9 +18,9 @@ abstract class AbstractPopup implements PopupInterface {
   private final static int PREFERRED_BUTTON_WIDTH = 100;
 
   /**
-   * @param confirmButtonText Text to show on confirm-button
-   * @param confirmButtonId ID to set on the confirm-button
-   * @param observers Inner class Observers in Controller to use with this class
+   * @param confirmButtonText Text to show on the confirm button
+   * @param confirmButtonId ID to set on the confirm button
+   * @param observers Observers to use with this class
    */
 
   AbstractPopup(String confirmButtonText,
@@ -55,6 +56,7 @@ abstract class AbstractPopup implements PopupInterface {
 
   /**
    * Getter for the cancel button.
+   *
    * @return This cancel button object
    */
   Button getCancelButton() {
@@ -63,6 +65,7 @@ abstract class AbstractPopup implements PopupInterface {
 
   /**
    * Getter for the confirm button.
+   *
    * @return This confirm button object
    */
   Button getConfirmButton() {
@@ -71,7 +74,8 @@ abstract class AbstractPopup implements PopupInterface {
 
   /**
    * Sets the observers for this class.
-   * @param observers Inner class of observers in TheFirmController
+   *
+   * @param observers Sets the observers
    */
   public void setObserver(Observers observers) {
     this.observers = observers;

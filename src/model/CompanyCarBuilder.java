@@ -4,7 +4,7 @@ import java.sql.Date;
 
 /**
  * A builder class building companyCar objects.
- * 
+ *
  * @author Harald & Cristoffer
  */
 public class CompanyCarBuilder {
@@ -48,7 +48,7 @@ public class CompanyCarBuilder {
 
   /**
    * Method takes all parameters from this class and sets them on the companyCar object.
-   * 
+   *
    * @return a complete companyCar object.
    */
   public CompanyCar build() {

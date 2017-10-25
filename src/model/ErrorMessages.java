@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 /**
  * Container for all error messages
- * 
+ *
  * @author Harald & Cristoffer
  */
 

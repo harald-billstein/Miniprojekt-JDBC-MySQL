@@ -70,7 +70,6 @@ SELECT name, COUNT(employee_id) FROM department JOIN employee ON department.depa
 
 ```
 # code block
-WORK IN PROGRESS employee_id foreign key problem!
 CREATE TABLE company_car (reg_nr char(6) NOT NULL UNIQUE, brand varchar(32) NOT NULL, model varchar(32) NOT NULL, purchase_price int 
 NOT NULL, purchase_date date NOT NULL, employee_id int UNIQUE, PRIMARY KEY(reg_nr), FOREIGN KEY(employee_id) REFERENCES employee(employee_id) ON DELETE SET NULL);
 ```

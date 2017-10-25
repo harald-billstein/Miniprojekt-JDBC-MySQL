@@ -34,7 +34,7 @@ public class EditEmployeePopup extends AbstractPopup {
    * Creates a new stage and assigns the primary stage
    *
    * @param primaryStage The primary stage which this popup belongs to
-   * @param observers Inner class Observers in Controller to use with this class
+   * @param observers Observers to use with this class
    */
   public EditEmployeePopup(Stage primaryStage, Observers observers) {
     super("Update Employee", "PopupEditEmployeeConfirmButton",

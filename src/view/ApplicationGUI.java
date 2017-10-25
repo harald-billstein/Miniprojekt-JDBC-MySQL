@@ -20,6 +20,7 @@ import model.EmployeeObservable;
 
 /**
  * Creates the main GUI window.
+ *
  * @author Cristoffer
  * @author Harald
  */
@@ -33,12 +34,13 @@ public class ApplicationGUI {
   private Observers observers;
   private Stage primaryStage;
   private ArrayList tableColumns;
-  private final static int APPLICATION_WINDOW_WIDTH = 1000;
-  private final static int APPLICATION_WINDOW_HEIGHT = 300;
+  private final static int PREFERRED_BUTTON_WIDTH = 120;
+  private final static int APPLICATION_WINDOW_WIDTH = 1408;
+  private final static int APPLICATION_WINDOW_HEIGHT = 792;
 
   /**
    * Creates Menu and menu item.
-   * Sets alignment for the elements in the menubar.
+   * Sets alignment for the elements in the menu bar.
    */
   private void setupTopPane() {
     Menu menuFile = new Menu("About");
@@ -88,28 +90,30 @@ public class ApplicationGUI {
     hireDate.setCellValueFactory(new PropertyValueFactory<>("hireDate"));
     hireDate.setMinWidth(50);
 
-    TableColumn<EmployeeObservable, String> departmentName = new TableColumn<>("Department name");
+    TableColumn<EmployeeObservable, String> departmentName = new TableColumn<>(
+        "Department name");
     departmentName.setCellValueFactory(new PropertyValueFactory<>("departmentName"));
-    departmentName.setMinWidth(50);
+    departmentName.setMinWidth(120);
 
-    TableColumn<EmployeeObservable, Integer> departmentRent = new TableColumn<>("Department rent");
+    TableColumn<EmployeeObservable, Integer> departmentRent = new TableColumn<>(
+        "Department rent");
     departmentRent.setCellValueFactory(new PropertyValueFactory<>("departmentRent"));
     departmentRent.setMinWidth(100);
 
     TableColumn<EmployeeObservable, String> departmentPhonenumber =
         new TableColumn<>("Department phonenumber");
     departmentPhonenumber.setCellValueFactory(new PropertyValueFactory<>("departmentPhoneNumber"));
-    departmentPhonenumber.setMinWidth(50);
+    departmentPhonenumber.setMinWidth(160);
 
     TableColumn<EmployeeObservable, String> companyCarRegNr = new TableColumn<>("Car regnr.");
     companyCarRegNr.setCellValueFactory(new PropertyValueFactory<>("companyCarRegNr"));
     companyCarRegNr.setMinWidth(50);
 
-    TableColumn<EmployeeObservable, String> companyCarBrand = new TableColumn<>("car brand");
+    TableColumn<EmployeeObservable, String> companyCarBrand = new TableColumn<>("Car brand");
     companyCarBrand.setCellValueFactory(new PropertyValueFactory<>("companyCarBrand"));
     companyCarBrand.setMinWidth(50);
 
-    TableColumn<EmployeeObservable, String> companyCarModel = new TableColumn<>("car model");
+    TableColumn<EmployeeObservable, String> companyCarModel = new TableColumn<>("Car model");
     companyCarModel.setCellValueFactory(new PropertyValueFactory<>("companyCarModel"));
     companyCarModel.setMinWidth(50);
 
@@ -117,13 +121,13 @@ public class ApplicationGUI {
         new TableColumn<>("Purchase price");
     companyCarPurchasePrice
         .setCellValueFactory(new PropertyValueFactory<>("companyCarPurchasePrise"));
-    companyCarPurchasePrice.setMinWidth(50);
+    companyCarPurchasePrice.setMinWidth(120);
 
     TableColumn<EmployeeObservable, Date> companyCarPurchaseDate =
         new TableColumn<>("Purchase date");
     companyCarPurchaseDate
         .setCellValueFactory(new PropertyValueFactory<>("companyCarPurchaseDate"));
-    companyCarPurchaseDate.setMinWidth(50);
+    companyCarPurchaseDate.setMinWidth(120);
 
     tableColumns = new ArrayList<>();
 
@@ -147,6 +151,7 @@ public class ApplicationGUI {
 
   /**
    * Getter for the center table.
+   *
    * @return The center table of this window
    */
   public TableView<EmployeeObservable> getCenterTable() {
@@ -187,7 +192,7 @@ public class ApplicationGUI {
     buttons.add(resetTableView);
 
     for (Button button : buttons) {
-      button.setMinWidth(100);
+      button.setPrefWidth(PREFERRED_BUTTON_WIDTH);
       button.setOnAction(observers.getActionEvent());
     }
   }
@@ -213,6 +218,7 @@ public class ApplicationGUI {
 
   /**
    * Sets this window as the applications primary stage.
+   *
    * @param primaryStage The primary stage from main method
    */
   public void setPrimaryStage(Stage primaryStage) {
@@ -221,6 +227,7 @@ public class ApplicationGUI {
 
   /**
    * Getter for the applications primary stage.
+   *
    * @return The primary stage of the application
    */
   public Stage getPrimaryStage() {
@@ -229,12 +236,12 @@ public class ApplicationGUI {
 
   /**
    * Sets the observers for this class.
+   *
    * @param observers Inner class of observers in TheFirmController
    */
   public void setObservers(Observers observers) {
     this.observers = observers;
 
   }
-
 
 }

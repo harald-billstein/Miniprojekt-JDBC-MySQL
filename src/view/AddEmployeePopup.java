@@ -12,9 +12,9 @@ import javafx.stage.Stage;
 
 /**
  * Creates a popup which is used to add a new employee to the database
+ *
  * @author Cristoffer
  * @author Harald
- *
  */
 
 public class AddEmployeePopup extends AbstractPopup {
@@ -35,7 +35,7 @@ public class AddEmployeePopup extends AbstractPopup {
    * Creates a new stage and assigns the primary stage
    *
    * @param primaryStage The primary stage which this popup belongs to
-   * @param observers Inner class Observers in Controller to use with this class
+   * @param observers Observers to use with this class
    */
   public AddEmployeePopup(Stage primaryStage, Observers observers) {
     super("Add Employee", "PopupAddEmployeeConfirmButton", observers);
@@ -135,6 +135,7 @@ public class AddEmployeePopup extends AbstractPopup {
 
   /**
    * Getter for first name
+   *
    * @return The first name of the Employee
    */
   public String getFirstName() {
@@ -143,6 +144,7 @@ public class AddEmployeePopup extends AbstractPopup {
 
   /**
    * Getter for last name
+   *
    * @return The last name of the Employee
    */
   public String getLastName() {
@@ -151,6 +153,7 @@ public class AddEmployeePopup extends AbstractPopup {
 
   /**
    * Getter for salary name
+   *
    * @return The salary of the Employee
    */
   public String getSalary() {
@@ -159,6 +162,7 @@ public class AddEmployeePopup extends AbstractPopup {
 
   /**
    * Getter for department
+   *
    * @return The department of the Employee
    */
   public String getDepartment() {
@@ -167,6 +171,7 @@ public class AddEmployeePopup extends AbstractPopup {
 
   /**
    * Sets the error text to be displayed if and input is invalid
+   *
    * @param errorText Error text to be displayed in the popup
    */
   public void setErrorLabelText(String errorText) {

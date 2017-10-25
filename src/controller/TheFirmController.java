@@ -19,8 +19,8 @@ import model.Department;
 import model.Employee;
 import model.EmployeeBuilder;
 import model.EmployeeObservable;
-import model.ToObservableList;
 import model.ErrorMessages;
+import model.ToObservableList;
 import view.AddEmployeePopup;
 import view.ApplicationGUI;
 import view.EditEmployeePopup;
@@ -29,9 +29,8 @@ import view.WebPagePresenter;
 
 /**
  * Class controlling the flow of data between the database and the user interface.
- * 
- * @author Harald & Cristoffer
  *
+ * @author Harald & Cristoffer
  */
 public class TheFirmController {
 
@@ -127,7 +126,7 @@ public class TheFirmController {
    * Search the database for employees.
    */
   private void doEmployeeSearch() {
-    boolean success = userInputChecker.isValidFirstName(searchEmployeePopup.getEmployeeNameInput());
+    boolean success = userInputChecker.isFirstNameValid(searchEmployeePopup.getEmployeeNameInput());
     if (success) {
       List<Employee> employees =
           employeeIO.seachEmployeeName(searchEmployeePopup.getEmployeeNameInput());
@@ -143,47 +142,47 @@ public class TheFirmController {
    * if all inputs are valid.
    */
   private void buildEmployee() {
-    boolean inputValid = true;
+    boolean inputValid;
 
     String firstName = addEmployeePopup.getFirstName().trim();
-    inputValid = userInputChecker.isValidFirstName(firstName);
+    inputValid = userInputChecker.isFirstNameValid(firstName);
     if (!inputValid) {
       addEmployeePopup.setErrorLabelText(userInputErrorText.getFirstNameError());
       return;
     }
 
     String lastName = addEmployeePopup.getLastName().trim();
-    inputValid = userInputChecker.isValidLastName(lastName);
+    inputValid = userInputChecker.isLastNameValid(lastName);
     if (!inputValid) {
       addEmployeePopup.setErrorLabelText(userInputErrorText.getLastNameError());
       return;
     }
 
     String salary = addEmployeePopup.getSalary();
-    inputValid = userInputChecker.isValidSalary(salary);
+    inputValid = userInputChecker.isSalaryValid(salary);
     if (!inputValid) {
       addEmployeePopup.setErrorLabelText(userInputErrorText.getSalaryError());
       return;
     }
 
     String departmentId = addEmployeePopup.getDepartment();
-    inputValid = userInputChecker.isValidDepartmentId(departmentId);
+    inputValid = userInputChecker.isDepartmentIdValid(departmentId);
     if (!inputValid) {
       addEmployeePopup.setErrorLabelText(userInputErrorText.getDepartmentError());
       return;
     }
 
-    if (inputValid) {
-      Employee employee = new EmployeeBuilder().setFirstName(firstName).setLastName(lastName)
-          .setSalary(Integer.parseInt(salary)).setDepartmentId(Integer.parseInt(departmentId))
-          .build();
+    Employee employee = new EmployeeBuilder()
+        .setFirstName(firstName)
+        .setLastName(lastName)
+        .setSalary(Integer.parseInt(salary))
+        .setDepartmentId(Integer.parseInt(departmentId))
+        .build();
 
-      employeeQueue.add(employee);
-      writeEmployeeQueueToDatabase(employeeQueue);
-      updateEmployeeTable();
-      addEmployeePopup.closePopup();
-    }
-
+    employeeQueue.add(employee);
+    writeEmployeeQueueToDatabase(employeeQueue);
+    updateEmployeeTable();
+    addEmployeePopup.closePopup();
   }
 
   private void updateEmployeeTable() {
@@ -192,8 +191,6 @@ public class TheFirmController {
 
   /**
    * Takes a list of employees and inserts them to the database.
-   * 
-   * @param employeeQueue
    */
   private void writeEmployeeQueueToDatabase(Queue<Employee> employeeQueue) {
     while (!employeeQueue.isEmpty()) {
@@ -206,41 +203,39 @@ public class TheFirmController {
    * Edits the selected employee.
    */
   private void updateEmployee() {
-    boolean inputValid = true;
+    boolean inputValid;
 
     String firstName = editEmployeePopup.getFirstName().trim();
-    inputValid = userInputChecker.isValidFirstName(firstName);
+    inputValid = userInputChecker.isFirstNameValid(firstName);
     if (!inputValid) {
       editEmployeePopup.setErrorLabelText(userInputErrorText.getFirstNameError());
       return;
     }
 
     String lastName = editEmployeePopup.getLastName().trim();
-    inputValid = userInputChecker.isValidLastName(lastName);
+    inputValid = userInputChecker.isLastNameValid(lastName);
     if (!inputValid) {
       editEmployeePopup.setErrorLabelText(userInputErrorText.getLastNameError());
       return;
     }
 
     String salary = editEmployeePopup.getSalary();
-    inputValid = userInputChecker.isValidSalary(salary);
+    inputValid = userInputChecker.isSalaryValid(salary);
     if (!inputValid) {
       editEmployeePopup.setErrorLabelText(userInputErrorText.getSalaryError());
       return;
     }
 
-    if (inputValid) {
-      Employee employee = new Employee();
-      employee.setEmployeeId(selectedEmployee.getEmployeeId());
-      employee.setFirstName(firstName);
-      employee.setLastName(lastName);
-      employee.setSalary(Integer.parseInt(salary));
+    Employee employee = new Employee();
+    employee.setEmployeeId(selectedEmployee.getEmployeeId());
+    employee.setFirstName(firstName);
+    employee.setLastName(lastName);
+    employee.setSalary(Integer.parseInt(salary));
 
-      employeeIO.updateEmployee(employee);
-      updateEmployeeTable();
-      editEmployeePopup.closePopup();
-      selectedEmployee = null;
-    }
+    employeeIO.updateEmployee(employee);
+    updateEmployeeTable();
+    editEmployeePopup.closePopup();
+    selectedEmployee = null;
   }
 
   public void setGui(ApplicationGUI applicationGUI) {
@@ -248,9 +243,9 @@ public class TheFirmController {
   }
 
   /**
-   * Collects all employees from database and converts them to and
+   * Collects all employees from database and converts them to an
    * observable list.
-   * 
+   *
    * @return Observable list of employees
    */
   public ObservableList<EmployeeObservable> getEmployees() {
@@ -260,9 +255,9 @@ public class TheFirmController {
   }
 
   /**
-   * Collects searched employees from database and converts them to and
+   * Collects searched employees from database and converts them to an
    * observable list.
-   * 
+   *
    * @return Observable list of employees
    */
   public ObservableList<EmployeeObservable> getSeachedEmployees(List<Employee> employees) {
@@ -275,10 +270,10 @@ public class TheFirmController {
     return observers;
   }
 
-  
+
   /**
    * class containing all observers needed in the project.
-   * 
+   *
    * @author Harald & Cristoffer
    */
   public class Observers {
@@ -300,6 +295,7 @@ public class TheFirmController {
       @Override
       public void handle(WindowEvent event) {
         System.out.println("Exiting App");
+        hibernateSessionManager.close();
         Platform.exit();
         System.exit(0);
 

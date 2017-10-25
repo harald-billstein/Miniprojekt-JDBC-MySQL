@@ -6,15 +6,13 @@ import model.Employee;
 
 /**
  * Class handling input and output from database.
- * 
+ *
  * @author Harald & Cristoffer
  */
 public class EmployeeIO extends DatabaseIO<Employee> {
 
   /**
    * Constructor setting an Object handling the connection to the database
-   * 
-   * @param hibernateSessionManager
    */
   public EmployeeIO(HibernateSessionManager hibernateSessionManager) {
     super(hibernateSessionManager, Employee.class);
@@ -22,8 +20,8 @@ public class EmployeeIO extends DatabaseIO<Employee> {
 
   /**
    * Search two columns (fname & lname) in the database for matches.
-   * 
-   * @param search string.
+   *
+   * @param name search string.
    * @return a list of all matches.
    */
   public List<Employee> seachEmployeeName(String name) {
@@ -45,8 +43,8 @@ public class EmployeeIO extends DatabaseIO<Employee> {
 
   /**
    * Updates columns (fname, lname, department_id and salary).
-   * 
-   * @param updatedEmployee.
+   *
+   * @param updatedEmployee Employee to update.
    * @return true if success.
    */
   public boolean updateEmployee(Employee updatedEmployee) {
@@ -74,6 +72,9 @@ public class EmployeeIO extends DatabaseIO<Employee> {
       }
       session.getTransaction().commit();
       success = true;
+    } catch (Exception e) {
+      e.printStackTrace();
+      success = false;
     } finally {
       session.close();
     }
