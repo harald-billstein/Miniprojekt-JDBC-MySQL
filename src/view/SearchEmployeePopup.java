@@ -17,7 +17,6 @@ import javafx.stage.Stage;
  * @author Cristoffer
  * @author Harald
  */
-
 public class SearchEmployeePopup extends AbstractPopup {
 
   private Stage popupStage;
@@ -88,7 +87,6 @@ public class SearchEmployeePopup extends AbstractPopup {
   /**
    * Closes the popup
    */
-
   public void closePopup() {
     popupStage.close();
   }

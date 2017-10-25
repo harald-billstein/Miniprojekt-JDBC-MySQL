@@ -1,7 +1,5 @@
 package view;
 
-import controller.TheFirmController.Observers;
-
 /**
  * Interface to use with the AbstractPopup
  */
@@ -9,6 +7,5 @@ import controller.TheFirmController.Observers;
 public interface PopupInterface {
   void createConfirmButton();
   void createCancelButton();
-  void setObserver(Observers observers);
   void closePopup();
 }
