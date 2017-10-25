@@ -10,8 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 /**
- * Class file used by Hibernete to fetch all info from database entity department.
- * 
+ * Class file used by Hibernate to fetch all info from database entity department.
+ *
  * @author Harald & Christoffer
  */
 @Entity(name = "department")

@@ -4,10 +4,11 @@ import java.sql.Date;
 
 /**
  * A builder class building employee objects.
- * 
+ *
  * @author Harald & Cristoffer
  */
 public class EmployeeBuilder {
+
   private String firstName;
   private String lastName;
   private Integer salary;
@@ -41,7 +42,7 @@ public class EmployeeBuilder {
 
   /**
    * Method takes all parameters from this class and sets them on the employee object.
-   * 
+   *
    * @return a complete employee object.
    */
   public Employee build() {

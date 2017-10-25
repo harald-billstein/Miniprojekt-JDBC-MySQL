@@ -11,7 +11,7 @@ import javax.persistence.OneToOne;
 
 /**
  * Class file used by Hibernete to fetch all info from database entity company_car.
- * 
+ *
  * @author Harald & Christoffer
  */
 @Entity(name = "company_car")

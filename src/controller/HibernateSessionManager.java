@@ -9,7 +9,7 @@ import org.hibernate.SessionFactory;
 
 /**
  * Class handling the communication to the database.
- * 
+ *
  * @author Harald & Cristoffer
  */
 public class HibernateSessionManager {
@@ -17,6 +17,11 @@ public class HibernateSessionManager {
 	private SessionFactory factory;
 	private Configuration configuration;
 	private List<Class<?>> clazzes;
+
+	/**
+	 * Constructor specifying list of classes to associate with hibernate
+	 * @param clazzes List of classes
+	 */
 
 	public HibernateSessionManager(List<Class<?>> clazzes) {
 		this.clazzes = clazzes;
@@ -27,8 +32,8 @@ public class HibernateSessionManager {
 
 	/**
 	 * Configure the connection.
-	 * 
-	 * @throws ServiceException
+	 *
+	 * @throws ServiceException If there is a problem with a service
 	 */
 	private void createConfiguration() throws ServiceException {
 		this.configuration = new Configuration().configure("hibernate.cfg.xml");
@@ -62,9 +67,9 @@ public class HibernateSessionManager {
    * Shuts down the factory, when communication to the database is not needed anymore.
    */
 	public void close() {
-		if (factory.isClosed()) {
+		if (!factory.isClosed()) {
 			factory.close();
 		}
 	}
-	
+
 }

@@ -9,7 +9,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * This class is used to show our Github page
+ * This class is used to show a webpage
  */
 public class WebPagePresenter {
 
@@ -17,6 +17,7 @@ public class WebPagePresenter {
 
   /**
    * Creates a popup and sets the primary stage of this popup
+   *
    * @param primaryStage The primary stage
    */
   public WebPagePresenter(Stage primaryStage) {
@@ -24,6 +25,9 @@ public class WebPagePresenter {
     webPagePresenter.initOwner(primaryStage);
   }
 
+  /**
+   * Shows our GitHub page
+   */
   public void showGitPage() {
     Scene scene = new Scene(new Group());
 
@@ -33,7 +37,8 @@ public class WebPagePresenter {
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setContent(browser);
 
-    webEngine.load("https://github.com/harald-billstein/Miniprojekt-JDBC-MySQL/blob/master/README.md");
+    webEngine.load(
+        "https://github.com/harald-billstein/Miniprojekt-JDBC-MySQL/blob/master/README.md");
 
     scene.setRoot(scrollPane);
 

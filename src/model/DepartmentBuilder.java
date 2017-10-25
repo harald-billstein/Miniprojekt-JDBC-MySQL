@@ -2,7 +2,7 @@ package model;
 
 /**
  * A builder class building department objects.
- * 
+ *
  * @author Harald & Cristoffer
  */
 public class DepartmentBuilder {
@@ -28,7 +28,7 @@ public class DepartmentBuilder {
 
   /**
    * Method takes all parameters from this class and sets them on the department object.
-   * 
+   *
    * @return a complete department object.
    */
   public Department Build() {

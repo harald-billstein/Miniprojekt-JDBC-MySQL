@@ -11,6 +11,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Creates a popup which is used to search for an employee
+ *
+ * @author Cristoffer
+ * @author Harald
+ */
+
 public class SearchEmployeePopup extends AbstractPopup {
 
   private Stage popupStage;
@@ -24,8 +31,9 @@ public class SearchEmployeePopup extends AbstractPopup {
 
   /**
    * Creates a popup which is used to search for an Employee
+   *
    * @param primaryStage The primary stage which this popup belongs to
-   * @param observers Inner class observers in controller to use with this class
+   * @param observers Observers to use with this class
    */
   public SearchEmployeePopup(Stage primaryStage, Observers observers) {
     super("Search", "PopupSearchEmployeeConfirmButton", observers);
@@ -77,12 +85,17 @@ public class SearchEmployeePopup extends AbstractPopup {
     bottomBox.setAlignment(Pos.CENTER);
   }
 
+  /**
+   * Closes the popup
+   */
+
   public void closePopup() {
     popupStage.close();
   }
 
   /**
    * Getter for Employee name TextField
+   *
    * @return Employee to search for
    */
   public String getEmployeeNameInput() {
@@ -91,6 +104,7 @@ public class SearchEmployeePopup extends AbstractPopup {
 
   /**
    * Sets the error text to be displayed if and input is invalid
+   *
    * @param errorMessage Error text to be displayed in the popup
    */
   public void setErrorLabelText(String errorMessage) {

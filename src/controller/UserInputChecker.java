@@ -2,7 +2,7 @@ package controller;
 
 /**
  * Checks if user inputs are valid.
- * 
+ *
  * @author Harald & Cristoffer
  */
 public class UserInputChecker {
@@ -15,7 +15,7 @@ public class UserInputChecker {
     this.numberOfDepartments = numberOfDepartments;
   }
 
-  public boolean isValidFirstName(String firstName) {
+  public boolean isFirstNameValid(String firstName) {
     boolean success = true;
 
     if (firstName.isEmpty()) {
@@ -24,7 +24,7 @@ public class UserInputChecker {
     return success;
   }
 
-  public boolean isValidLastName(String lastName) {
+  public boolean isLastNameValid(String lastName) {
     boolean success = true;
 
     if (lastName.isEmpty()) {
@@ -33,10 +33,10 @@ public class UserInputChecker {
     return success;
   }
 
-  public boolean isValidSalary(String salary) {
+  public boolean isSalaryValid(String salary) {
     boolean success = true;
 
-    if (!isParasble(salary)) {
+    if (!isParsable(salary)) {
       success = false;
     } else if (Integer.parseInt(salary) < MINIMUM_SALARY) {
       success = false;
@@ -45,10 +45,10 @@ public class UserInputChecker {
     return success;
   }
 
-  public boolean isValidDepartmentId(String departmentId) {
+  public boolean isDepartmentIdValid(String departmentId) {
     boolean success = true;
 
-    if (!isParasble(departmentId)) {
+    if (!isParsable(departmentId)) {
 
       success = false;
     } else if (Integer.parseInt(departmentId) < 1
@@ -60,7 +60,7 @@ public class UserInputChecker {
     return success;
   }
 
-  public boolean isParasble(String s) {
+  public boolean isParsable(String s) {
     boolean success;
 
     try {

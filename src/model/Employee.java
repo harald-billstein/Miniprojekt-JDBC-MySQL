@@ -11,8 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
- * Class file used by Hibernete to fetch all info from database entity employee.
- * 
+ * Class file used by Hibernate to fetch all info from database entity employee.
+ *
  * @author Harald & Christoffer
  */
 @Entity(name = "employee")
